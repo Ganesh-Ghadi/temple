@@ -89,7 +89,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       <ScrollArea
         className={`${
           isSidebarOpen ? "w-80 px-4" : " w-16 p-3 "
-        } hidden md:block duration-300 text-white transition-all pt-3.5 border border-dark-purple  min-h-screen bg-dark-purple`}
+        } hidden md:block duration-300 text-white transition-all pt-3.5 border border-dark-purple  min-h-screen bg-dark-purple dark:bg-gray-800`}
         // className={`${
         //   isSidebarOpen ? "w-80 opacity-100" : "w-0 opacity-0"
         // } duration-300 transition-all px-4 pt-3.5 shadow-xl min-h-screen dark:bg-gray-800 bg-slate-50`}
@@ -110,7 +110,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 {/* Parent item */}
                 {item.children ? (
                   <NavLink
-                    className=" flex my-2 text-sm px-1 py-2 hover:bg-dark-purple-light rounded items-center"
+                    className=" flex my-2 text-sm px-1 py-2 hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded items-center"
                     to={item.path || "#"}
                     onClick={() => item.children && toggleChildren(item.name)} // Toggle children visibility on click
                   >
@@ -144,8 +144,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 ) : (
                   <NavLink
                     className={({ isActive }) =>
-                      ` flex my-2 px-1 py-2 text-white hover:bg-dark-purple-light text-sm rounded items-center ${
-                        isActive && "bg-dark-purple-light text-white"
+                      ` flex my-2 px-1 py-2 text-white hover:bg-dark-purple-light dark:hover:bg-gray-600 text-sm rounded items-center ${
+                        isActive &&
+                        "bg-dark-purple-light dark:bg-gray-600 text-white"
                       }`
                     }
                     to={item.path || "#"}
@@ -180,8 +181,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         key={idx}
                         className={({ isActive }) =>
                           `  ${
-                            isActive && "bg-dark-purple-light"
-                          } pl-1 w-full py-2 my-2 gap-2  hover:bg-dark-purple-light rounded flex items-center text-sm ${
+                            isActive && "bg-dark-purple-light dark:bg-gray-600"
+                          } pl-1 w-full py-2 my-2 gap-2  hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded flex items-center text-sm ${
                             isSidebarOpen && "pl-8"
                           } `
                         }
