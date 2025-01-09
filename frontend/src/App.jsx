@@ -17,6 +17,9 @@ import UpdateUsers from "./pages/Users/Update";
 import Devtas from "./pages/Devtas/index";
 import CreateDevtas from "./pages/Devtas/Create";
 import UpdateDevtas from "./pages/Devtas/Update";
+import PoojaTypes from "./pages/PoojaTypes/index";
+import CreatePoojaType from "./pages/PoojaTypes/Create";
+import UpdatePoojaType from "./pages/PoojaTypes/Update";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -50,6 +53,9 @@ const App = () => {
           <Route path="/devtas" element={<Devtas />} />
           <Route path="/devtas/create" element={<CreateDevtas />} />
           <Route path="/devtas/:id/edit" element={<UpdateDevtas />} />
+          <Route path="/pooja_types" element={<PoojaTypes />} />
+          <Route path="/pooja_types/create" element={<CreatePoojaType />} />
+          <Route path="/pooja_types/:id/edit" element={<UpdatePoojaType />} />
         </Route>
         <Route
           errorElement={<Error />}

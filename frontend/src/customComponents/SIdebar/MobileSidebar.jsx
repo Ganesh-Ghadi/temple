@@ -18,6 +18,8 @@ import {
   LayoutDashboard,
   Users,
   Network,
+  Sun,
+  Settings,
   SquareUserRound,
   CircleGauge,
 } from "lucide-react";
@@ -53,6 +55,23 @@ const MobileSidebar = ({ open, setOpen }) => {
       ],
     },
     {
+      name: "Masters",
+      path: "#",
+      logo: <Settings size={16} />,
+      children: [
+        {
+          name: "Devtas",
+          path: "/devtas",
+          logo: <Sun />,
+        },
+        {
+          name: "Pooja Types",
+          path: "/pooja_types",
+          logo: <Sun />,
+        },
+      ],
+    },
+    {
       name: "Dashboard",
       path: "/gr",
       logo: <CircleGauge size={20} />,
@@ -78,13 +97,22 @@ const MobileSidebar = ({ open, setOpen }) => {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" className=" block md:hidden">
-            <AlignJustify color="red" size={48} />
+            <AlignJustify className="text-black dark:text-white" size={48} />
           </Button>
         </SheetTrigger>
 
-        <SheetContent side="left" className="dark:bg-gray-800">
+        <SheetContent
+          side="left"
+          className="text-white bg-dark-purple dark:bg-gray-800"
+        >
           <SheetHeader>
-            <SheetTitle className="text-left">Project</SheetTitle>
+            <SheetTitle className="text-left mb-10">
+              <div className="flex gap-3 p-1 text-2xl items-center text-white">
+                {" "}
+                <LayoutDashboard />
+                Designer
+              </div>{" "}
+            </SheetTitle>
           </SheetHeader>
           <ScrollArea className="h-full pr-3">
             <ul className="pb-32 ">

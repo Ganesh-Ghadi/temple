@@ -36,7 +36,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import Delete from "./Delete";
-import { Input } from "@/components/ui/input";
 
 const Index = () => {
   const [search, setSearch] = useState("");
@@ -47,14 +46,14 @@ const Index = () => {
   const navigate = useNavigate();
 
   const {
-    data: DevtasData,
-    isLoading: isDevtasDataLoading,
-    isError: isDevtasDataError,
+    data: PoojaTypesData,
+    isLoading: isPoojaTypesDataLoading,
+    isError: isPoojaTypesDataError,
   } = useQuery({
-    queryKey: ["devtas", currentPage, search], // This is the query key
+    queryKey: ["poojaTypes", currentPage, search], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get("/api/devtas", {
+        const response = await axios.get("/api/pooja_types", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -73,7 +72,7 @@ const Index = () => {
   });
 
   // pagination start
-  const { Devtas, pagination } = DevtasData || {}; // Destructure Profiles and pagination from UsersData
+  const { PoojaTypes, pagination } = PoojaTypesData || {}; // Destructure Profiles and pagination from UsersData
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
 
   // Directly use Profiles for the table data
@@ -81,7 +80,7 @@ const Index = () => {
 
   // pagination end
 
-  if (isDevtasDataError) {
+  if (isPoojaTypesDataError) {
     return <p>Error fetching data</p>;
   }
 
@@ -90,16 +89,16 @@ const Index = () => {
       <div className="w-full p-5">
         <div className="w-full mb-7">
           <Button
-            onClick={() => navigate("/devtas/create")}
+            onClick={() => navigate("/pooja_types/create")}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
-            Add Devtas
+            Add Pooja Type
           </Button>
         </div>
         <div className="px-5 dark:bg-gray-800 pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
-            <h2 className="text-xl font-medium">Devtas</h2>
+            <h2 className="text-xl font-medium">Pooja Types</h2>
             {/* search field here */}
             <div className="relative p-0.5 ">
               <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -125,7 +124,7 @@ const Index = () => {
                 }}
                 id="search"
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for Devta"
+                placeholder="Search for Pooja Types"
               />
             </div>
             {/* end */}
@@ -145,20 +144,32 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-gray-600 bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="">Roles</TableHead>
+                <TableHead className="p-2">Pooja Type</TableHead>
+                <TableHead className="p-2">Devta Name</TableHead>
+                <TableHead className="p-2">Contribution</TableHead>
+                <TableHead className="p-2">Multiple</TableHead>
 
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Devtas &&
-                Devtas.map((devta) => (
+              {PoojaTypes &&
+                PoojaTypes.map((poojaType) => (
                   <TableRow
-                    key={devta.id}
+                    key={poojaType.id}
                     className=" dark:hover:bg-gray-600 dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
-                      {devta.devta_name}
+                      {poojaType.pooja_type}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
+                      {poojaType.devta_name}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
+                      ₹{poojaType.contribution}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
+                      {poojaType.multiple ? "Yes" : "No"}
                     </TableCell>
 
                     <TableCell className="text-right p-2">
@@ -179,12 +190,14 @@ const Index = () => {
                             variant="ghost"
                             size="sm"
                             className="w-full text-sm"
-                            onClick={() => navigate(`/devtas/${devta.id}/edit`)}
+                            onClick={() =>
+                              navigate(`/pooja_types/${poojaType.id}/edit`)
+                            }
                           >
                             <Pencil /> Edit
                           </Button>
                           <div className="w-full">
-                            <Delete id={devta.id} />
+                            <Delete id={poojaType.id} />
                           </div>
                         </DropdownMenuContent>
                       </DropdownMenu>

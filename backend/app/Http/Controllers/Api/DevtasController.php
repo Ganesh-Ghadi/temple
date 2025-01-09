@@ -97,4 +97,16 @@ class DevtasController extends BaseController
 
         return $this->sendResponse([], "devta deleted successfully");
     }
+
+    /**
+     * Fetch All Devta.
+     */
+    public function alldevtas(): JsonResponse
+    {
+        $devtas = Devta::all();
+
+        return $this->sendResponse(["Devtas"=>DevtaResource::collection($devtas),
+        ], "Devtas retrieved successfully");
+
+    }
 }
