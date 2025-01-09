@@ -12,6 +12,7 @@ import {
   Network,
   SquareUserRound,
   CircleGauge,
+  AlignStartVertical,
   CircleChevronLeft,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -35,12 +36,12 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {
           name: "Devtas",
           path: "/devtas",
-          logo: <Sun />,
+          logo: <Sun size={16} />,
         },
         {
           name: "Pooja Types",
           path: "/pooja_types",
-          logo: <Sun />,
+          logo: <AlignStartVertical size={16} />,
         },
       ],
     },
@@ -88,7 +89,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       <ScrollArea
         className={`${
           isSidebarOpen ? "w-80 px-4" : " w-16 p-3 "
-        } hidden md:block duration-300 text-white transition-all pt-3.5 border border-dark-purple  min-h-screen dark:bg-gray-800 bg-dark-purple`}
+        } hidden md:block duration-300 text-white transition-all pt-3.5 border border-dark-purple  min-h-screen bg-dark-purple`}
         // className={`${
         //   isSidebarOpen ? "w-80 opacity-100" : "w-0 opacity-0"
         // } duration-300 transition-all px-4 pt-3.5 shadow-xl min-h-screen dark:bg-gray-800 bg-slate-50`}
@@ -143,8 +144,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 ) : (
                   <NavLink
                     className={({ isActive }) =>
-                      ` flex my-2 px-1 py-2 hover:text-white  hover:bg-dark-purple-light text-sm rounded items-center ${
-                        isActive && "bg-gray-200 text-black  dark:bg-gray-200"
+                      ` flex my-2 px-1 py-2 text-white hover:bg-dark-purple-light text-sm rounded items-center ${
+                        isActive && "bg-dark-purple-light text-white"
                       }`
                     }
                     to={item.path || "#"}
@@ -179,16 +180,16 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         key={idx}
                         className={({ isActive }) =>
                           `  ${
-                            isActive &&
-                            " bg-gray-200 text-black dark:bg-gray-200"
-                          } pl-1 w-full py-1 my-2 gap-2 hover:text-blue-600  hover:bg-gray-200 rounded flex items-center text-sm text-gray-600 dark:text-gray-400 dark:hover:text-blue-600   ${
+                            isActive && "bg-dark-purple-light"
+                          } pl-1 w-full py-2 my-2 gap-2  hover:bg-dark-purple-light rounded flex items-center text-sm ${
                             isSidebarOpen && "pl-8"
                           } `
                         }
                         to={child.path}
                       >
-                        <p className="">
-                          <Minus size={16} />
+                        <p className="pl-1">
+                          {/* <Minus size={16} /> */}
+                          {child.logo}
                         </p>
                         <p
                           className={`${!isSidebarOpen && "hidden"}
