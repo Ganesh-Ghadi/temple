@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('devtas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); 
             $table->string('devta_name')->nullable();
             $table->timestamps();
         });
