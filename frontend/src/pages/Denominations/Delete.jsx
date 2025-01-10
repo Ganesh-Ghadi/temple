@@ -35,23 +35,26 @@ const Delete = ({ id }) => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(`/api/pooja_types/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the Bearer token
-        },
-      });
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/api/devtas/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the Bearer token
+          },
+        }
+      );
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries("pooja_types");
-      toast.success("Pooja Type Deleted Successfully");
+      queryClient.invalidateQueries("users");
+      toast.success("Devta Deleted Successfully");
       setIsLoading(false);
-      navigate("/pooja_types");
+      navigate("/devtas");
     },
     onError: (error) => {
       setIsLoading(false);
-      toast.error("Faild to delete pooja type");
+
       console.log("got error ", error);
     },
   });
@@ -65,7 +68,7 @@ const Delete = ({ id }) => {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="ghost" size="sm" className="w-full text-sm">
-            <Trash /> Delete
+            <Trash size={16} /> Delete
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

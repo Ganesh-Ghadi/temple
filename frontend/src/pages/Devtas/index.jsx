@@ -161,7 +161,7 @@ const Index = () => {
                       {devta.devta_name}
                     </TableCell>
 
-                    <TableCell className="text-right p-2">
+                    <TableCell className="text-right p-2 pr-5">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">

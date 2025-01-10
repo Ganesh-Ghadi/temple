@@ -96,7 +96,7 @@ class PoojaTypesController extends BaseController
     public function destroy(string $id): JsonResponse
     {
         $poojaType = PoojaType::find($id);
-        if(!$devtapoojaType){
+        if(!$poojaType){
             return $this->sendError("Pooja Type not found", ['error'=>'Pooja Type not found']);
         }
         $poojaType->delete();

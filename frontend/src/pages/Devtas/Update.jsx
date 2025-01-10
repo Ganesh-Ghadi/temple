@@ -42,6 +42,7 @@ const Update = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    setError,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const {
@@ -98,7 +99,23 @@ const Update = () => {
     },
     onError: (error) => {
       setIsLoading(false);
-
+      if (error.response && error.response.data.errors) {
+        const serverStatus = error.response.data.status;
+        const serverErrors = error.response.data.errors;
+        if (serverStatus === false) {
+          if (serverErrors.devta_name) {
+            setError("devta_name", {
+              type: "manual",
+              message: serverErrors.devta_name[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+        } else {
+          toast.error("Failed to add Devta details.");
+        }
+      } else {
+        toast.error("Failed to add Devta details.");
+      }
       console.log("got error ", error);
     },
   });
@@ -112,13 +129,13 @@ const Update = () => {
     <>
       <div className="p-5">
         {/* breadcrumb start */}
-        <div className=" mb-11 text-sm">
+        <div className=" mb-7 text-sm">
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               {/* Users */}
               <Button
                 onClick={() => navigate("/devtas")}
-                className="p-0 text-blue-500"
+                className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
                 Devtas

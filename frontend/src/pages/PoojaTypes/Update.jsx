@@ -48,6 +48,7 @@ const Update = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    setError,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const {
@@ -122,7 +123,23 @@ const Update = () => {
     },
     onError: (error) => {
       setIsLoading(false);
-
+      if (error.response && error.response.data.errors) {
+        const serverStatus = error.response.data.status;
+        const serverErrors = error.response.data.errors;
+        if (serverStatus === false) {
+          if (serverErrors.pooja_type) {
+            setError("pooja_type", {
+              type: "manual",
+              message: serverErrors.pooja_type[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+        } else {
+          toast.error("Failed to add pooja type.");
+        }
+      } else {
+        toast.error("Failed to add pooja type.");
+      }
       console.log("got error ", error);
     },
   });
@@ -136,19 +153,19 @@ const Update = () => {
     <>
       <div className="p-5">
         {/* breadcrumb start */}
-        <div className=" mb-11 text-sm">
+        <div className=" mb-7 text-sm">
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
                 onClick={() => navigate("/pooja_types")}
-                className="p-0 text-blue-500"
+                className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
                 Pooja Types
               </Button>
             </span>
             <span className="text-gray-400">/</span>
-            <span className="dark:text-gray-300">Add</span>
+            <span className="dark:text-gray-300">Edit</span>
           </div>
         </div>
         {/* breadcrumb ends */}
@@ -241,10 +258,7 @@ const Update = () => {
                   </p>
                 )}
               </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="contribution">
-                  Multiple:
-                </Label>
+              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
                 <Controller
                   name="multiple"
                   control={control}
@@ -253,11 +267,17 @@ const Update = () => {
                       {...field}
                       id="multiple"
                       checked={field.value === 1}
+                      onChange={(e) => {
+                        field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                      }}
                       type="checkbox"
                       className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                     />
                   )}
                 />
+                <Label className="font-normal" htmlFor="contribution">
+                  Multiple:
+                </Label>
                 {errors.multiple && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.multiple.message}

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StorePoojaTypeRequest extends FormRequest
 {
@@ -22,7 +24,18 @@ class StorePoojaTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "pooja_type" => ['required', 'unique:pooja_types,pooja_type'],
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'status' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422)
+        );
+    }    
 }

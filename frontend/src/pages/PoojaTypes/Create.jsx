@@ -44,6 +44,7 @@ const Create = () => {
     control,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const {
@@ -89,7 +90,23 @@ const Create = () => {
     },
     onError: (error) => {
       setIsLoading(false);
-
+      if (error.response && error.response.data.errors) {
+        const serverStatus = error.response.data.status;
+        const serverErrors = error.response.data.errors;
+        if (serverStatus === false) {
+          if (serverErrors.pooja_type) {
+            setError("pooja_type", {
+              type: "manual",
+              message: serverErrors.pooja_type[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+        } else {
+          toast.error("Failed to add pooja type.");
+        }
+      } else {
+        toast.error("Failed to add pooja type.");
+      }
       console.log("got error ", error);
     },
   });
@@ -102,12 +119,12 @@ const Create = () => {
     <>
       <div className="p-5">
         {/* breadcrumb start */}
-        <div className=" mb-11 text-sm">
+        <div className=" mb-7 text-sm">
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
                 onClick={() => navigate("/pooja_types")}
-                className="p-0 text-blue-500"
+                className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
                 Pooja Types
@@ -207,10 +224,7 @@ const Create = () => {
                   </p>
                 )}
               </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="contribution">
-                  Multiple:
-                </Label>
+              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
                 <Controller
                   name="multiple"
                   control={control}
@@ -223,6 +237,9 @@ const Create = () => {
                     />
                   )}
                 />
+                <Label className="font-normal" htmlFor="multiple">
+                  Multiple
+                </Label>
                 {errors.multiple && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.multiple.message}

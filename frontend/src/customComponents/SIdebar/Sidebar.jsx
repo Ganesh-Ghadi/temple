@@ -4,6 +4,12 @@ import { IoLogoSlack } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Minus,
   Settings,
   LayoutDashboard,
@@ -11,9 +17,11 @@ import {
   Sun,
   Network,
   SquareUserRound,
-  CircleGauge,
   AlignStartVertical,
   CircleChevronLeft,
+  UsersRound,
+  Notebook,
+  HandCoins,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
@@ -24,7 +32,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const items = [
     {
-      name: "Home",
+      name: "Dashboard",
       path: "/",
       logo: <LayoutDashboard size={16} />,
     },
@@ -53,19 +61,19 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {
           name: "Roles",
           path: "/roles",
-          logo: <IoLogoSlack />,
+          logo: <Notebook size={16} />,
         },
         {
           name: "Users",
           path: "/users",
-          logo: <IoLogoSlack />,
+          logo: <UsersRound size={16} />,
         },
       ],
     },
     {
-      name: "Dashboard",
-      path: "/gr",
-      logo: <CircleGauge size={16} />,
+      name: "Denominations",
+      path: "/denominations",
+      logo: <HandCoins size={16} />,
     },
     {
       name: "Services",
