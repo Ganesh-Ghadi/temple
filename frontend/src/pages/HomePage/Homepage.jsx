@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import ColorDisplay from './ColorDisplay';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const Homepage = () => {
@@ -150,6 +151,10 @@ const Homepage = () => {
             </div>
           </TabsContent>
         </Tabs>
+      </div>
+      <div>
+        <h1>HSL Color Display</h1>
+        <ColorDisplay />
       </div>
     </>
   );
