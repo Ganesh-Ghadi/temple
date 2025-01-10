@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { IoIosArrowDropleft } from "react-icons/io";
-import { IoLogoSlack } from "react-icons/io";
-import { NavLink } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
+import { useState } from 'react';
+import { IoIosArrowDropleft } from 'react-icons/io';
+import { IoLogoSlack } from 'react-icons/io';
+import { NavLink } from 'react-router-dom';
+import { IoIosArrowDown } from 'react-icons/io';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
 import {
   Minus,
   Settings,
@@ -22,9 +23,9 @@ import {
   UsersRound,
   Notebook,
   HandCoins,
-} from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSelector } from "react-redux";
+} from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useSelector } from 'react-redux';
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   // State to track which parent item has its children visible
@@ -32,57 +33,57 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const items = [
     {
-      name: "Dashboard",
-      path: "/",
+      name: 'Dashboard',
+      path: '/',
       logo: <LayoutDashboard size={16} />,
     },
     {
-      name: "Masters",
-      path: "#",
+      name: 'Masters',
+      path: '#',
       logo: <Settings size={16} />,
       children: [
         {
-          name: "Devtas",
-          path: "/devtas",
+          name: 'Devtas',
+          path: '/devtas',
           logo: <Sun size={16} />,
         },
         {
-          name: "Pooja Types",
-          path: "/pooja_types",
+          name: 'Pooja Types',
+          path: '/pooja_types',
           logo: <AlignStartVertical size={16} />,
         },
       ],
     },
     {
-      name: "User Management",
-      path: "#",
+      name: 'User Management',
+      path: '#',
       logo: <Users size={16} />,
       children: [
         {
-          name: "Roles",
-          path: "/roles",
+          name: 'Roles',
+          path: '/roles',
           logo: <Notebook size={16} />,
         },
         {
-          name: "Users",
-          path: "/users",
+          name: 'Users',
+          path: '/users',
           logo: <UsersRound size={16} />,
         },
       ],
     },
     {
-      name: "Denominations",
-      path: "/denominations",
+      name: 'Denominations',
+      path: '/denominations',
       logo: <HandCoins size={16} />,
     },
     {
-      name: "Services",
-      path: "/services",
+      name: 'Services',
+      path: '/services',
       logo: <Network size={16} />,
     },
     {
-      name: "Contact",
-      path: "/contact",
+      name: 'Contact',
+      path: '/contact',
       logo: <SquareUserRound size={16} />,
     },
   ];
@@ -96,7 +97,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
     <>
       <ScrollArea
         className={`${
-          isSidebarOpen ? "w-80 px-4" : " w-16 p-3 "
+          isSidebarOpen ? 'w-80 px-4' : ' w-16 p-3 '
         } hidden md:block duration-300 text-white transition-all pt-3.5 border border-dark-purple  min-h-screen bg-dark-purple dark:bg-gray-800`}
         // className={`${
         //   isSidebarOpen ? "w-80 opacity-100" : "w-0 opacity-0"
@@ -106,7 +107,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           <p className="text-4xl p-1">
             <LayoutDashboard />
           </p>
-          <p className={`text-3xl duration-300 ${!isSidebarOpen && "scale-0"}`}>
+          <p className={`text-3xl duration-300 ${!isSidebarOpen && 'scale-0'}`}>
             Designer
           </p>
         </div>
@@ -119,19 +120,29 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 {item.children ? (
                   <NavLink
                     className=" flex my-2 text-sm px-1 py-2 hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded items-center"
-                    to={item.path || "#"}
+                    to={item.path || '#'}
                     onClick={() => item.children && toggleChildren(item.name)} // Toggle children visibility on click
                   >
-                    <p className="text-xl px-1">{item.logo}</p>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <p className="text-xl px-1">{item.logo}</p>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{item.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    {/* <p className="text-xl px-1">{item.logo}</p> */}
                     <div
                       className={`w-full px-2 flex justify-between items-center ${
-                        !isSidebarOpen && "opacity-0 invisible"
+                        !isSidebarOpen && 'opacity-0 invisible'
                       }`}
                     >
                       <p
                         className={`font-medium ${
                           !isSidebarOpen &&
-                          "text-ellipsis whitespace-nowrap overflow-hidden"
+                          'text-ellipsis whitespace-nowrap overflow-hidden'
                         }`}
                       >
                         {item.name}
@@ -142,7 +153,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             className={`${
                               item.children &&
                               activeParent === item.name &&
-                              "rotate-180"
+                              'rotate-180'
                             }`}
                           />
                         </p>
@@ -154,16 +165,26 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                     className={({ isActive }) =>
                       ` flex my-2 px-1 py-2 text-white hover:bg-dark-purple-light dark:hover:bg-gray-600 text-sm rounded items-center ${
                         isActive &&
-                        "bg-dark-purple-light dark:bg-gray-600 text-white"
+                        'bg-dark-purple-light dark:bg-gray-600 text-white'
                       }`
                     }
-                    to={item.path || "#"}
+                    to={item.path || '#'}
                     onClick={() => item.children && toggleChildren(item.name)} // Toggle children visibility on click
                   >
-                    <p className="text-xl px-1">{item.logo}</p>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <p className="text-xl px-1">{item.logo}</p>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{item.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    {/* <p className="text-xl px-1">{item.logo}</p> */}
                     <div
                       className={`w-full px-2 flex justify-between items-center ${
-                        !isSidebarOpen && "opacity-0 invisible"
+                        !isSidebarOpen && 'opacity-0 invisible'
                       }`}
                     >
                       <p className="">{item.name}</p>
@@ -173,7 +194,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             className={`${
                               item.children &&
                               activeParent === item.name &&
-                              "rotate-180"
+                              'rotate-180'
                             }`}
                           />
                         </p>
@@ -189,19 +210,28 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         key={idx}
                         className={({ isActive }) =>
                           `  ${
-                            isActive && "bg-dark-purple-light dark:bg-gray-600"
+                            isActive && 'bg-dark-purple-light dark:bg-gray-600'
                           } pl-1 w-full py-2 my-2 gap-2  hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded flex items-center text-sm ${
-                            isSidebarOpen && "pl-8"
+                            isSidebarOpen && 'pl-8'
                           } `
                         }
                         to={child.path}
                       >
-                        <p className="pl-1">
-                          {/* <Minus size={16} /> */}
-                          {child.logo}
+                        <p className="">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <p className="text-xl px-1">{child.logo}</p>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{child.name}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          {/* {child.logo} */}
                         </p>
                         <p
-                          className={`${!isSidebarOpen && "hidden"}
+                          className={`${!isSidebarOpen && 'hidden'}
                           origin-left duration-300 text-sm`}
                         >
                           {child.name}
