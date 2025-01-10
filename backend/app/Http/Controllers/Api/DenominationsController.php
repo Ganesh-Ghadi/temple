@@ -188,8 +188,9 @@ class DenominationsController extends BaseController
         $html = view('Denomination.denomination', $data)->render();
 
         // Create a new mPDF instance
-        $mpdf = new Mpdf();
-        
+        // $mpdf = new Mpdf();
+            $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'orientation' => 'L']);  // 'P' is for portrait (default)
+
 
         // Write HTML to the PDF
         $mpdf->WriteHTML($html);
