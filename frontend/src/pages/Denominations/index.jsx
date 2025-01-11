@@ -9,6 +9,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -141,9 +152,11 @@ const Index = () => {
             Add Denominations
           </Button>
         </div>
-        <div className="px-5 dark:bg-gray-800 pt-1 w-full bg-white shadow-xl border rounded-md">
+        <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
-            <h2 className="text-xl font-medium">Denominations</h2>
+            <h2 className="text-2xl font-semibold leading-none tracking-tight">
+              Denominations
+            </h2>
             {/* search field here */}
             <div className="relative p-0.5 ">
               <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -187,7 +200,7 @@ const Index = () => {
                 />
               </div>
             </TableCaption>
-            <TableHeader className="dark:bg-gray-600 bg-gray-100  rounded-md">
+            <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
                 <TableHead className="p-2">Denomination Date</TableHead>
                 <TableHead className="p-2">Amount</TableHead>
@@ -199,7 +212,7 @@ const Index = () => {
                 Denominations.map((denomination) => (
                   <TableRow
                     key={denomination.id}
-                    className=" dark:hover:bg-gray-600 dark:border-b dark:border-gray-600"
+                    className=" dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
                       {denomination.deposit_date}
@@ -233,14 +246,47 @@ const Index = () => {
                           >
                             <Pencil size={16} /> Edit
                           </Button>
-                          <Button
+                          {/* <Button
                             variant="ghost"
                             size="sm"
                             className="w-full text-sm"
                             onClick={() => handlePrint(denomination.id)}
                           >
                             <PrinterCheck size={16} /> Print
-                          </Button>
+                          </Button> */}
+                          {/* print button start */}
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-full text-sm"
+                              >
+                                <PrinterCheck size={16} /> Print
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to print the
+                                  denomination?
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-blue-600 hover:bg-blue-700"
+                                  onClick={() => handlePrint(denomination.id)}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                          {/* print button end */}
                           <div className="w-full">
                             <Delete id={denomination.id} />
                           </div>

@@ -35,7 +35,12 @@ const Logout = ({ onLogout, closeDialog }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onLogout}>Continue</AlertDialogAction>
+            <AlertDialogAction
+              className="bg-blue-600 hover:bg-blue-700"
+              onClick={onLogout}
+            >
+              Continue
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

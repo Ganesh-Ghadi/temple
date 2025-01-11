@@ -22,6 +22,7 @@ import {
   Settings,
   SquareUserRound,
   CircleGauge,
+  HandCoins,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlignJustify } from "lucide-react";
@@ -72,9 +73,9 @@ const MobileSidebar = ({ open, setOpen }) => {
       ],
     },
     {
-      name: "Dashboard",
-      path: "/gr",
-      logo: <CircleGauge size={20} />,
+      name: "Denominations",
+      path: "/denominations",
+      logo: <HandCoins size={16} />,
     },
     {
       name: "Services",
@@ -103,7 +104,7 @@ const MobileSidebar = ({ open, setOpen }) => {
 
         <SheetContent
           side="left"
-          className="text-white bg-dark-purple dark:bg-gray-800"
+          className="text-white bg-dark-purple dark:bg-background"
         >
           <SheetHeader>
             <SheetTitle className="text-left mb-10">
@@ -123,7 +124,7 @@ const MobileSidebar = ({ open, setOpen }) => {
                     {/* Parent item */}
                     {item.children ? (
                       <NavLink
-                        className=" flex my-2 hover:text-blue-600 text-base px-1 py-2 hover:bg-gray-200 rounded items-center"
+                        className=" flex my-2 text-base px-1 py-2 hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded items-center"
                         to={item.path || "#"}
                         onClick={() =>
                           item.children && toggleChildren(item.name)
@@ -150,9 +151,8 @@ const MobileSidebar = ({ open, setOpen }) => {
                     ) : (
                       <NavLink
                         className={({ isActive }) =>
-                          ` flex my-2 px-1  py-2 hover:text-blue-600  hover:bg-gray-200 text-base rounded items-center ${
-                            isActive &&
-                            "bg-gray-200 text-blue-600 dark:bg-gray-200"
+                          ` flex my-2 px-1  py-2  hover:bg-dark-purple-light dark:hover:bg-gray-600  text-base rounded items-center ${
+                            isActive && "bg-dark-purple-light  dark:bg-gray-600"
                           }`
                         }
                         to={item.path || "#"}
@@ -188,8 +188,8 @@ const MobileSidebar = ({ open, setOpen }) => {
                             className={({ isActive }) =>
                               ` ${
                                 isActive &&
-                                "text-blue-600 dark:text-blue-600 bg-gray-200  dark:bg-gray-200"
-                              } pl-8 w-full py-1 my-2 gap-2 hover:text-blue-600 hover:bg-gray-200 rounded flex items-center text-sm text-gray-600 dark:text-gray-400 dark:hover:text-blue-600`
+                                " bg-dark-purple-light  dark:bg-gray-600"
+                              } pl-8 w-full py-2 my-2 gap-2 hover:bg-dark-purple-light dark:hover:bg-gray-600  rounded flex items-center text-sm`
                             }
                             to={child.path}
                           >

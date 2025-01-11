@@ -96,9 +96,11 @@ const Index = () => {
             Add Pooja Type
           </Button>
         </div>
-        <div className="px-5 dark:bg-gray-800 pt-1 w-full bg-white shadow-xl border rounded-md">
+        <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
-            <h2 className="text-xl font-medium">Pooja Types</h2>
+            <h2 className="text-2xl font-semibold leading-none tracking-tight">
+              Pooja Types
+            </h2>{" "}
             {/* search field here */}
             <div className="relative p-0.5 ">
               <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -142,7 +144,7 @@ const Index = () => {
                 />
               </div>
             </TableCaption>
-            <TableHeader className="dark:bg-gray-600 bg-gray-100  rounded-md">
+            <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
                 <TableHead className="p-2">Pooja Type</TableHead>
                 <TableHead className="p-2">Devta Name</TableHead>
@@ -157,7 +159,7 @@ const Index = () => {
                 PoojaTypes.map((poojaType) => (
                   <TableRow
                     key={poojaType.id}
-                    className=" dark:hover:bg-gray-600 dark:border-b dark:border-gray-600"
+                    className=" dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
                       {poojaType.pooja_type}

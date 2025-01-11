@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,10 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import ColorDisplay from './ColorDisplay';
+} from "@/components/ui/card";
+import ColorDisplay from "./ColorDisplay";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const Homepage = () => {
   return (
     <>
@@ -35,6 +35,7 @@ const Homepage = () => {
                   <CardTitle className="text-sm font-medium">
                     Total Revenue
                   </CardTitle>
+
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"

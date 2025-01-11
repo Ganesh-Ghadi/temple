@@ -119,7 +119,7 @@ const Create = () => {
 
         {/* form style strat */}
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="px-5 pb-4 mb-5 dark:bg-gray-800 pt-1 w-full bg-white shadow-lg border  rounded-md">
+          <div className="px-5 pb-4 mb-5 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
             <div className="w-full py-3 flex justify-start items-center">
               <h2 className="text-lg  font-normal">Deposit Details</h2>
             </div>
@@ -150,7 +150,7 @@ const Create = () => {
             </div>
           </div>
 
-          <div className="px-5 pb-7 mb-5 dark:bg-gray-800 pt-1 w-full bg-white shadow-lg border  rounded-md">
+          <div className="px-5 pb-7 mb-5 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
             <div className="w-full py-3 flex justify-start items-center">
               <h2 className="text-lg  font-normal">Notes Denominations</h2>
             </div>
@@ -323,7 +323,7 @@ const Create = () => {
             {/* row ends */}
           </div>
 
-          <div className="px-5 pb-7 dark:bg-gray-800 pt-1 w-full bg-white shadow-lg border  rounded-md">
+          <div className="px-5 pb-7 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
             <div className="w-full py-3 flex justify-start items-center">
               <h2 className="text-lg  font-normal">Coins Denominations</h2>
             </div>
@@ -476,7 +476,7 @@ const Create = () => {
             <div className="w-full gap-4 mt-4 flex justify-end items-center">
               <Button
                 type="button"
-                className="dark:text-white shadow-xl bg-red-500 hover:bg-red-600"
+                className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
                 onClick={() => navigate("/denominations")}
               >
                 Cancle
@@ -485,7 +485,7 @@ const Create = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className=" dark:text-white  shadow-xl bg-green-500 hover:bg-green-600"
+                className=" dark:text-white  shadow-xl bg-green-600 hover:bg-green-700"
               >
                 {isLoading ? (
                   <>
