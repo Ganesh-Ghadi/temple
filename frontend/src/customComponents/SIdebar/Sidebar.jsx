@@ -153,8 +153,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             className={`${
                               item.children &&
                               activeParent === item.name &&
-                              "rotate-180"
-                            }`}
+                              "rotate-180 "
+                            } transition-all duration-300`}
                           />
                         </p>
                       )}
@@ -205,15 +205,16 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 {/* Render children if the parent item has children and it's the active one */}
                 {item.children && activeParent === item.name && (
                   <div>
+                    {" "}
                     {item.children.map((child, idx) => (
                       <NavLink
                         key={idx}
                         className={({ isActive }) =>
-                          `  ${
+                          ` ${
                             isActive && "bg-dark-purple-light dark:bg-gray-600"
                           } pl-1 w-full py-2 my-2 gap-2  hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded flex items-center text-sm ${
                             isSidebarOpen && "pl-8"
-                          } `
+                          }`
                         }
                         to={child.path}
                       >
@@ -224,7 +225,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                 <p className="text-xl px-1">{child.logo}</p>
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>{child.name}</p>
+                                <p className="">{child.name}</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
