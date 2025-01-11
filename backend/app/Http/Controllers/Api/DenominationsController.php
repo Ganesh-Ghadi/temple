@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use File;
 use Response;
 use Mpdf\Mpdf;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
 use Barryvdh\DomPDF\PDF;
 use App\Models\Denomination;
 use Illuminate\Http\Request;
@@ -189,8 +191,28 @@ class DenominationsController extends BaseController
 
         // Create a new mPDF instance
         // $mpdf = new Mpdf();
-            $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'orientation' => 'L']);  // 'P' is for portrait (default)
-
+            // $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'orientation' => 'L']);  // 'P' is for portrait (default)
+            $defaultConfig = (new ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+        
+            $defaultFontConfig = (new FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+        
+            $mpdf = new Mpdf([
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'orientation' => 'L',
+                'fontDir' => array_merge($fontDirs, [
+                    storage_path('fonts/'), // Update to point to the storage/fonts directory
+                ]),
+                'fontdata' => $fontData + [
+                    'notosansdevanagari' => [
+                        'R' => 'NotoSansDevanagari-Regular.ttf',
+                        'B' => 'NotoSansDevanagari-Bold.ttf',
+                    ],
+                ],
+                'default_font' => 'notosansdevanagari',
+            ]);
 
         // Write HTML to the PDF
         $mpdf->WriteHTML($html);
