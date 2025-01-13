@@ -17,6 +17,9 @@ import UpdateUsers from "./pages/Users/Update";
 import Devtas from "./pages/Devtas/index";
 import CreateDevtas from "./pages/Devtas/Create";
 import UpdateDevtas from "./pages/Devtas/Update";
+import ReceiptTypes from "./pages/ReceiptTypes/index";
+import CreateReceiptTypes from "./pages/ReceiptTypes/Create";
+import UpdateReceiptTypes from "./pages/ReceiptTypes/Update";
 import PoojaTypes from "./pages/PoojaTypes/index";
 import CreatePoojaType from "./pages/PoojaTypes/Create";
 import UpdatePoojaType from "./pages/PoojaTypes/Update";
@@ -60,6 +63,15 @@ const App = () => {
           <Route path="/pooja_types" element={<PoojaTypes />} />
           <Route path="/pooja_types/create" element={<CreatePoojaType />} />
           <Route path="/pooja_types/:id/edit" element={<UpdatePoojaType />} />
+          <Route path="/receipt_types" element={<ReceiptTypes />} />
+          <Route
+            path="/receipt_types/create"
+            element={<CreateReceiptTypes />}
+          />
+          <Route
+            path="/receipt_types/:id/edit"
+            element={<UpdateReceiptTypes />}
+          />
           <Route path="/pooja_dates" element={<PoojaDates />} />
           <Route path="/pooja_dates/create" element={<CreatePoojaDate />} />
           <Route path="/pooja_dates/:id/edit" element={<UpdatePoojaDate />} />

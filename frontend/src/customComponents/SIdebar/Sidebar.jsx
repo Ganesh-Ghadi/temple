@@ -58,6 +58,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/pooja_dates",
           logo: <Settings size={16} />,
         },
+        {
+          name: "Receipt types",
+          path: "/receipt_types",
+          logo: <ReceiptText size={16} />,
+        },
       ],
     },
     {
