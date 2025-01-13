@@ -23,16 +23,14 @@ import UpdatePoojaType from "./pages/PoojaTypes/Update";
 import Denominations from "./pages/Denominations/index";
 import CreateDenominations from "./pages/Denominations/Create";
 import UpdateDenominations from "./pages/Denominations/Update";
+import Receipts from "./pages/Receipts/index";
+import CreateReceipts from "./pages/Receipts/Create";
+import UpdateReceipts from "./pages/Receipts/Update";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
-import CreateProject from "./pages/Projects/CreateProject";
 import ProtectedRoute from "./customComponents/ProtectedRoute/ProtectedRoute";
 import GuestRoute from "./customComponents/GuestRoute/GuestRoute";
-import EditProject from "./pages/Projects/EditProject";
-import Tasks from "./pages/Tasks/Tasks";
-import CreateTask from "./pages/Tasks/CreateTask";
-import EditTask from "./pages/Tasks/EditTask";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -68,6 +66,9 @@ const App = () => {
             path="/denominations/:id/edit"
             element={<UpdateDenominations />}
           />
+          <Route path="/receipts" element={<Receipts />} />
+          <Route path="/receipts/create" element={<CreateReceipts />} />
+          <Route path="/receipts/:id/edit" element={<UpdateReceipts />} />
         </Route>
         <Route
           errorElement={<Error />}

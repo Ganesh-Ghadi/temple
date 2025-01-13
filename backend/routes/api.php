@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\DevtasController;
 use App\Http\Controllers\Api\ProfilesController;
+use App\Http\Controllers\Api\ReceiptsController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\PoojaTypesController;
 use App\Http\Controllers\Api\DenominationsController;
@@ -19,6 +20,7 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::resource('departments', DepartmentController::class);  
    Route::resource('profiles', ProfilesController::class);  
    Route::resource('denominations', DenominationsController::class);  
+   Route::resource('receipts', ReceiptsController::class);  
    Route::resource('devtas', DevtasController::class);
    Route::resource('pooja_types', PoojaTypesController::class);    
    Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');

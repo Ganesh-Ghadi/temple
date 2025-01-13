@@ -23,6 +23,7 @@ import {
   UsersRound,
   Notebook,
   HandCoins,
+  ReceiptText,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
@@ -52,6 +53,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/pooja_types",
           logo: <AlignStartVertical size={16} />,
         },
+        {
+          name: "Pooja Dates",
+          path: "/pooja_dates",
+          logo: <Settings size={16} />,
+        },
       ],
     },
     {
@@ -76,16 +82,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       path: "/denominations",
       logo: <HandCoins size={16} />,
     },
-    {
-      name: "Services",
-      path: "/services",
-      logo: <Network size={16} />,
-    },
-    {
-      name: "Contact",
-      path: "/contact",
-      logo: <SquareUserRound size={16} />,
-    },
+    // {
+    //   name: "Receipts",
+    //   path: "/receipts",
+    //   logo: <ReceiptText size={16} />,
+    // },
   ];
 
   // Function to toggle children visibility (close previous and open current)
