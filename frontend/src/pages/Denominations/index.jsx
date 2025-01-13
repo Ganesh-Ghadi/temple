@@ -64,7 +64,7 @@ const Index = () => {
           },
           params: {
             page: currentPage,
-            search: search, // Send the current page number in the request
+            search: search, 
           },
         });
         return response.data?.data; // Return the fetched data
@@ -76,11 +76,9 @@ const Index = () => {
   });
 
   // pagination start
-  const { Denominations, pagination } = DenominationsData || {}; // Destructure Profiles and pagination from UsersData
+  const { Denominations, pagination } = DenominationsData || {}; 
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
 
-  // Directly use Profiles for the table data
-  // const currentTableData = Devtas || []; // Just assign Profiles directly
 
   // pagination end
 
@@ -101,7 +99,6 @@ const Index = () => {
         }
       );
 
-      // If the response is successful (status code 200-299)
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");

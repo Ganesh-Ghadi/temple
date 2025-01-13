@@ -60,7 +60,7 @@ const Index = () => {
           },
           params: {
             page: currentPage,
-            search: search, // Send the current page number in the request
+            search: search, 
           },
         });
         return response.data?.data; // Return the fetched data
@@ -72,11 +72,10 @@ const Index = () => {
   });
 
   // pagination start
-  const { ReceiptTypes, pagination } = ReceiptTypesData || {}; // Destructure Profiles and pagination from UsersData
+  const { ReceiptTypes, pagination } = ReceiptTypesData || {}; 
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
 
-  // Directly use Profiles for the table data
-  // const currentTableData = Devtas || []; // Just assign Profiles directly
+ 
 
   // pagination end
 
