@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -65,7 +65,51 @@ const Create = () => {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
+
+  const denominations = watch([
+    'n_2000',
+    'n_500',
+    'n_200',
+    'n_100',
+    'n_50',
+    'n_20',
+    'n_10',
+    'c_20',
+    'c_10',
+    'c_5',
+    'c_2',
+    'c_1',
+  ]);
+
+  // Effect to calculate the total amount whenever denominations change
+  useEffect(() => {
+    const totalAmount = (
+      (denominations[0] || 0) * 2000 + // n_2000
+      (denominations[1] || 0) * 500 + // n_500
+      (denominations[2] || 0) * 200 + // n_200
+      (denominations[3] || 0) * 100 + // n_100
+      (denominations[4] || 0) * 50 + // n_50
+      (denominations[5] || 0) * 20 + // n_20
+      (denominations[6] || 0) * 10 + // n_10
+      (denominations[7] || 0) * 20 + // c_20
+      (denominations[8] || 0) * 10 + // c_10
+      (denominations[9] || 0) * 5 + // c_5
+      (denominations[10] || 0) * 2 + // c_2
+      (denominations[11] || 0) * 1
+    ) // c_1
+      .toFixed(2);
+
+    setValue('amount', totalAmount);
+    console.log(
+      'amoutn value fron useEfect',
+      totalAmount,
+      'fef',
+      denominations.n_2000
+    );
+  }, [denominations, setValue]);
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
@@ -91,6 +135,7 @@ const Create = () => {
     },
   });
   const onSubmit = (data) => {
+    console.log(data);
     setIsLoading(true);
 
     storeMutation.mutate(data);
@@ -459,8 +504,10 @@ const Create = () => {
                     <Input
                       {...field}
                       id="amount"
-                      className="mt-1"
+                      className="mt-1 bg-gray-100"
                       type="number"
+                      // disabled="true"
+                      readOnly
                       placeholder="Enter amount"
                     />
                   )}
