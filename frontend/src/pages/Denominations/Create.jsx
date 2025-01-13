@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import React, { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Loader2 } from 'lucide-react';
 
 import {
   Select,
@@ -14,12 +14,12 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+} from '@/components/ui/select';
+import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   n_2000: z.coerce.number().optional(),
@@ -34,30 +34,30 @@ const formSchema = z.object({
   c_5: z.coerce.number().optional(),
   c_2: z.coerce.number().optional(),
   c_1: z.coerce.number().optional(),
-  amount: z.coerce.number().min(0.01, { message: "amount field is required" }),
-  deposit_date: z.string().min(1, "deposit date field is required"),
+  amount: z.coerce.number().min(0.01, { message: 'amount field is required' }),
+  deposit_date: z.string().min(1, 'deposit date field is required'),
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
   const token = user.token;
   const navigate = useNavigate();
   const defaultValues = {
-    n_2000: "",
-    n_500: "",
-    n_200: "",
-    n_100: "",
-    n_50: "",
-    n_20: "",
-    n_10: "",
-    c_20: "",
-    c_10: "",
-    c_5: "",
-    c_2: "",
-    c_1: "",
-    deposit_date: "",
-    amount: "",
+    n_2000: '',
+    n_500: '',
+    n_200: '',
+    n_100: '',
+    n_50: '',
+    n_20: '',
+    n_10: '',
+    c_20: '',
+    c_10: '',
+    c_5: '',
+    c_2: '',
+    c_1: '',
+    deposit_date: '',
+    amount: '',
   };
 
   const {
@@ -69,29 +69,29 @@ const Create = () => {
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.post("/api/denominations", data, {
+      const response = await axios.post('/api/denominations', data, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries("denominations");
-      toast.success("Denominations Added Successfully");
+      queryClient.invalidateQueries('denominations');
+      toast.success('Denominations Added Successfully');
       setIsLoading(false);
-      navigate("/denominations");
+      navigate('/denominations');
     },
     onError: (error) => {
       setIsLoading(false);
+      toast.error('Faild to Store denomination');
 
-      console.log("got error ", error);
+      console.log('got error ', error);
     },
   });
   const onSubmit = (data) => {
     setIsLoading(true);
-    toast.error("Faild to update denomination");
 
     storeMutation.mutate(data);
   };
@@ -104,7 +104,7 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/denominations")}
+                onClick={() => navigate('/denominations')}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -124,7 +124,7 @@ const Create = () => {
               <h2 className="text-lg  font-normal">Deposit Details</h2>
             </div>
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
-              <div className="relative">
+              <div className="relative w-full">
                 <Label className="font-normal" htmlFor="deposit_date">
                   Deposit date:<span className="text-red-500">*</span>
                 </Label>
@@ -132,10 +132,10 @@ const Create = () => {
                   name="deposit_date"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    <input
                       {...field}
                       id="deposit_date"
-                      className="mt-1"
+                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter date"
                     />
@@ -477,7 +477,7 @@ const Create = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/denominations")}
+                onClick={() => navigate('/denominations')}
               >
                 Cancle
               </Button>
@@ -493,7 +493,7 @@ const Create = () => {
                     Submitting...
                   </>
                 ) : (
-                  "Submit"
+                  'Submit'
                 )}
               </Button>
             </div>

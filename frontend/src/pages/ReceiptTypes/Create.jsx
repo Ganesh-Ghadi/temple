@@ -139,7 +139,7 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/receipt_types")}
+                onClick={() => navigate('/receipt_types')}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -225,10 +225,10 @@ const Create = () => {
                   name="special_date"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    <input
                       {...field}
                       id="special_date"
-                      className="mt-1"
+                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter special date"
                     />
@@ -288,82 +288,81 @@ const Create = () => {
                   </p>
                 )}
               </div>
-             
             </div>
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
-                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
-                  <Controller
-                    name="is_pooja"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        id="is_pooja"
-                        {...field}
-                        type="checkbox"
-                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                      />
-                    )}
-                  />
-                  <Label className="font-normal" htmlFor="is_pooja">
-                    Is Pooja
-                  </Label>
-                  {errors.is_pooja && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.is_pooja.message}
-                    </p>
+              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                <Controller
+                  name="is_pooja"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      id="is_pooja"
+                      {...field}
+                      type="checkbox"
+                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                    />
                   )}
-                </div>
-                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
-                  <Controller
-                    name="show_special_date"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        id="show_special_date"
-                        {...field}
-                        type="checkbox"
-                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                      />
-                    )}
-                  />
-                  <Label className="font-normal" htmlFor="show_special_date">
-                    Show Special Date
-                  </Label>
-                  {errors.show_special_date && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.show_special_date.message}
-                    </p>
-                  )}
-                </div>
-                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
-                  <Controller
-                    name="show_remembarance"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        id="show_remembarance"
-                        {...field}
-                        type="checkbox"
-                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                      />
-                    )}
-                  />
-                  <Label className="font-normal" htmlFor="show_remembarance">
-                    Show Remembarance
-                  </Label>
-                  {errors.show_remembarance && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.show_remembarance.message}
-                    </p>
-                  )}
-                </div>
+                />
+                <Label className="font-normal" htmlFor="is_pooja">
+                  Is Pooja
+                </Label>
+                {errors.is_pooja && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.is_pooja.message}
+                  </p>
+                )}
               </div>
+              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                <Controller
+                  name="show_special_date"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      id="show_special_date"
+                      {...field}
+                      type="checkbox"
+                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                    />
+                  )}
+                />
+                <Label className="font-normal" htmlFor="show_special_date">
+                  Show Special Date
+                </Label>
+                {errors.show_special_date && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.show_special_date.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                <Controller
+                  name="show_remembarance"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      id="show_remembarance"
+                      {...field}
+                      type="checkbox"
+                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                    />
+                  )}
+                />
+                <Label className="font-normal" htmlFor="show_remembarance">
+                  Show Remembarance
+                </Label>
+                {errors.show_remembarance && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.show_remembarance.message}
+                  </p>
+                )}
+              </div>
+            </div>
             {/* row ends */}
             <div className="w-full gap-4 mt-4 flex justify-end items-center">
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/receipt_types")}
+                onClick={() => navigate('/receipt_types')}
               >
                 Cancle
               </Button>
@@ -379,7 +378,7 @@ const Create = () => {
                     Submitting...
                   </>
                 ) : (
-                  "Submit"
+                  'Submit'
                 )}
               </Button>
             </div>

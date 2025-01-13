@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Loader2 } from 'lucide-react';
 
 import {
   Select,
@@ -14,48 +14,48 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+} from '@/components/ui/select';
+import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   receipt_type: z
     .string()
-    .min(2, "Receipt type must be at least 2 characters."),
-  receipt_head: z.string().min(2, "Receipt head field is required."),
+    .min(2, 'Receipt type must be at least 2 characters.'),
+  receipt_head: z.string().min(2, 'Receipt head field is required.'),
   special_date: z.string().optional(),
   list_order: z.string().optional(),
   minimum_amount: z.coerce.number().optional(),
 
-  is_pooja: z.coerce.number().min(0, "is Pooja field is required"),
+  is_pooja: z.coerce.number().min(0, 'is Pooja field is required'),
   show_special_date: z.coerce
     .number()
-    .min(0, "Show Special date field is required"),
+    .min(0, 'Show Special date field is required'),
   show_remembarance: z.coerce
     .number()
-    .min(0, "show remembarance field is required"),
+    .min(0, 'show remembarance field is required'),
 });
 
 const Update = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
   const { id } = useParams();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
   const token = user.token;
   const navigate = useNavigate();
 
   const defaultValues = {
-    receipt_type: "",
-    receipt_head: "",
-    special_date: "",
-    minimum_amount: "",
-    is_pooja: "",
-    show_special_date: "",
-    show_remembarance: "",
-    list_order: "",
+    receipt_type: '',
+    receipt_head: '',
+    special_date: '',
+    minimum_amount: '',
+    is_pooja: '',
+    show_special_date: '',
+    show_remembarance: '',
+    list_order: '',
   };
 
   const {
@@ -71,14 +71,14 @@ const Update = () => {
     isLoading: isAllReceiptHeadsDataLoading,
     isError: isAllReceiptHeadsDataError,
   } = useQuery({
-    queryKey: ["allReceiptHeads"], // This is the query key
+    queryKey: ['allReceiptHeads'], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(
           `http://127.0.0.1:8000/api/all_receipt_heads`,
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
           }
@@ -96,12 +96,12 @@ const Update = () => {
     isLoading: isEditReceiptTypeDataLoading,
     isError: isEditReceiptTypeDataError,
   } = useQuery({
-    queryKey: ["editReceiptType", id], // This is the query key
+    queryKey: ['editReceiptType', id], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/receipt_types/${id}`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -115,18 +115,18 @@ const Update = () => {
 
   useEffect(() => {
     if (editReceiptType) {
-      setValue("receipt_type", editReceiptType.ReceiptType?.receipt_type);
-      setValue("receipt_head", editReceiptType.ReceiptType?.receipt_head);
-      setValue("special_date", editReceiptType.ReceiptType?.special_date);
-      setValue("minimum_amount", editReceiptType.ReceiptType?.minimum_amount);
-      setValue("is_pooja", editReceiptType.ReceiptType?.is_pooja);
+      setValue('receipt_type', editReceiptType.ReceiptType?.receipt_type);
+      setValue('receipt_head', editReceiptType.ReceiptType?.receipt_head);
+      setValue('special_date', editReceiptType.ReceiptType?.special_date);
+      setValue('minimum_amount', editReceiptType.ReceiptType?.minimum_amount);
+      setValue('is_pooja', editReceiptType.ReceiptType?.is_pooja);
       setValue(
-        "show_remembarance",
+        'show_remembarance',
         editReceiptType.ReceiptType?.show_remembarance
       );
-      setValue("list_order", editReceiptType.ReceiptType?.list_order);
+      setValue('list_order', editReceiptType.ReceiptType?.list_order);
       setValue(
-        "show_special_date",
+        'show_special_date',
         editReceiptType.ReceiptType?.show_special_date
       );
     }
@@ -136,18 +136,18 @@ const Update = () => {
     mutationFn: async (data) => {
       const response = await axios.put(`/api/receipt_types/${id}`, data, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries("receiptTypes");
+      queryClient.invalidateQueries('receiptTypes');
 
-      toast.success("Receipt Type Updated Successfully");
+      toast.success('Receipt Type Updated Successfully');
       setIsLoading(false);
-      navigate("/receipt_types");
+      navigate('/receipt_types');
     },
     onError: (error) => {
       setIsLoading(false);
@@ -162,18 +162,18 @@ const Update = () => {
           //   });
           //   // toast.error("The poo has already been taken.");
           // }
-          toast.error("Failed to add receipt type.");
+          toast.error('Failed to add receipt type.');
         } else {
-          toast.error("Failed to add receipt type.");
+          toast.error('Failed to add receipt type.');
         }
       } else {
-        toast.error("Failed to add receipt type.");
+        toast.error('Failed to add receipt type.');
       }
-      console.log("got error ", error);
+      console.log('got error ', error);
     },
   });
   const onSubmit = (data) => {
-    console.log("Clicked");
+    console.log('Clicked');
     setIsLoading(true);
     updateMutation.mutate(data);
   };
@@ -186,7 +186,7 @@ const Update = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/receipt_types")}
+                onClick={() => navigate('/receipt_types')}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -272,10 +272,10 @@ const Update = () => {
                   name="special_date"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    <input
                       {...field}
                       id="special_date"
-                      className="mt-1"
+                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter special date"
                     />
@@ -421,7 +421,7 @@ const Update = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/receipt_types")}
+                onClick={() => navigate('/receipt_types')}
               >
                 Cancle
               </Button>
@@ -437,7 +437,7 @@ const Update = () => {
                     Submitting...
                   </>
                 ) : (
-                  "Submit"
+                  'Submit'
                 )}
               </Button>
             </div>
