@@ -26,7 +26,9 @@ class ReceiptTypesController extends BaseController
             $searchTerm = $request->query('search');
     
             $query->where(function ($query) use ($searchTerm) {
-                $query->where('receipt_head', 'like', '%' . $searchTerm . '%');
+                $query->where('receipt_head', 'like', '%' . $searchTerm . '%')
+                ->orWhere('receipt_type', 'like', '%' . $searchTerm . '%');
+                
             });
         }
         $receiptTypes = $query->Orderby("id","desc")->paginate(5);
@@ -48,7 +50,8 @@ class ReceiptTypesController extends BaseController
      * @bodyParam minimum_amount string The name of the Minimum amount field.
      * @bodyParam is_pooja boolean The name of the pooja.
      * @bodyParam show_special_date boolean The name of the show_special.
-     * @bodyParam show_remembarance boolean The name of the show_remembarance.
+     * @bodyParam show_remembarance boolean The name of the show_remembarance.\
+     * @bodyParam list_order boolean The name of the List Order.
      */
     public function store(Request $request): JsonResponse
     {
@@ -60,6 +63,7 @@ class ReceiptTypesController extends BaseController
         $receiptType->is_pooja = $request->input("is_pooja");
         $receiptType->show_special_date = $request->input("show_special_date");
         $receiptType->show_remembarance = $request->input("show_remembarance");
+        $receiptType->list_order = $request->input("list_order");
 
         if(!$receiptType->save()) {
             return $this->sendError("Error while saving data", ['error'=>['Error while saving data']]);
@@ -89,6 +93,8 @@ class ReceiptTypesController extends BaseController
      * @bodyParam is_pooja boolean The name of the pooja.
      * @bodyParam show_special_date boolean The name of the show_special.
      * @bodyParam show_remembarance boolean The name of the show_remembarance.
+     * @bodyParam list_order boolean The name of the List Order.
+
      */
     public function update(Request $request, string $id): JsonResponse
     {
@@ -103,6 +109,8 @@ class ReceiptTypesController extends BaseController
         $receiptType->is_pooja = $request->input("is_pooja");
         $receiptType->show_special_date = $request->input("show_special_date");
         $receiptType->show_remembarance = $request->input("show_remembarance");
+        $receiptType->list_order = $request->input("list_order");
+
         if(!$receiptType->save()) {
             return $this->sendError("Error while saving data", ['error'=>['Error while saving data']]);
         }

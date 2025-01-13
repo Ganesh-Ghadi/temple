@@ -22,10 +22,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  pooja_type: z.string().min(2, "pooja type must be at least 2 characters"),
-  devta_id: z.coerce.number().min(1, "devta field is required"),
-  multiple: z.coerce.number().min(0, "multiple field is required"),
-  contribution: z.coerce.number().optional(),
+  receipt_type: z
+    .string()
+    .min(2, "Receipt type must be at least 2 characters."),
+  receipt_head: z.string().min(2, "Receipt head field is required."),
+  special_date: z.string().optional(),
+  list_order: z.string().optional(),
+  minimum_amount: z.coerce.number().optional(),
+
+  is_pooja: z.coerce.number().min(0, "is Pooja field is required"),
+  show_special_date: z.coerce
+    .number()
+    .min(0, "Show Special date field is required"),
+  show_remembarance: z.coerce
+    .number()
+    .min(0, "show remembarance field is required"),
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,10 +45,14 @@ const Create = () => {
   const token = user.token;
   const navigate = useNavigate();
   const defaultValues = {
-    pooja_type: "",
-    devta_id: "",
-    multiple: "",
-    contribution: "0.00",
+    receipt_type: "",
+    receipt_head: "",
+    special_date: "",
+    minimum_amount: "0.00",
+    is_pooja: "",
+    show_special_date: "",
+    show_remembarance: "",
+    list_order: "",
   };
 
   const {
@@ -48,15 +63,15 @@ const Create = () => {
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const {
-    data: allDevtasData,
-    isLoading: isAllDevtaDataLoading,
-    isError: isAllDevtaDataError,
+    data: allReceiptHeadsData,
+    isLoading: isAllReceiptHeadsDataLoading,
+    isError: isAllReceiptHeadsDataError,
   } = useQuery({
-    queryKey: ["allDevtas"], // This is the query key
+    queryKey: ["allReceiptHeads"], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/all_devtas`,
+          `http://127.0.0.1:8000/api/all_receipt_heads`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -74,7 +89,7 @@ const Create = () => {
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.post("/api/pooja_types", data, {
+      const response = await axios.post("/api/receipt_types", data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the Bearer token
@@ -83,24 +98,25 @@ const Create = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries("poojaTypes");
-      toast.success("Pooja Type Added Successfully");
+      queryClient.invalidateQueries("receiptTypes");
+      toast.success("Receipt Type Added Successfully");
       setIsLoading(false);
-      navigate("/pooja_types");
+      navigate("/receipt_types");
     },
     onError: (error) => {
       setIsLoading(false);
-      if (error.response && error.response.data.errors) {
-        const serverStatus = error.response.data.status;
-        const serverErrors = error.response.data.errors;
+      if (error?.response && error?.response?.data?.errors) {
+        const serverStatus = error?.response?.data?.status;
+        const serverErrors = error?.response?.data?.errors;
         if (serverStatus === false) {
-          if (serverErrors.pooja_type) {
-            setError("pooja_type", {
-              type: "manual",
-              message: serverErrors.pooja_type[0], // The error message from the server
-            });
-            // toast.error("The poo has already been taken.");
-          }
+          // if (serverErrors.pooja_type) {
+          //   setError("pooja_type", {
+          //     type: "manual",
+          //     message: serverErrors.pooja_type[0], // The error message from the server
+          //   });
+          //   // toast.error("The poo has already been taken.");
+          // }
+          toast.error("Failed to add pooja type.");
         } else {
           toast.error("Failed to add pooja type.");
         }
@@ -123,11 +139,11 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/pooja_types")}
+                onClick={() => navigate("/receipt_types")}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
-                Pooja Types
+                Receipt Types
               </Button>
             </span>
             <span className="text-gray-400">/</span>
@@ -139,120 +155,215 @@ const Create = () => {
         {/* form style strat */}
         <div className="px-5 pb-7 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
           <div className="w-full py-3 flex justify-start items-center">
-            <h2 className="text-lg  font-normal">Add Pooja Type</h2>
+            <h2 className="text-lg  font-normal">Add Receipt Type</h2>
           </div>
           {/* row starts */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-4">
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
-                <Label className="font-normal" htmlFor="pooja_type">
-                  Pooja Type: <span className="text-red-500">*</span>
+                <Label className="font-normal" htmlFor="receipt_head">
+                  Receipt Head: <span className="text-red-500">*</span>
                 </Label>
                 <Controller
-                  name="pooja_type"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="pooja_type"
-                      className="mt-1"
-                      type="text"
-                      placeholder="Enter pooja type"
-                    />
-                  )}
-                />
-                {errors.pooja_type && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.pooja_type.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="devta_id">
-                  Devta: <span className="text-red-500">*</span>
-                </Label>
-                <Controller
-                  name="devta_id"
+                  name="receipt_head"
                   control={control}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select devta" />
+                        <SelectValue placeholder="Select receipt head" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="pb-10">
                         <SelectGroup>
-                          <SelectLabel>Select Devta</SelectLabel>
-                          {allDevtasData?.Devtas &&
-                            allDevtasData?.Devtas.map((devta) => (
-                              <SelectItem value={String(devta.id)}>
-                                {devta.devta_name}
-                              </SelectItem>
-                            ))}
+                          <SelectLabel>Select receipt head</SelectLabel>
+                          {allReceiptHeadsData?.ReceiptHeads &&
+                            Object.keys(allReceiptHeadsData?.ReceiptHeads).map(
+                              (key) => (
+                                <SelectItem key={key} value={key}>
+                                  {allReceiptHeadsData.ReceiptHeads[key]}
+                                </SelectItem>
+                              )
+                            )}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   )}
                 />
-                {errors.devta_id && (
+                {errors.receipt_head && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.devta_id.message}
+                    {errors.receipt_head.message}
                   </p>
                 )}
               </div>
-            </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-4">
               <div className="relative">
-                <Label className="font-normal" htmlFor="contribution">
-                  Contribution:
+                <Label className="font-normal" htmlFor="receipt_type">
+                  Receipt Type: <span className="text-red-500">*</span>
                 </Label>
                 <Controller
-                  name="contribution"
+                  name="receipt_type"
                   control={control}
                   render={({ field }) => (
                     <Input
                       {...field}
-                      id="contribution"
+                      id="receipt_type"
                       className="mt-1"
-                      type="number"
-                      placeholder="Enter contribution amount"
+                      type="text"
+                      placeholder="Enter receipt type"
                     />
                   )}
                 />
-                {errors.contribution && (
+                {errors.receipt_type && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.contribution.message}
+                    {errors.receipt_type.message}
                   </p>
                 )}
               </div>
-              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+              <div className="relative">
+                <Label className="font-normal" htmlFor="special_date">
+                  Special date:
+                </Label>
                 <Controller
-                  name="multiple"
+                  name="special_date"
                   control={control}
                   render={({ field }) => (
-                    <input
-                      id="multiple"
+                    <Input
                       {...field}
-                      type="checkbox"
-                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      id="special_date"
+                      className="mt-1"
+                      type="date"
+                      placeholder="Enter special date"
                     />
                   )}
                 />
-                <Label className="font-normal" htmlFor="multiple">
-                  Multiple
-                </Label>
-                {errors.multiple && (
+                {errors.special_date && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.multiple.message}
+                    {errors.special_date.message}
                   </p>
                 )}
               </div>
             </div>
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-4">
+              <div className="relative">
+                <Label className="font-normal" htmlFor="minimum_amount">
+                  Minimum Amount:
+                </Label>
+                <Controller
+                  name="minimum_amount"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="minimum_amount"
+                      className="mt-1"
+                      type="number"
+                      placeholder="Enter amount"
+                    />
+                  )}
+                />
+                {errors.minimum_amount && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.minimum_amount.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="list_order">
+                  List Order:
+                </Label>
+                <Controller
+                  name="list_order"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="list_order"
+                      className="mt-1"
+                      type="text"
+                      placeholder="Enter list order"
+                    />
+                  )}
+                />
+                {errors.list_order && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.list_order.message}
+                  </p>
+                )}
+              </div>
+             
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="is_pooja"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="is_pooja"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="is_pooja">
+                    Is Pooja
+                  </Label>
+                  {errors.is_pooja && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.is_pooja.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="show_special_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="show_special_date"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="show_special_date">
+                    Show Special Date
+                  </Label>
+                  {errors.show_special_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.show_special_date.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="show_remembarance"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="show_remembarance"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="show_remembarance">
+                    Show Remembarance
+                  </Label>
+                  {errors.show_remembarance && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.show_remembarance.message}
+                    </p>
+                  )}
+                </div>
+              </div>
             {/* row ends */}
             <div className="w-full gap-4 mt-4 flex justify-end items-center">
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/pooja_types")}
+                onClick={() => navigate("/receipt_types")}
               >
                 Cancle
               </Button>

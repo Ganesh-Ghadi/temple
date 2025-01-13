@@ -46,14 +46,14 @@ const Index = () => {
   const navigate = useNavigate();
 
   const {
-    data: PoojaTypesData,
-    isLoading: isPoojaTypesDataLoading,
-    isError: isPoojaTypesDataError,
+    data: ReceiptTypesData,
+    isLoading: isReceiptTypesDataLoading,
+    isError: isReceiptTypesDataError,
   } = useQuery({
-    queryKey: ["poojaTypes", currentPage, search], // This is the query key
+    queryKey: ["receiptTypes", currentPage, search], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get("/api/pooja_types", {
+        const response = await axios.get("/api/receipt_types", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const Index = () => {
   });
 
   // pagination start
-  const { PoojaTypes, pagination } = PoojaTypesData || {}; // Destructure Profiles and pagination from UsersData
+  const { ReceiptTypes, pagination } = ReceiptTypesData || {}; // Destructure Profiles and pagination from UsersData
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
 
   // Directly use Profiles for the table data
@@ -80,7 +80,7 @@ const Index = () => {
 
   // pagination end
 
-  if (isPoojaTypesDataError) {
+  if (isReceiptTypesDataError) {
     return <p>Error fetching data</p>;
   }
 
@@ -89,17 +89,17 @@ const Index = () => {
       <div className="w-full p-5">
         <div className="w-full mb-7">
           <Button
-            onClick={() => navigate("/pooja_types/create")}
+            onClick={() => navigate("/receipt_types/create")}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
-            Add Pooja Type
+            Add Receipt Type
           </Button>
         </div>
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold leading-none tracking-tight">
-              Pooja Types
+              Receipt Types
             </h2>{" "}
             {/* search field here */}
             <div className="relative p-0.5 ">
@@ -126,7 +126,7 @@ const Index = () => {
                 }}
                 id="search"
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for Pooja Types"
+                placeholder="Search for Receipt Types"
               />
             </div>
             {/* end */}
@@ -146,34 +146,36 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="p-2">Pooja Type</TableHead>
-                <TableHead className="p-2">Devta Name</TableHead>
-                <TableHead className="p-2">Contribution</TableHead>
-                <TableHead className="p-2">Multiple</TableHead>
-
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="p-2">Receipt Type</TableHead>
+                <TableHead className="p-2">Receipt Head</TableHead>
+                <TableHead className="p-2">Minimum Amount</TableHead>
+                <TableHead className="p-2">List Order</TableHead>
+                <TableHead className="p-2">Is Pooja</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {PoojaTypes &&
-                PoojaTypes.map((poojaType) => (
+              {ReceiptTypes &&
+                ReceiptTypes.map((receiptType) => (
                   <TableRow
-                    key={poojaType.id}
+                    key={receiptType.id}
                     className=" dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
-                      {poojaType.pooja_type}
+                      {receiptType.receipt_type}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {poojaType.devta_name}
+                      {receiptType.receipt_head}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      ₹{poojaType.contribution}
+                      ₹{receiptType.minimum_amount}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {poojaType.multiple ? "Yes" : "No"}
+                      {receiptType.list_order}
                     </TableCell>
-
+                    <TableCell className="font-medium p-2">
+                      {receiptType.is_pooja ? "Yes" : "No"}
+                    </TableCell>
                     <TableCell className="text-right p-2 pr-5">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -193,13 +195,13 @@ const Index = () => {
                             size="sm"
                             className="w-full text-sm"
                             onClick={() =>
-                              navigate(`/pooja_types/${poojaType.id}/edit`)
+                              navigate(`/receipt_types/${receiptType.id}/edit`)
                             }
                           >
                             <Pencil /> Edit
                           </Button>
                           <div className="w-full">
-                            <Delete id={poojaType.id} />
+                            <Delete id={receiptType.id} />
                           </div>
                         </DropdownMenuContent>
                       </DropdownMenu>

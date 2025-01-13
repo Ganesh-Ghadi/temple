@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("receipt_type")->nullable();
             $table->date("special_date")->nullable();
             $table->decimal("minimum_amount",10,2)->nullable();
-            $table->boolean("isPooja")->nullable();
+            $table->boolean("is_pooja")->nullable();
             $table->boolean("show_special_date")->nullable();
             $table->boolean("show_remembarance")->nullable();
             $table->string("list_order",5)->nullable();
