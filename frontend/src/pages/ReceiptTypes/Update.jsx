@@ -117,14 +117,14 @@ const Update = () => {
     if (editReceiptType) {
       setValue('receipt_type', editReceiptType.ReceiptType?.receipt_type);
       setValue('receipt_head', editReceiptType.ReceiptType?.receipt_head);
-      setValue('special_date', editReceiptType.ReceiptType?.special_date);
+      setValue('special_date', editReceiptType.ReceiptType?.special_date || '');
       setValue('minimum_amount', editReceiptType.ReceiptType?.minimum_amount);
       setValue('is_pooja', editReceiptType.ReceiptType?.is_pooja);
       setValue(
         'show_remembarance',
         editReceiptType.ReceiptType?.show_remembarance
       );
-      setValue('list_order', editReceiptType.ReceiptType?.list_order);
+      setValue('list_order', editReceiptType.ReceiptType?.list_order || '');
       setValue(
         'show_special_date',
         editReceiptType.ReceiptType?.show_special_date
