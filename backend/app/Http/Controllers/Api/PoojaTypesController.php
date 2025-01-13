@@ -103,5 +103,17 @@ class PoojaTypesController extends BaseController
         return $this->sendResponse([], "Pooja Type deleted successfully");
     }
 
+     /**
+     * Fetch All Pooja Types.
+     */
+    public function allPoojaTypes(): JsonResponse
+    {
+        $poojaTypes = PoojaType::all();
+
+        return $this->sendResponse(["PoojaTypes"=>PoojaTypeResource::collection($poojaTypes),
+        ], "All Pooja Types retrieved successfully");
+
+    }
+
     
 }

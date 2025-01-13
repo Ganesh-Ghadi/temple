@@ -17,6 +17,7 @@ class PoojaDateResource extends JsonResource
         return [
             'id' => $this->id,
             'pooja_type_id' => $this->pooja_type_id,
+            'pooja_type' => $this->poojaType ? $this->poojaType->pooja_type : null, // If there's a relationship with Devta model
             'pooja_date' => $this->pooja_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

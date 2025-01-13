@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\PoojaDate;
+use App\Models\PoojaType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PoojaDateResource;
+use App\Http\Resources\PoojaTypeResource;
 use App\Http\Controllers\Api\BaseController;
 
     /**
@@ -20,14 +22,19 @@ class PoojaDatesController extends BaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $query = PoojaDate::query();
+        $query = PoojaDate::with("poojaType");
 
         if ($request->query('search')) {
             $searchTerm = $request->query('search');
     
             $query->where(function ($query) use ($searchTerm) {
-                $query->where('pooja_date', 'like', '%' . $searchTerm . '%');
+                $query->where('pooja_date', 'like', '%' . $searchTerm . '%')
+                ->orWhereHas('poojaType', function ($query) use ($searchTerm) {
+                    $query->where('pooja_type', 'like', '%' . $searchTerm . '%');
+                });
             });
+
+            
         }
         $poojaDates = $query->Orderby("id","desc")->paginate(5);
 
@@ -99,4 +106,7 @@ class PoojaDatesController extends BaseController
         $poojaDate->delete();
         return $this->sendResponse([], "Pooja Date deleted successfully");
     }
+
+   
+    
 }
