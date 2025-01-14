@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\DevtasController;
+use App\Http\Controllers\Api\GurujisController;
 use App\Http\Controllers\Api\ProfilesController;
 use App\Http\Controllers\Api\ReceiptsController;
 use App\Http\Controllers\Api\DepartmentController;
@@ -25,6 +26,7 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::resource('denominations', DenominationsController::class);  
    Route::resource('receipts', ReceiptsController::class);  
    Route::resource('devtas', DevtasController::class);
+   Route::resource('gurujis', GurujisController::class);
    Route::resource('receipt_types', ReceiptTypesController::class);
    Route::resource('pooja_types', PoojaTypesController::class);    
    Route::resource('pooja_dates', PoojaDatesController::class);    
