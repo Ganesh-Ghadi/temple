@@ -153,7 +153,7 @@ class DenominationsController extends BaseController
     }
 
     /**
-     * Delete Denomination
+     * Delete Denomination 
      */
     public function destroy(string $id): JsonResponse
     {
@@ -161,7 +161,7 @@ class DenominationsController extends BaseController
         if(!$denomination){
             return $this->sendError("Denomination not found", ['error'=>'Denomination not found']);
         }
-
+// ttt
         $denomination->delete();
 
         return $this->sendResponse([], "Denomination deleted successfully");
