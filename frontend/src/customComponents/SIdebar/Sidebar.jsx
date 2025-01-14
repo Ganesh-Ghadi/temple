@@ -26,10 +26,12 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const role = user?.user?.role?.name;
   const location = useLocation();
   const [activeParent, setActiveParent] = useState(null);
 
-  const items = [
+  const adminItems = [
     {
       name: 'Dashboard',
       path: '/',
@@ -95,6 +97,49 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       logo: <ReceiptText size={16} />,
     },
   ];
+
+  const limitedItems = [
+    {
+      name: 'Dashboard',
+      path: '/',
+      logo: <LayoutDashboard size={16} />,
+    },
+    {
+      name: 'Masters',
+      path: '#',
+      logo: <Settings size={16} />,
+      children: [
+        {
+          name: 'Devtas',
+          path: '/devtas',
+          logo: <Sun size={16} />,
+        },
+        {
+          name: 'Pooja Dates',
+          path: '/pooja_dates',
+          logo: <Settings size={16} />,
+        },
+        {
+          name: 'Gurujis',
+          path: '/gurujis',
+          logo: <Flower size={16} />,
+        },
+      ],
+    },
+
+    {
+      name: 'Denominations',
+      path: '/denominations',
+      logo: <HandCoins size={16} />,
+    },
+    {
+      name: 'Receipts',
+      path: '/receipts',
+      logo: <ReceiptText size={16} />,
+    },
+  ];
+
+  const items = role === 'admin' ? adminItems : limitedItems;
 
   // Check if the parent item should be active
   const isParentActive = (children) => {
