@@ -8,16 +8,20 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import {
-  LayoutDashboard,
+  Minus,
   Settings,
-  Sun,
-  AlignStartVertical,
+  LayoutDashboard,
   Users,
-  Notebook,
-  UsersRound,
-  HandCoins,
+  Sun,
   Network,
   SquareUserRound,
+  AlignStartVertical,
+  CircleChevronLeft,
+  UsersRound,
+  Notebook,
+  HandCoins,
+  ReceiptText,
+  Flower,
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -46,6 +50,21 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: '/pooja_types',
           logo: <AlignStartVertical size={16} />,
         },
+        {
+          name: 'Pooja Dates',
+          path: '/pooja_dates',
+          logo: <Settings size={16} />,
+        },
+        {
+          name: 'Receipt types',
+          path: '/receipt_types',
+          logo: <ReceiptText size={16} />,
+        },
+        {
+          name: 'Gurujis',
+          path: '/gurujis',
+          logo: <Flower size={16} />,
+        },
       ],
     },
     {
@@ -71,14 +90,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       logo: <HandCoins size={16} />,
     },
     {
-      name: 'Services',
-      path: '/services',
-      logo: <Network size={16} />,
-    },
-    {
-      name: 'Contact',
-      path: '/contact',
-      logo: <SquareUserRound size={16} />,
+      name: 'Receipts',
+      path: '/receipts',
+      logo: <ReceiptText size={16} />,
     },
   ];
 
@@ -104,8 +118,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   return (
     <ScrollArea
       className={`${
-        isSidebarOpen ? 'w-80' : 'w-14'
-      } transition-all px-3 text-sm duration-300 min-h-screen bg-dark-purple text-white`}
+        isSidebarOpen ? 'w-80' : 'w-16'
+      } hidden md:block transition-all px-3.5 m-0 text-sm duration-300 pt-3.5  border border-dark-purple  min-h-screen bg-dark-purple dark:bg-background text-white`}
     >
       <div className="flex items-center gap-x-4 mt-4 ">
         <LayoutDashboard size={32} />
@@ -120,17 +134,15 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           // const isActive =
           //   location.pathname.startsWith(item.path) ||
           //   isParentActive(item.children);
-         const isActive =
-           (item.path === '/' && location.pathname === '/') || // Dashboard link active only on exact `/`
-           (item.path !== '/' && location.pathname.startsWith(item.path)) ||
-           isParentActive(item.children);
+          const isActive =
+            (item.path === '/' && location.pathname === '/') || // Dashboard link active only on exact `/`
+            (item.path !== '/' && location.pathname.startsWith(item.path)) ||
+            isParentActive(item.children);
           return (
             <li key={index}>
               <NavLink
-                className={`flex my-1 items-center p-2 rounded-lg transition-all duration-300 ${
-                  isActive
-                    ? 'bg-dark-purple-light'
-                    : 'hover:bg-dark-purple-light'
+                className={`flex my-1 items-center p-2 hover:bg-dark-purple-light dark:hover:bg-gray-600 rounded transition-all duration-300 ${
+                  isActive ? 'bg-dark-purple-light  dark:bg-gray-600' : ''
                 }`}
                 to={item.path || '#'}
                 onClick={() => item.children && toggleChildren(item.name)}
@@ -152,7 +164,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                   <IoIosArrowDown
                     className={`ml-auto transition-transform ${
                       activeParent === item.name ? 'rotate-180' : ''
-                    }`}
+                    } ${!isSidebarOpen && 'hidden'} `}
                   />
                 )}
               </NavLink>
@@ -173,11 +185,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                     return (
                       <NavLink
                         key={idx}
-                        className={`flex my-1 items-center gap-x-4 p-2 pl-8 rounded-lg transition-all duration-300 ${
+                        className={`flex my-1 items-center gap-x-4 p-2  rounded-lg transition-all duration-300 ${
                           isChildActive
-                            ? 'bg-dark-purple-light'
-                            : 'hover:bg-dark-purple-light'
-                        }`}
+                            ? 'bg-dark-purple-light dark:bg-gray-600'
+                            : 'hover:bg-dark-purple-light dark:hover:bg-gray-600'
+                        } ${isSidebarOpen && 'pl-8'}`}
                         to={child.path}
                       >
                         <TooltipProvider>
