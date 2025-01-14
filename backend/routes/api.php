@@ -38,5 +38,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/all_receipt_heads', [ReceiptHeadsController::class, 'allReceiptHeads'])->name("receipt_heads.all");
    Route::get('/all_receipt_types', [ReceiptTypesController::class, 'allReceiptTypes'])->name("receipt_types.all");
    Route::get('/generate_receipt/{id}', [ReceiptsController::class, 'generateReceipt'])->name("receipts.print");
+   Route::get('/cancel_receipt/{id}', [ReceiptsController::class, 'cancelReceipt'])->name("receipts.cancle");
 
 });

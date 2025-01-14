@@ -190,5 +190,19 @@ class ReceiptsController extends BaseController
          // return $this->sendResponse([], "Invoice generated successfully");
      }
 
-   
+     /**
+     * Cancle Receipt.
+     */
+    public function cancelReceipt(string $id): JsonResponse
+    {
+        $receipt = Receipt::find($id);
+        if(!$receipt){
+            return $this->sendError("Receipt not found", ['error'=>'Receipt not found']);
+        }
+        $val = 1;
+        $receipt->cancelled = $val;
+        $receipt->cancelled_by = auth()->user()->profile->id;
+        $receipt->save();
+        return $this->sendResponse([], "Receipt Cancelled successfully");
+    }
 }
