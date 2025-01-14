@@ -9,21 +9,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Pencil, MoreHorizontal, PrinterCheck } from "lucide-react";
+import {
+  File,
+  PlusCircle,
+  Search,
+  Pencil,
+  Trash,
+  MoreHorizontal,
+  ListFilter,
+} from "lucide-react";
 
 import Pagination from "@/customComponents/Pagination/Pagination";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -39,25 +36,25 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import Delete from "./Delete";
+import { Input } from "@/components/ui/input";
 
 const Index = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = user.token;
   const [search, setSearch] = useState("");
-
+  const user = JSON.parse(localStorage.getItem("user"));
   const [currentPage, setCurrentPage] = useState(1);
 
+  const token = user.token;
   const navigate = useNavigate();
 
   const {
-    data: DenominationsData,
-    isLoading: isDenominationsDataLoading,
-    isError: isDenominationsDataError,
+    data: GurujisData,
+    isLoading: isGurujisDataLoading,
+    isError: isGurujisDataError,
   } = useQuery({
-    queryKey: ["denominations", currentPage, search], // This is the query key
+    queryKey: ["gurujis", currentPage, search], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get("/api/denominations", {
+        const response = await axios.get("/api/gurujis", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -76,82 +73,31 @@ const Index = () => {
   });
 
   // pagination start
-  const { Denominations, pagination } = DenominationsData || {};
+  const { Gurujis, pagination } = GurujisData || {};
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
 
   // pagination end
 
-  if (isDenominationsDataError) {
+  if (isGurujisDataError) {
     return <p>Error fetching data</p>;
   }
-
-  const handlePrint = async (denominationId) => {
-    try {
-      const response = await axios.get(
-        `/api/generate_denomination/${denominationId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob", // To ensure the response is a blob (PDF file)
-        }
-      );
-
-      const blob = response.data;
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      link.href = url;
-      link.download = `denomination-${denominationId}.pdf`;
-
-      document.body.appendChild(link);
-
-      link.click();
-
-      document.body.removeChild(link);
-
-      // Invalidate the queries related to the "lead" data
-      queryClient.invalidateQueries("denominations");
-      toast.success("Denomination Printed Successfully");
-    } catch (error) {
-      // Handle errors (both response errors and network errors)
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          const errorData = error.response.data;
-          if (error.response.status === 401 && errorData.status === false) {
-            toast.error(errorData.errors.error);
-          } else {
-            toast.error("Failed to generate Receipt");
-          }
-        } else {
-          // Network or other errors
-          console.error("Error:", error);
-          toast.error("An error occurred while printing the denomination");
-        }
-      } else {
-        console.error("Unexpected error:", error);
-        toast.error("An unexpected error occurred");
-      }
-    }
-  };
 
   return (
     <>
       <div className="w-full p-5">
         <div className="w-full mb-7">
           <Button
-            onClick={() => navigate("/denominations/create")}
+            onClick={() => navigate("/gurujis/create")}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
-            Add Denominations
+            Add Gurujis
           </Button>
         </div>
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold leading-none tracking-tight">
-              Denominations
+              Gurujis
             </h2>
             {/* search field here */}
             <div className="relative p-0.5 ">
@@ -178,7 +124,7 @@ const Index = () => {
                 }}
                 id="search"
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for Denominations"
+                placeholder="Search for Gurujis"
               />
             </div>
             {/* end */}
@@ -198,26 +144,20 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="p-2">Denomination Date</TableHead>
-                <TableHead className="p-2">Amount</TableHead>
+                <TableHead className="">Roles</TableHead>
+
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Denominations &&
-                Denominations.map((denomination) => (
+              {Gurujis &&
+                Gurujis.map((guruji) => (
                   <TableRow
-                    key={denomination.id}
+                    key={guruji.id}
                     className=" dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
-                      {/* {denomination.deposit_date} */}
-                      {new Date(denomination.deposit_date).toLocaleDateString(
-                        "en-GB"
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium p-2">
-                      ₹{denomination.amount}
+                      {guruji.guruji_name}
                     </TableCell>
 
                     <TableCell className="text-right p-2 pr-5">
@@ -239,54 +179,13 @@ const Index = () => {
                             size="sm"
                             className="w-full text-sm"
                             onClick={() =>
-                              navigate(`/denominations/${denomination.id}/edit`)
+                              navigate(`/gurujis/${guruji.id}/edit`)
                             }
                           >
-                            <Pencil size={16} /> Edit
+                            <Pencil /> Edit
                           </Button>
-                          {/* <Button
-                            variant="ghost"
-                            size="sm"
-                            className="w-full text-sm"
-                            onClick={() => handlePrint(denomination.id)}
-                          >
-                            <PrinterCheck size={16} /> Print
-                          </Button> */}
-                          {/* print button start */}
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="w-full text-sm"
-                              >
-                                <PrinterCheck size={16} /> Print
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to print the
-                                  denomination?
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  className="bg-blue-600 hover:bg-blue-700"
-                                  onClick={() => handlePrint(denomination.id)}
-                                >
-                                  Continue
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                          {/* print button end */}
                           <div className="w-full">
-                            <Delete id={denomination.id} />
+                            <Delete id={guruji.id} />
                           </div>
                         </DropdownMenuContent>
                       </DropdownMenu>

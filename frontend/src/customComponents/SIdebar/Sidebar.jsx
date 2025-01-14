@@ -24,6 +24,7 @@ import {
   Notebook,
   HandCoins,
   ReceiptText,
+  Flower,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSelector } from "react-redux";
@@ -63,6 +64,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/receipt_types",
           logo: <ReceiptText size={16} />,
         },
+        {
+          name: "Gurujis",
+          path: "/gurujis",
+          logo: <Flower size={16} />,
+        },
       ],
     },
     {
@@ -87,11 +93,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       path: "/denominations",
       logo: <HandCoins size={16} />,
     },
-    // {
-    //   name: "Receipts",
-    //   path: "/receipts",
-    //   logo: <ReceiptText size={16} />,
-    // },
+    {
+      name: "Receipts",
+      path: "/receipts",
+      logo: <ReceiptText size={16} />,
+    },
   ];
 
   // Function to toggle children visibility (close previous and open current)
@@ -117,7 +123,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             Designer
           </p>
         </div>
-        <ul className="pb-32 pt-8">
+        <ul className="pb-24 pt-8">
           {/* mt-10 about */}
           {items.map((item, index) => {
             return (

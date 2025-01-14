@@ -36,5 +36,7 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/all_pooja_types', [PoojaTypesController::class, 'allPoojaTypes'])->name("pooja_types.all");
    Route::get('/generate_denomination/{id}', [DenominationsController::class, 'generateDenomination'])->name("denominations.print");
    Route::get('/all_receipt_heads', [ReceiptHeadsController::class, 'allReceiptHeads'])->name("receipt_heads.all");
+   Route::get('/all_receipt_types', [ReceiptTypesController::class, 'allReceiptTypes'])->name("receipt_types.all");
+   Route::get('/generate_receipt/{id}', [ReceiptsController::class, 'generateReceipt'])->name("receipts.print");
 
 });

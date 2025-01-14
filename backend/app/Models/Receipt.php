@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Receipt;
+use App\Models\ReceiptType;
 use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
@@ -21,5 +22,9 @@ class Receipt extends Model
             $lastNumber = intval(substr($latestNumber->receipt_no, 4)) + 1;
         }
         return date('my') . str_pad($lastNumber, 3, '0', STR_PAD_LEFT);
+    }
+
+    public function receiptType(){
+        return $this->belongsTo(ReceiptType::class, 'receipt_type_id');
     }
 }

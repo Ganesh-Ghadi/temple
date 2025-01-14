@@ -129,4 +129,16 @@ class ReceiptTypesController extends BaseController
         $receiptType->delete();
         return $this->sendResponse([], "Receipt Type deleted successfully");
     }
+
+     /**
+     * Fetch All Receipt Types.
+     */
+    public function allReceiptTypes(): JsonResponse
+    {
+        $receiptTypes = ReceiptType::all();
+
+        return $this->sendResponse(["ReceiptTypes"=>ReceiptTypeResource::collection($receiptTypes),
+        ], "All Receipt Types retrieved successfully");
+
+    }
 }

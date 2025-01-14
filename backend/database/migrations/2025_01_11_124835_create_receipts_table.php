@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('receipt_type_id')->nullable(); 
+            $table->unsignedBigInteger('receipt_type_id'); 
             $table->string('receipt_no',20)->nullable(); 
+            $table->string('receipt_head')->nullable(); 
             $table->date('receipt_date')->nullable(); 
             $table->string('name')->nullable(); 
             $table->string('gotra')->nullable(); 
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->string('remembarance')->nullable(); 
             $table->decimal('amount',18,2)->nullable(); 
             $table->string('amount_in_words')->nullable(); 
+            $table->string('receipt_file')->nullable(); 
             $table->boolean('print_count')->nullable(); 
             $table->boolean('cancelled')->nullable(); 
             $table->unsignedBigInteger('cancelled_by')->nullable(); 

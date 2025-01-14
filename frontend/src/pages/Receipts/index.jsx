@@ -64,7 +64,7 @@ const Index = () => {
           },
           params: {
             page: currentPage,
-            search: search, 
+            search: search,
           },
         });
         return response.data?.data; // Return the fetched data
@@ -76,15 +76,62 @@ const Index = () => {
   });
 
   // pagination start
-  const { Receipts, pagination } = ReceiptsData || {}; 
+  const { Receipts, pagination } = ReceiptsData || {};
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
-
 
   // pagination end
 
   if (isReceiptsDataError) {
     return <p>Error fetching data</p>;
   }
+
+  const handlePrint = async (receiptId) => {
+    try {
+      const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob", // To ensure the response is a blob (PDF file)
+      });
+
+      const blob = response.data;
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = `receipt-${receiptId}.pdf`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+      // Invalidate the queries related to the "lead" data
+      queryClient.invalidateQueries("receipts");
+      toast.success("Receipt Printed Successfully");
+    } catch (error) {
+      // Handle errors (both response errors and network errors)
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          const errorData = error.response.data;
+          if (error.response.status === 401 && errorData.status === false) {
+            toast.error(errorData.errors.error);
+          } else {
+            toast.error("Failed to generate Receipt");
+          }
+        } else {
+          // Network or other errors
+          console.error("Error:", error);
+          toast.error("An error occurred while printing the Receipt");
+        }
+      } else {
+        console.error("Unexpected error:", error);
+        toast.error("An unexpected error occurred");
+      }
+    }
+  };
 
   return (
     <>
@@ -149,8 +196,10 @@ const Index = () => {
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
                 <TableHead className="p-2">Receipt No</TableHead>
+                <TableHead className="p-2">Receipt Type</TableHead>
+                <TableHead className="p-2">Receipt Date</TableHead>
                 <TableHead className="p-2">Name</TableHead>
-                <TableHead className="p-2">Email</TableHead>
+                <TableHead className="p-2">Amount</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -166,10 +215,19 @@ const Index = () => {
                       {/* {new Date(denomination.deposit_date).toLocaleDateString("en-GB")} */}
                     </TableCell>
                     <TableCell className="font-medium p-2">
+                      {receipt.receipt_type}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
+                      {/* {poojaDate.pooja_date} */}
+                      {new Date(receipt.receipt_date).toLocaleDateString(
+                        "en-GB"
+                      )}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
                       {receipt.name}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {receipt.email}
+                      {receipt.amount}
                     </TableCell>
 
                     <TableCell className="text-right p-2 pr-5">
@@ -191,12 +249,43 @@ const Index = () => {
                             size="sm"
                             className="w-full text-sm"
                             onClick={() =>
-                              navigate(`/denominations/${denomination.id}/edit`)
+                              navigate(`/receipts/${receipt.id}/edit`)
                             }
                           >
-                            <Pencil size={16} /> Edit
+                            <Pencil size={16} /> View
                           </Button>
-
+                          {/* print button start */}
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-full text-sm"
+                              >
+                                <PrinterCheck size={16} /> Print
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to print the Receipt?
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-blue-600 hover:bg-blue-700"
+                                  onClick={() => handlePrint(receipt.id)}
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                          {/* print button end */}
                           <div className="w-full">
                             <Delete id={receipt.id} />
                           </div>

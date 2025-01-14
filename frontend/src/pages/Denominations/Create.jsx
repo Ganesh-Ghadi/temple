@@ -526,7 +526,7 @@ const Create = () => {
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
                 onClick={() => navigate('/denominations')}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button

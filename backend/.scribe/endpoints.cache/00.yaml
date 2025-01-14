@@ -6,80 +6,6 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/register
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Register User'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: 'Must not be greater than 255 characters.'
-        required: true
-        example: kymjesbedxezgydujlpwhviwl
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      email:
-        name: email
-        description: 'Must be a valid email address.'
-        required: true
-        example: gerda65@example.net
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      password:
-        name: password
-        description: 'Must be at least 6 characters.'
-        required: true
-        example: "R[88cm.%GwV'kg"
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      password_confirmation:
-        name: password_confirmation
-        description: ''
-        required: true
-        example: omnis
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      name: kymjesbedxezgydujlpwhviwl
-      email: gerda65@example.net
-      password: "R[88cm.%GwV'kg"
-      password_confirmation: omnis
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - POST
     uri: api/login
     metadata:
       groupName: Endpoints
@@ -102,7 +28,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: ernestine.reinger@example.org
+        example: drolfson@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -112,15 +38,15 @@ endpoints:
         name: password
         description: 'Must be at least 6 characters.'
         required: true
-        example: rtJ%;>s
+        example: '/3s:qQrXp`[TT@&ImJ\'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: ernestine.reinger@example.org
-      password: rtJ%;>s
+      email: drolfson@example.net
+      password: '/3s:qQrXp`[TT@&ImJ\'
     fileParameters: []
     responses: []
     responseFields: []
@@ -132,52 +58,13 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: api/permissions
+    uri: api/profiles
     metadata:
       groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get All Permissions/Roles'
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          vary: Origin
-        description: null
-        custom: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
-  -
-    httpMethods:
-      - GET
-    uri: api/projects
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Display a listing of the resource.'
+      title: 'Display All Profiles.'
       description: ''
       authenticated: false
       custom: []
@@ -210,13 +97,13 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/projects
+    uri: api/profiles
     metadata:
       groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Store a newly created resource in storage.'
+      title: 'Store Profile.'
       description: ''
       authenticated: false
       custom: []
@@ -228,29 +115,73 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
-        name: name
-        description: ''
-        required: true
-        example: voluptate
+      profile_name:
+        name: profile_name
+        description: 'The name of the Profile.'
+        required: false
+        example: ratione
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      description:
-        name: description
-        description: ''
+      email:
+        name: email
+        description: 'The name of the Profile.'
         required: false
-        example: 'Eos sequi molestiae expedita minima repellendus tempore.'
+        example: caitlyn.weimann@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: true
+        nullable: false
+        custom: []
+      active:
+        name: active
+        description: 'The name of the Profile.'
+        required: false
+        example: quo
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      password:
+        name: password
+        description: 'The name of the Profile.'
+        required: false
+        example: 'KLYB3{"?3q=ESQ.@He'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      role:
+        name: role
+        description: 'The name of the Profile.'
+        required: false
+        example: totam
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      mobile:
+        name: mobile
+        description: 'The name of the Profile.'
+        required: false
+        example: animi
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
         custom: []
     cleanBodyParameters:
-      name: voluptate
-      description: 'Eos sequi molestiae expedita minima repellendus tempore.'
+      profile_name: ratione
+      email: caitlyn.weimann@example.com
+      active: quo
+      password: 'KLYB3{"?3q=ESQ.@He'
+      role: totam
+      mobile: animi
     fileParameters: []
     responses: []
     responseFields: []
@@ -262,13 +193,13 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: 'api/projects/{id}'
+    uri: 'api/profiles/{id}'
     metadata:
       groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Display the specified resource.'
+      title: 'Show Profile.'
       description: ''
       authenticated: false
       custom: []
@@ -278,7 +209,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the project.'
+        description: 'The ID of the profile.'
         required: true
         example: quia
         type: string
@@ -313,13 +244,13 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/projects/{id}'
+    uri: 'api/profiles/{id}'
     metadata:
       groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update the specified resource in storage.'
+      title: 'Update Profile.'
       description: ''
       authenticated: false
       custom: []
@@ -329,42 +260,86 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the project.'
+        description: 'The ID of the profile.'
         required: true
-        example: labore
+        example: aut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: labore
+      id: aut
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
-        name: name
-        description: ''
-        required: true
-        example: ullam
+      profile_name:
+        name: profile_name
+        description: 'The name of the Profile.'
+        required: false
+        example: quia
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      description:
-        name: description
-        description: ''
+      email:
+        name: email
+        description: 'The name of the Profile.'
         required: false
-        example: 'Sapiente cum nemo architecto similique sunt consequatur optio.'
+        example: connelly.genevieve@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
-        nullable: true
+        nullable: false
+        custom: []
+      active:
+        name: active
+        description: 'The name of the Profile.'
+        required: false
+        example: ut
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      password:
+        name: password
+        description: 'The name of the Profile.'
+        required: false
+        example: 'vZ"h(?dCx3}vzy~_L:Fk'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      role:
+        name: role
+        description: 'The name of the Profile.'
+        required: false
+        example: tempore
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      mobile:
+        name: mobile
+        description: 'The name of the Profile.'
+        required: false
+        example: natus
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
         custom: []
     cleanBodyParameters:
-      name: ullam
-      description: 'Sapiente cum nemo architecto similique sunt consequatur optio.'
+      profile_name: quia
+      email: connelly.genevieve@example.com
+      active: ut
+      password: 'vZ"h(?dCx3}vzy~_L:Fk'
+      role: tempore
+      mobile: natus
     fileParameters: []
     responses: []
     responseFields: []
@@ -376,13 +351,13 @@ endpoints:
   -
     httpMethods:
       - DELETE
-    uri: 'api/projects/{id}'
+    uri: 'api/profiles/{id}'
     metadata:
       groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Remove the specified resource from storage.'
+      title: 'Remove Employee.'
       description: ''
       authenticated: false
       custom: []
@@ -392,16 +367,16 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the project.'
+        description: 'The ID of the profile.'
         required: true
-        example: voluptatem
+        example: aliquam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: voluptatem
+      id: aliquam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -424,6 +399,45 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Logout User'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: Origin
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/all_receipt_heads
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Fetch All receipt Heads.'
       description: ''
       authenticated: false
       custom: []
