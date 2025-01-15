@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Mpdf\Config\FontVariables;
 use Mpdf\Config\ConfigVariables;
 use Illuminate\Http\JsonResponse;
+use App\Helpers\NumberToWordsHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReceiptResource;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +73,19 @@ class ReceiptsController extends BaseController
         $receipt->name = $request->input("name");
         $receipt->gotra = $request->input("gotra");
         $receipt->amount = $request->input("amount");
+        $receipt->email = $request->input("email");
+        $receipt->mobile = $request->input("mobile");
+        $receipt->address = $request->input("address");
+        $receipt->narration = $request->input("narration");
+        $receipt->pincode = $request->input("pincode");
+        $receipt->payment_mode = $request->input("payment_mode");
+        $receipt->special_date = $request->input("special_date");
+        // start
+        $amount = $request->input("amount");
+        $numberToWordsHelper = new NumberToWordsHelper();
+        $amountInWords = $numberToWordsHelper->convert($amount);
+        $receipt->amount_in_words = $amountInWords; // Save the amount in words
+        // end
         $receipt->save();
 
         // खत विक्री पावती

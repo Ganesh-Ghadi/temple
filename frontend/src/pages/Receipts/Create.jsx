@@ -5,7 +5,23 @@ import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -30,10 +46,19 @@ const formSchema = z.object({
   amount: z.coerce.number().min(1, "amount filed is required"),
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
+  email: z.string().optional(),
+  special_date: z.string().optional(),
+  payment_mode: z.string().optional(),
+  mobile: z.coerce.number().optional(),
+  pincode: z.coerce.number().optional(),
+  address: z.string().optional(),
+  narration: z.string().optional(),
 });
 
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [openReceiptHead, setOpenReceiptHead] = useState(false);
+  const [openReceiptType, setOpenReceiptType] = useState(false);
   const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
   const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
   const khatReceiptId = "6";
@@ -51,6 +76,13 @@ const Create = () => {
     receipt_head: "",
     quantity: "",
     rate: "",
+    email: "",
+    mobile: "",
+    address: "",
+    narration: "",
+    pincode: "",
+    payment_mode: "",
+    special_date: "",
   };
 
   const {
@@ -111,8 +143,6 @@ const Create = () => {
     keepPreviousData: true, // Keep previous data until the new data is available
   });
 
- 
-
   const storeMutation = useMutation({
     mutationFn: async (data) => {
       const response = await axios.post("/api/receipts", data, {
@@ -172,7 +202,9 @@ const Create = () => {
     const quantity = parseFloat(receiptAmount[0]) || 0;
     const rate = parseFloat(receiptAmount[1]) || 0;
     const totalAmount = (quantity * rate).toFixed(2); // Multiply instead of adding
-    setValue("amount", totalAmount);
+    if (totalAmount) {
+      setValue("amount", totalAmount);
+    }
   }, [receiptAmount, setValue]);
 
   return (
@@ -204,6 +236,31 @@ const Create = () => {
             </div>
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
+                <Label className="font-normal" htmlFor="receipt_no">
+                  receipt Number: <span className="text-red-500">*</span>
+                </Label>
+                <Controller
+                  name="receipt_no"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="receipt_no"
+                      className="mt-1 bg-gray-100"
+                      type="text"
+                      readOnly
+                      // disabled="true"
+                      placeholder=""
+                    />
+                  )}
+                />
+                {errors.receipt_no && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.receipt_no.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_date">
                   Receipt date:
                 </Label>
@@ -231,7 +288,7 @@ const Create = () => {
                 <Label className="font-normal" htmlFor="receipt_head">
                   Receipt Head: <span className="text-red-500">*</span>
                 </Label>
-                <Controller
+                {/* <Controller
                   name="receipt_head"
                   control={control}
                   render={({ field }) => (
@@ -260,13 +317,86 @@ const Create = () => {
                       </SelectContent>
                     </Select>
                   )}
+                /> */}
+                {/* <div className="w-full pt-1"> */}
+                <Controller
+                  name="receipt_head"
+                  control={control}
+                  render={({ field }) => (
+                    <Popover
+                      open={openReceiptHead}
+                      onOpenChange={setOpenReceiptHead}
+                    >
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={openReceiptHead ? "true" : "false"} // This should depend on the popover state
+                          className=" w-[325px] justify-between"
+                          onClick={() => setOpenReceiptHead((prev) => !prev)} // Toggle popover on button click
+                        >
+                          {field.value
+                            ? Object.keys(
+                                allReceiptHeadsData?.ReceiptHeads
+                              ).find((key) => key === field.value)
+                            : "Select Receipt Head..."}
+                          <ChevronsUpDown className="opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[325px] p-0">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search receipt head..."
+                            className="h-9"
+                          />
+                          <CommandList>
+                            <CommandEmpty>No receipt head found.</CommandEmpty>
+                            <CommandGroup>
+                              {allReceiptHeadsData?.ReceiptHeads &&
+                                Object.keys(
+                                  allReceiptHeadsData?.ReceiptHeads
+                                ).map((key) => (
+                                  <CommandItem
+                                    key={key}
+                                    value={key}
+                                    onSelect={(currentValue) => {
+                                      setValue("receipt_head", key);
+                                      setSelectedReceiptHead(
+                                        currentValue === selectedReceiptHead
+                                          ? ""
+                                          : currentValue
+                                      );
+                                      setOpenReceiptHead(false);
+                                      // Close popover after selection
+                                    }}
+                                  >
+                                    {key}
+                                    <Check
+                                      className={cn(
+                                        "ml-auto",
+                                        key === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  )}
                 />
+                {/* </div> */}
                 {errors.receipt_head && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.receipt_head.message}
                   </p>
                 )}
               </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_type_id">
                   Receipt Type: <span className="text-red-500">*</span>
@@ -307,8 +437,6 @@ const Create = () => {
                   </p>
                 )}
               </div>
-            </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="name">
                   Name: <span className="text-red-500">*</span>
@@ -332,6 +460,9 @@ const Create = () => {
                   </p>
                 )}
               </div>
+            </div>
+
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative ">
                 <Label className="font-normal" htmlFor="gotra">
                   Gotra: <span className="text-red-500">*</span>
@@ -352,6 +483,123 @@ const Create = () => {
                 {errors.gotra && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.gotra.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative ">
+                <Label className="font-normal" htmlFor="email">
+                  Email:
+                </Label>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="email"
+                      className="mt-1"
+                      type="email"
+                      placeholder="Enter email"
+                    />
+                  )}
+                />
+                {errors.email && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative ">
+                <Label className="font-normal" htmlFor="mobile">
+                  Mobile:
+                </Label>
+                <Controller
+                  name="mobile"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="mobile"
+                      className="mt-1"
+                      type="number"
+                      placeholder="Enter mobile"
+                    />
+                  )}
+                />
+                {errors.mobile && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.mobile.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
+              <div className="relative ">
+                <Label className="font-normal" htmlFor="address">
+                  Address:
+                </Label>
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <Textarea
+                      placeholder="Enter the address..."
+                      className="resize-none mt-1 "
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.mobile && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.mobile.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="relative md:col-span-2">
+                <Label className="font-normal" htmlFor="narration">
+                  Narration:
+                </Label>
+                <Controller
+                  name="narration"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="narration"
+                      className="mt-1"
+                      type="text"
+                      placeholder="Enter narration"
+                    />
+                  )}
+                />
+                {errors.narration && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.narration.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="pincode">
+                  Pincode:
+                </Label>
+                <Controller
+                  name="pincode"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="pincode"
+                      className="mt-1"
+                      type="number"
+                      placeholder="Enter pincode"
+                    />
+                  )}
+                />
+                {errors.pincode && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.pincode.message}
                   </p>
                 )}
               </div>
@@ -408,7 +656,64 @@ const Create = () => {
             )}
 
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-              <div className="relative md:col-start-3">
+              <div className="relative">
+                <Label className="font-normal" htmlFor="payment_mode">
+                  Payment Mode:
+                </Label>
+                <Controller
+                  name="payment_mode"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                    >
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select payent mode" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Select payment mode</SelectLabel>
+                          <SelectItem value="Cash">Cash</SelectItem>
+                          <SelectItem value="Bank">Bank</SelectItem>
+                          <SelectItem value="Card">Card</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.payment_mode && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.payment_mode.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="special_date">
+                  Special date:
+                </Label>
+                <Controller
+                  name="special_date"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      id="special_date"
+                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      type="date"
+                      placeholder="Enter special date"
+                    />
+                  )}
+                />
+                {errors.special_date && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.special_date.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
                 <Label className="font-normal" htmlFor="amount">
                   Amount: <span className="text-red-500">*</span>
                 </Label>
@@ -466,44 +771,3 @@ const Create = () => {
 };
 
 export default Create;
-
-// <div className="relative">
-// <Label className="font-normal" htmlFor="receipt_head">
-//   Receipt Head: <span className="text-red-500">*</span>
-// </Label>
-// <Controller
-//   name="receipt_head"
-//   control={control}
-//   render={({ field }) => (
-//     <Select
-//       value={field.value}
-//       onValueChange={(value) => {
-//         field.onChange(value);
-//         setSelectedReceiptHead(value); // Set the selected receipt head
-//       }}
-//     >
-//       <SelectTrigger className="mt-1">
-//         <SelectValue placeholder="Select receipt head" />
-//       </SelectTrigger>
-//       <SelectContent className="pb-10">
-//         <SelectGroup>
-//           <SelectLabel>Select receipt head</SelectLabel>
-//           {allReceiptHeadsData?.ReceiptHeads &&
-//             Object.keys(allReceiptHeadsData?.ReceiptHeads).map(
-//               (key) => (
-//                 <SelectItem key={key} value={key}>
-//                   {allReceiptHeadsData.ReceiptHeads[key]}
-//                 </SelectItem>
-//               )
-//             )}
-//         </SelectGroup>
-//       </SelectContent>
-//     </Select>
-//   )}
-// />
-// {errors.receipt_head && (
-//   <p className="absolute text-red-500 text-sm mt-1 left-0">
-//     {errors.receipt_head.message}
-//   </p>
-// )}
-// </div>
