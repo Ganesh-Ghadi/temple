@@ -246,7 +246,7 @@ const Create = () => {
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_no">
-                  receipt Number: <span className="text-red-500">*</span>
+                  Receipt Number: <span className="text-red-500">*</span>
                 </Label>
                 <Controller
                   name="receipt_no"
