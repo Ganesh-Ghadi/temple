@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreReceiptRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreReceiptRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,31 @@ class StoreReceiptRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'receipt_type_id' => 'required|integer',
+            'quantity' => 'nullable|numeric', // Make `quantity` nullable initially
+            'rate' => 'nullable|numeric', // Make `rate` nullable initially
         ];
     }
+
+    protected function withValidator(Validator $validator)
+    {
+        $validator->sometimes('quantity', 'required|numeric|min:1', function ($input) {
+            return $input->receipt_type_id == 6; // Only require `quantity` if `receipt_type_id` is 6
+        });
+
+        $validator->sometimes('rate', 'required|numeric|min:1', function ($input) {
+            return $input->receipt_type_id == 6; // Only require `rate` if `receipt_type_id` is 6
+        });
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'status' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422)
+        );
+    }    
 }

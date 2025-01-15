@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -28,14 +28,19 @@ const formSchema = z.object({
   receipt_head: z.string().min(2, "receipt head field is required"),
   gotra: z.string().min(2, "gotra field must have at least 2 characters"),
   amount: z.coerce.number().min(1, "amount filed is required"),
+  quantity: z.coerce.number().optional(),
+  rate: z.coerce.number().optional(),
 });
+
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
+  const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
+  const khatReceiptId = "6";
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const currentDate = new Date().toISOString().split("T")[0];
-
   const navigate = useNavigate();
   const defaultValues = {
     receipt_type_id: "",
@@ -44,6 +49,8 @@ const Create = () => {
     gotra: "",
     amount: "",
     receipt_head: "",
+    quantity: "",
+    rate: "",
   };
 
   const {
@@ -51,6 +58,8 @@ const Create = () => {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const {
@@ -58,10 +67,15 @@ const Create = () => {
     isLoading: isAllReceiptTypesDataLoading,
     isError: isAllReceiptTypesDataError,
   } = useQuery({
-    queryKey: ["allReceiptTypes"], // This is the query key
+    queryKey: ["allReceiptTypes", selectedReceiptHead], // This is the query key
     queryFn: async () => {
       try {
+        if (selectedReceiptHead) {
+          setValue("receipt_type_id", "");
+          handleReceiptTypeChange("");
+        }
         const response = await axios.get(`/api/all_receipt_types`, {
+          params: { receipt_head: selectedReceiptHead },
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -97,6 +111,8 @@ const Create = () => {
     keepPreviousData: true, // Keep previous data until the new data is available
   });
 
+ 
+
   const storeMutation = useMutation({
     mutationFn: async (data) => {
       const response = await axios.post("/api/receipts", data, {
@@ -115,7 +131,30 @@ const Create = () => {
     },
     onError: (error) => {
       setIsLoading(false);
-      toast.error("Failed to Add Receipt");
+      if (error.response && error.response.data.errors) {
+        const serverStatus = error.response.data.status;
+        const serverErrors = error.response.data.errors;
+        if (serverStatus === false) {
+          if (serverErrors.quantity) {
+            setError("quantity", {
+              type: "manual",
+              message: serverErrors.quantity[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+          if (serverErrors.rate) {
+            setError("rate", {
+              type: "manual",
+              message: serverErrors.rate[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+        } else {
+          toast.error("Failed to add pooja type.");
+        }
+      } else {
+        toast.error("Failed to add pooja type.");
+      }
       console.log("got error ", error);
     },
   });
@@ -123,6 +162,18 @@ const Create = () => {
     setIsLoading(true);
     storeMutation.mutate(data);
   };
+
+  const handleReceiptTypeChange = (value) => {
+    setSelectedReceiptTypeId(value);
+  };
+
+  const receiptAmount = watch(["quantity", "rate"]);
+  useEffect(() => {
+    const quantity = parseFloat(receiptAmount[0]) || 0;
+    const rate = parseFloat(receiptAmount[1]) || 0;
+    const totalAmount = (quantity * rate).toFixed(2); // Multiply instead of adding
+    setValue("amount", totalAmount);
+  }, [receiptAmount, setValue]);
 
   return (
     <>
@@ -184,7 +235,13 @@ const Create = () => {
                   name="receipt_head"
                   control={control}
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setSelectedReceiptHead(value); // Set the selected receipt head
+                      }}
+                    >
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder="Select receipt head" />
                       </SelectTrigger>
@@ -218,7 +275,13 @@ const Create = () => {
                   name="receipt_type_id"
                   control={control}
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        handleReceiptTypeChange(value);
+                      }}
+                    >
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder="Select receipt type" />
                       </SelectTrigger>
@@ -293,6 +356,56 @@ const Create = () => {
                 )}
               </div>
             </div>
+            {selectedReceiptTypeId === khatReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="quantity">
+                    Quantity: <span className="text-red-500">*</span>
+                  </Label>
+                  <Controller
+                    name="quantity"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="quantity"
+                        className="mt-1"
+                        type="number"
+                        placeholder="Enter quantity"
+                      />
+                    )}
+                  />
+                  {errors.quantity && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.quantity.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="rate">
+                    Rate: <span className="text-red-500">*</span>
+                  </Label>
+                  <Controller
+                    name="rate"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="rate"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter rate"
+                      />
+                    )}
+                  />
+                  {errors.rate && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.rate.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-start-3">
@@ -353,3 +466,44 @@ const Create = () => {
 };
 
 export default Create;
+
+// <div className="relative">
+// <Label className="font-normal" htmlFor="receipt_head">
+//   Receipt Head: <span className="text-red-500">*</span>
+// </Label>
+// <Controller
+//   name="receipt_head"
+//   control={control}
+//   render={({ field }) => (
+//     <Select
+//       value={field.value}
+//       onValueChange={(value) => {
+//         field.onChange(value);
+//         setSelectedReceiptHead(value); // Set the selected receipt head
+//       }}
+//     >
+//       <SelectTrigger className="mt-1">
+//         <SelectValue placeholder="Select receipt head" />
+//       </SelectTrigger>
+//       <SelectContent className="pb-10">
+//         <SelectGroup>
+//           <SelectLabel>Select receipt head</SelectLabel>
+//           {allReceiptHeadsData?.ReceiptHeads &&
+//             Object.keys(allReceiptHeadsData?.ReceiptHeads).map(
+//               (key) => (
+//                 <SelectItem key={key} value={key}>
+//                   {allReceiptHeadsData.ReceiptHeads[key]}
+//                 </SelectItem>
+//               )
+//             )}
+//         </SelectGroup>
+//       </SelectContent>
+//     </Select>
+//   )}
+// />
+// {errors.receipt_head && (
+//   <p className="absolute text-red-500 text-sm mt-1 left-0">
+//     {errors.receipt_head.message}
+//   </p>
+// )}
+// </div>

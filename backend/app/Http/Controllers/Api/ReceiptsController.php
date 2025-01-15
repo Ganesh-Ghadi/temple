@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Api;
 use File;
 use Response;
 use Mpdf\Mpdf;
-use Mpdf\Config\ConfigVariables;
-use Mpdf\Config\FontVariables;
-use Barryvdh\DomPDF\PDF;
 use App\Models\Receipt;
+use Barryvdh\DomPDF\PDF;
+use App\Models\KhatReceipt;
 use App\Models\ReceiptType;
 use Illuminate\Http\Request;
+use Mpdf\Config\FontVariables;
+use Mpdf\Config\ConfigVariables;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReceiptResource;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreReceiptRequest;
 use App\Http\Resources\ReceiptTypeResource;
 use App\Http\Controllers\Api\BaseController;
 
@@ -59,7 +61,7 @@ class ReceiptsController extends BaseController
      * @bodyParam gotra string the gotra of the person for receipt.
      * @bodyParam amount decimal the amount of the person for receipt.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreReceiptRequest $request): JsonResponse
     {
         $receipt = new Receipt();
         $receipt->receipt_type_id = $request->input("receipt_type_id");
@@ -70,9 +72,24 @@ class ReceiptsController extends BaseController
         $receipt->name = $request->input("name");
         $receipt->gotra = $request->input("gotra");
         $receipt->amount = $request->input("amount");
-        if(!$receipt->save()) {
-            return $this->sendError("Error while saving data", ['error'=>['Error while saving data']]);
-        }
+        $receipt->save();
+
+        // खत विक्री पावती
+    //  start
+      $receiptTypeId = 6;
+   
+    if ($request->has("quantity") && $request->has("rate") && $request->input("receipt_type_id") == $receiptTypeId) {
+        // Check if the conditions are true and then save the KhatReceipt
+        $khat_receipt = new KhatReceipt();
+        $khat_receipt->receipt_id = $receipt->id;
+        $khat_receipt->quantity = $request->input("quantity");
+        $khat_receipt->rate = $request->input("rate");
+        $khat_receipt->save();
+    }
+    
+    // end
+        
+        
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');
     }
 
