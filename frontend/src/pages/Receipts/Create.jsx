@@ -683,25 +683,25 @@ const Create = () => {
                     )}
                   </div>
                   <div className="relative ">
-                    <Label className="font-normal" htmlFor="cheque_no">
+                    <Label className="font-normal" htmlFor="cheque_number">
                       Cheque Number:
                     </Label>
                     <Controller
-                      name="cheque_no"
+                      name="cheque_number"
                       control={control}
                       render={({ field }) => (
                         <Input
                           {...field}
-                          id="cheque_no"
+                          id="cheque_number"
                           className="mt-1"
                           type="text"
                           placeholder="Enter cheque number"
                         />
                       )}
                     />
-                    {errors.cheque_no && (
+                    {errors.cheque_number && (
                       <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.cheque_no.message}
+                        {errors.cheque_number.message}
                       </p>
                     )}
                   </div>

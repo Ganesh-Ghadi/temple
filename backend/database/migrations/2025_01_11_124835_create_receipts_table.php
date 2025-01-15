@@ -25,11 +25,11 @@ return new class extends Migration
             $table->string('email')->nullable(); 
             $table->string('narration')->nullable(); 
             $table->string('payment_mode',50)->nullable(); 
-            $table->string('check_no',50)->nullable(); 
-            $table->date('check_date')->nullable(); 
+            $table->string('cheque_number',50)->nullable(); 
+            $table->date('cheque_date')->nullable(); 
             $table->string('bank_details',100)->nullable(); 
             $table->date('special_date')->nullable(); 
-            $table->string('remembarance')->nullable(); 
+            $table->string('remembrance')->nullable(); 
             $table->decimal('amount',18,2)->nullable(); 
             $table->string('amount_in_words')->nullable(); 
             $table->string('receipt_file')->nullable(); 

@@ -80,6 +80,11 @@ class ReceiptsController extends BaseController
         $receipt->pincode = $request->input("pincode");
         $receipt->payment_mode = $request->input("payment_mode");
         $receipt->special_date = $request->input("special_date");
+        $receipt->bank_details = $request->input("bank_details");
+        $receipt->cheque_number = $request->input("cheque_number");
+        $receipt->cheque_date = $request->input("cheque_date");
+        $receipt->remembrance = $request->input("remembrance");
+
         // start
         $amount = $request->input("amount");
         $numberToWordsHelper = new NumberToWordsHelper();
