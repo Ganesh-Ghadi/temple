@@ -53,6 +53,10 @@ const formSchema = z.object({
   pincode: z.coerce.number().optional(),
   address: z.string().optional(),
   narration: z.string().optional(),
+  cheque_date: z.string().optional(),
+  cheque_number: z.coerce.number().optional(),
+  bank_details: z.string().optional(),
+  remembrance: z.string().optional(),
 });
 
 const Create = () => {
@@ -61,7 +65,8 @@ const Create = () => {
   const [openReceiptType, setOpenReceiptType] = useState(false);
   const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
   const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
-  const khatReceiptId = "6";
+  const [paymentMode, setPaymentMode] = useState("");
+  const khatReceiptId = 6;
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
@@ -83,6 +88,10 @@ const Create = () => {
     pincode: "",
     payment_mode: "",
     special_date: "",
+    cheque_date: "",
+    cheque_number: "",
+    bank_details: "",
+    remembrance: "",
   };
 
   const {
@@ -332,7 +341,7 @@ const Create = () => {
                           variant="outline"
                           role="combobox"
                           aria-expanded={openReceiptHead ? "true" : "false"} // This should depend on the popover state
-                          className=" w-[325px] justify-between"
+                          className=" w-[325px] justify-between mt-1"
                           onClick={() => setOpenReceiptHead((prev) => !prev)} // Toggle popover on button click
                         >
                           {field.value
@@ -405,30 +414,74 @@ const Create = () => {
                   name="receipt_type_id"
                   control={control}
                   render={({ field }) => (
-                    <Select
-                      value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        handleReceiptTypeChange(value);
-                      }}
+                    <Popover
+                      open={openReceiptType}
+                      onOpenChange={setOpenReceiptType}
                     >
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select receipt type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Select receipt type</SelectLabel>
-                          {allReceiptTypesData?.ReceiptTypes &&
-                            allReceiptTypesData?.ReceiptTypes.map(
-                              (ReceiptType) => (
-                                <SelectItem value={String(ReceiptType.id)}>
-                                  {ReceiptType.receipt_type}
-                                </SelectItem>
-                              )
-                            )}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={openReceiptType ? "true" : "false"} // This should depend on the popover state
+                          className=" w-[325px] justify-between mt-1"
+                          onClick={() => setOpenReceiptType((prev) => !prev)} // Toggle popover on button click
+                        >
+                          {field.value
+                            ? allReceiptTypesData?.ReceiptTypes &&
+                              allReceiptTypesData?.ReceiptTypes.find(
+                                (receiptType) => receiptType.id === field.value
+                              )?.receipt_type
+                            : "Select Receipt Type..."}
+                          <ChevronsUpDown className="opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[325px] p-0">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search receipt type..."
+                            className="h-9"
+                          />
+                          <CommandList>
+                            <CommandEmpty>No receipt type found.</CommandEmpty>
+                            <CommandGroup>
+                              {allReceiptTypesData?.ReceiptTypes &&
+                                allReceiptTypesData?.ReceiptTypes.map(
+                                  (receiptType) => (
+                                    <CommandItem
+                                      key={receiptType.id}
+                                      value={receiptType.id}
+                                      onSelect={(currentValue) => {
+                                        setValue(
+                                          "receipt_type_id",
+                                          receiptType.id
+                                        );
+                                        // setSelectedReceiptTypeId(
+                                        //   currentValue === selectedReceiptTypeId
+                                        //     ? ""
+                                        //     : currentValue
+                                        // );
+                                        handleReceiptTypeChange(receiptType.id);
+                                        setOpenReceiptType(false);
+                                        // Close popover after selection
+                                      }}
+                                    >
+                                      {receiptType.receipt_type}
+                                      <Check
+                                        className={cn(
+                                          "ml-auto",
+                                          receiptType.id === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  )
+                                )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   )}
                 />
                 {errors.receipt_type_id && (
@@ -604,6 +657,107 @@ const Create = () => {
                 )}
               </div>
             </div>
+
+            {paymentMode === "Bank" && (
+              <>
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="bank_details">
+                      bank Details:
+                    </Label>
+                    <Controller
+                      name="bank_details"
+                      control={control}
+                      render={({ field }) => (
+                        <Textarea
+                          placeholder="Enter bank details..."
+                          className="resize-none mt-1 "
+                          {...field}
+                        />
+                      )}
+                    />
+                    {errors.bank_details && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.bank_details.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="cheque_no">
+                      Cheque Number:
+                    </Label>
+                    <Controller
+                      name="cheque_no"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="cheque_no"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter cheque number"
+                        />
+                      )}
+                    />
+                    {errors.cheque_no && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.cheque_no.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="cheque_date">
+                      Cheque date:
+                    </Label>
+                    <Controller
+                      name="cheque_date"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="cheque_date"
+                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          type="date"
+                          placeholder="Enter cheque date"
+                        />
+                      )}
+                    />
+                    {errors.cheque_date && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.cheque_date.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="remembrance">
+                      Remembrance:
+                    </Label>
+                    <Controller
+                      name="remembrance"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="remembrance"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter remembrance"
+                        />
+                      )}
+                    />
+                    {errors.remembrance && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.remembrance.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {console.log(selectedReceiptTypeId, typeof selectedReceiptTypeId)}
             {selectedReceiptTypeId === khatReceiptId && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
@@ -668,6 +822,7 @@ const Create = () => {
                       value={field.value}
                       onValueChange={(value) => {
                         field.onChange(value);
+                        setPaymentMode(value);
                       }}
                     >
                       <SelectTrigger className="mt-1">
