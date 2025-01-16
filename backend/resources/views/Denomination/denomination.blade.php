@@ -7,7 +7,7 @@
         <title>Document</title>
         <style>
             body {
-                font-family: "Noto Sans Devanagari", sans-serif;
+                font-family: "freeserif";
             }
         </style>
     </head>
