@@ -8,12 +8,14 @@ use Mpdf\Mpdf;
 use App\Models\Receipt;
 use Barryvdh\DomPDF\PDF;
 use App\Models\CampReceipt;
+use App\Models\HallReceipt;
 use App\Models\KhatReceipt;
 use App\Models\ReceiptType;
 use App\Models\NaralReceipt;
 use App\Models\SareeReceipt;
 use Illuminate\Http\Request;
 use App\Models\BhangarReceipt;
+use App\Models\LibraryReceipt;
 use App\Models\UparaneReceipt;
 use Mpdf\Config\FontVariables;
 use Mpdf\Config\ConfigVariables;
@@ -77,6 +79,8 @@ class ReceiptsController extends BaseController
         $uparaneReceiptId = 5;
         $vasturupeeReceiptId = 6;
         $campReceiptId = 7;
+        $libraryReceiptId = 8;
+        $hallReceiptId = 9;
 
 
         $receipt = new Receipt();
@@ -155,11 +159,27 @@ class ReceiptsController extends BaseController
             $camp_receipt->member_name = $request->input("member_name");
             $camp_receipt->from_date = $request->input("from_date");
             $camp_receipt->to_date = $request->input("to_date");
-            $camp_receipt->malkahamb = $request->input("malkahamb");
+            $camp_receipt->Mallakhamb = $request->input("Mallakhamb");
             $camp_receipt->zanj = $request->input("zanj");
             $camp_receipt->dhol = $request->input("dhol");
             $camp_receipt->lezim = $request->input("lezim");
             $camp_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $hallReceiptId) {
+            $hall_receipt = new HallReceipt();
+            $hall_receipt->receipt_id = $receipt->id;
+            $hall_receipt->hall = $request->input("hall");            
+            $hall_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $libraryReceiptId) {
+            $library_receipt = new LibraryReceipt();
+            $library_receipt->receipt_id = $receipt->id;
+            $library_receipt->membership_no = $request->input("membership_no"); 
+            $library_receipt->from_date = $request->input("from_date");            
+            $library_receipt->to_date = $request->input("to_date");                       
+            $library_receipt->save();
         }
     
         

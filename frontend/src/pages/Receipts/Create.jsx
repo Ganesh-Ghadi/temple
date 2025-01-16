@@ -65,10 +65,13 @@ const formSchema = z.object({
   member_name: z.string().optional(),
   from_date: z.string().optional(),
   to_date: z.string().optional(),
-  mallakhamb: z.coerce.number().min(0, "mallakhamb field is required"),
+  Mallakhamb: z.coerce.number().min(0, "mallakhamb field is required"),
   zanj: z.coerce.number().min(0, "zanj field is required"),
   dhol: z.coerce.number().min(0, "dhol field is required"),
   lezim: z.coerce.number().min(0, "lezim field is required"),
+  hall: z.string().optional(),
+  membership_no: z.string().optional(),
+
 });
 
 const Create = () => {
@@ -85,6 +88,8 @@ const Create = () => {
   const uparaneReceiptId = 5;
   const vasturupeeReceiptId = 6;
   const campReceiptId = 7;
+  const libraryReceiptId = 8;
+  const hallReceiptId = 9;
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -119,10 +124,12 @@ const Create = () => {
     member_name: "",
     from_date: "",
     to_date: "",
-    mallakhamb: "",
+    Mallakhamb: "",
     zanj: "",
     lezim: "",
     dhol: "",
+    hall: "",
+    membership_no:"",
   };
 
   const {
@@ -1032,168 +1039,273 @@ const Create = () => {
               </div>
             )}
 
-            <div className="w-full  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-              <div className="relative ">
-                <Label className="font-normal" htmlFor="member_name">
-                  Member Name:
-                </Label>
-                <Controller
-                  name="member_name"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="member_name"
-                      className="mt-1"
-                      type="text"
-                      placeholder="Enter name"
-                    />
+            {selectedReceiptTypeId === campReceiptId && (
+              <div className="w-full  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="member_name">
+                    Member Name:
+                  </Label>
+                  <Controller
+                    name="member_name"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="member_name"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter name"
+                      />
+                    )}
+                  />
+                  {errors.member_name && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.member_name.message}
+                    </p>
                   )}
-                />
-                {errors.member_name && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.member_name.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="from_date">
-                  From date:
-                </Label>
-                <Controller
-                  name="from_date"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      id="from_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                      type="date"
-                      placeholder="Enter from date"
-                    />
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="from_date">
+                    From date:
+                  </Label>
+                  <Controller
+                    name="from_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="from_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter from date"
+                      />
+                    )}
+                  />
+                  {errors.from_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_date.message}
+                    </p>
                   )}
-                />
-                {errors.from_date && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.from_date.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="to_date">
-                  To date:
-                </Label>
-                <Controller
-                  name="to_date"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      id="to_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                      type="date"
-                      placeholder="Enter to date"
-                    />
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="to_date">
+                    To date:
+                  </Label>
+                  <Controller
+                    name="to_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="to_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter to date"
+                      />
+                    )}
+                  />
+                  {errors.to_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_date.message}
+                    </p>
                   )}
-                />
-                {errors.to_date && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.to_date.message}
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
+            )}
+            {selectedReceiptTypeId === campReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="Mallakhamb"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="Mallakhamb"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="Mallakhamb">
+                    Mallakhamb
+                  </Label>
+                  {errors.Mallakhamb && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.Mallakhamb.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="zanj"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="zanj"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="zanj">
+                    Zanj
+                  </Label>
+                  {errors.zanj && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.zanj.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="dhol"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="dhol"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="dhol">
+                    Dhol
+                  </Label>
+                  {errors.dhol && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.dhol.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="lezim"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="lezim"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="lezim">
+                    lezim
+                  </Label>
+                  {errors.lezim && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.lezim.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
-              <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
-                <Controller
-                  name="mallakhamb"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      id="mallakhamb"
-                      {...field}
-                      type="checkbox"
-                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                    />
+            {selectedReceiptTypeId === hallReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="hall">
+                    Hall:
+                  </Label>
+                  <Controller
+                    name="hall"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="hall"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter hall name"
+                      />
+                    )}
+                  />
+                  {errors.hall && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.hall.message}
+                    </p>
                   )}
-                />
-                <Label className="font-normal" htmlFor="mallakhamb">
-                  Mallakhamb
-                </Label>
-                {errors.mallakhamb && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.mallakhamb.message}
-                  </p>
-                )}
+                </div>
               </div>
-              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
-                <Controller
-                  name="zanj"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      id="zanj"
-                      {...field}
-                      type="checkbox"
-                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                    />
+            )}
+
+            {selectedReceiptTypeId === libraryReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="membership_no">
+                    Membership Number:
+                  </Label>
+                  <Controller
+                    name="membership_no"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="membership_no"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter membership no."
+                      />
+                    )}
+                  />
+                  {errors.membership_no && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.membership_no.message}
+                    </p>
                   )}
-                />
-                <Label className="font-normal" htmlFor="zanj">
-                  Zanj
-                </Label>
-                {errors.zanj && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.zanj.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
-                <Controller
-                  name="dhol"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      id="dhol"
-                      {...field}
-                      type="checkbox"
-                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                    />
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="from_date">
+                    From date:
+                  </Label>
+                  <Controller
+                    name="from_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="from_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter from date"
+                      />
+                    )}
+                  />
+                  {errors.from_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_date.message}
+                    </p>
                   )}
-                />
-                <Label className="font-normal" htmlFor="dhol">
-                  Dhol
-                </Label>
-                {errors.dhol && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.dhol.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
-                <Controller
-                  name="lezim"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      id="lezim"
-                      {...field}
-                      type="checkbox"
-                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                    />
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="to_date">
+                    To date:
+                  </Label>
+                  <Controller
+                    name="to_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="to_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter to date"
+                      />
+                    )}
+                  />
+                  {errors.to_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_date.message}
+                    </p>
                   )}
-                />
-                <Label className="font-normal" htmlFor="lezim">
-                  lezim
-                </Label>
-                {errors.lezim && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.lezim.message}
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
