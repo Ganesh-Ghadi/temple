@@ -7,11 +7,17 @@ use Response;
 use Mpdf\Mpdf;
 use App\Models\Receipt;
 use Barryvdh\DomPDF\PDF;
+use App\Models\CampReceipt;
 use App\Models\KhatReceipt;
 use App\Models\ReceiptType;
+use App\Models\NaralReceipt;
+use App\Models\SareeReceipt;
 use Illuminate\Http\Request;
+use App\Models\BhangarReceipt;
+use App\Models\UparaneReceipt;
 use Mpdf\Config\FontVariables;
 use Mpdf\Config\ConfigVariables;
+use App\Models\VasturupeeReceipt;
 use Illuminate\Http\JsonResponse;
 use App\Helpers\NumberToWordsHelper;
 use App\Http\Controllers\Controller;
@@ -64,6 +70,15 @@ class ReceiptsController extends BaseController
      */
     public function store(StoreReceiptRequest $request): JsonResponse
     {
+        $khatReceiptId = 1;
+        $naralReceiptId = 2;
+        $bhangarReceiptId = 3;
+        $sareeReceiptId = 4;
+        $uparaneReceiptId = 5;
+        $vasturupeeReceiptId = 6;
+        $campReceiptId = 7;
+
+
         $receipt = new Receipt();
         $receipt->receipt_type_id = $request->input("receipt_type_id");
         $receipt->created_by = auth()->user()->profile->id;
@@ -84,29 +99,69 @@ class ReceiptsController extends BaseController
         $receipt->cheque_number = $request->input("cheque_number");
         $receipt->cheque_date = $request->input("cheque_date");
         $receipt->remembrance = $request->input("remembrance");
-
-        // start
-        $amount = $request->input("amount");
-        $numberToWordsHelper = new NumberToWordsHelper();
-        $amountInWords = $numberToWordsHelper->convert($amount);
-        $receipt->amount_in_words = $amountInWords; // Save the amount in words
-        // end
         $receipt->save();
 
         // खत विक्री पावती
-    //  start
-      $receiptTypeId = 6;
    
-    if ($request->has("quantity") && $request->has("rate") && $request->input("receipt_type_id") == $receiptTypeId) {
-        // Check if the conditions are true and then save the KhatReceipt
-        $khat_receipt = new KhatReceipt();
-        $khat_receipt->receipt_id = $receipt->id;
-        $khat_receipt->quantity = $request->input("quantity");
-        $khat_receipt->rate = $request->input("rate");
-        $khat_receipt->save();
-    }
+        if ($request->has("quantity") && $request->has("rate") && $request->input("receipt_type_id") == $khatReceiptId) {
+            $khat_receipt = new KhatReceipt();
+            $khat_receipt->receipt_id = $receipt->id;
+            $khat_receipt->quantity = $request->input("quantity");
+            $khat_receipt->rate = $request->input("rate");
+            $khat_receipt->save();
+        }
+
+        if ($request->has("quantity") && $request->has("rate") && $request->input("receipt_type_id") == $naralReceiptId) {
+            $naral_receipt = new NaralReceipt();
+            $naral_receipt->receipt_id = $receipt->id;
+            $naral_receipt->quantity = $request->input("quantity");
+            $naral_receipt->rate = $request->input("rate");
+            $naral_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $bhangarReceiptId) {
+            $bhangar_receipt = new BhangarReceipt();
+            $bhangar_receipt->receipt_id = $receipt->id;
+            $bhangar_receipt->description = $request->input("description");
+            $bhangar_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $sareeReceiptId) {
+            $saree_receipt = new SareeReceipt();
+            $saree_receipt->receipt_id = $receipt->id;
+            $saree_receipt->saree_draping_date = $request->input("saree_draping_date");
+            $saree_receipt->return_saree = $request->input("return_saree");
+            $saree_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $uparaneReceiptId) {
+            $uparane_receipt = new UparaneReceipt();
+            $uparane_receipt->receipt_id = $receipt->id;
+            $uparane_receipt->uparane_draping_date = $request->input("uparane_draping_date");
+            $uparane_receipt->return_uparane = $request->input("return_uparane");
+            $uparane_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $vasturupeeReceiptId) {
+            $vasturupee_receipt = new VasturupeeReceipt();
+            $vasturupee_receipt->receipt_id = $receipt->id;
+            $vasturupee_receipt->description = $request->input("description");
+            $vasturupee_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $campReceiptId) {
+            $camp_receipt = new CampReceipt();
+            $camp_receipt->receipt_id = $receipt->id;
+            $camp_receipt->member_name = $request->input("member_name");
+            $camp_receipt->from_date = $request->input("from_date");
+            $camp_receipt->to_date = $request->input("to_date");
+            $camp_receipt->malkahamb = $request->input("malkahamb");
+            $camp_receipt->zanj = $request->input("zanj");
+            $camp_receipt->dhol = $request->input("dhol");
+            $camp_receipt->lezim = $request->input("lezim");
+            $camp_receipt->save();
+        }
     
-    // end
         
         
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');
