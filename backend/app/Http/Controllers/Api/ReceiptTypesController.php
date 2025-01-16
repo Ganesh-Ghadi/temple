@@ -136,11 +136,11 @@ class ReceiptTypesController extends BaseController
     public function allReceiptTypes(Request $request): JsonResponse
     {
         $receipt_head = $request->query("receipt_head");
-        if($receipt_head){
+        // if($receipt_head){
             $receiptTypes = ReceiptType::where('receipt_head', $receipt_head)->get();
-        }else{
-           $receiptTypes = ReceiptType::all();
-        }
+        // }else{
+        //    $receiptTypes = ReceiptType::all();
+        // }
 
         return $this->sendResponse(["ReceiptTypes"=>ReceiptTypeResource::collection($receiptTypes),
         ], "All Receipt Types retrieved successfully");
