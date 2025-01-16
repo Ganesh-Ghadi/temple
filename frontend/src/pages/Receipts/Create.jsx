@@ -49,14 +49,29 @@ const formSchema = z.object({
   email: z.string().optional(),
   special_date: z.string().optional(),
   payment_mode: z.string().optional(),
-  mobile: z.coerce.number().optional(),
-  pincode: z.coerce.number().optional(),
+  mobile: z.coerce.string().optional(),
+  pincode: z.coerce.string().optional(),
   address: z.string().optional(),
   narration: z.string().optional(),
   cheque_date: z.string().optional(),
-  cheque_number: z.coerce.number().optional(),
+  cheque_number: z.coerce.string().optional(),
   bank_details: z.string().optional(),
   remembrance: z.string().optional(),
+  description: z.string().optional(),
+  saree_draping_date: z.string().optional(),
+  return_saree: z.coerce.number().min(0, "return saree field is required"),
+  uparane_draping_date: z.string().optional(),
+  return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
+  member_name: z.string().optional(),
+  from_date: z.string().optional(),
+  to_date: z.string().optional(),
+  Mallakhamb: z.coerce.number().min(0, "mallakhamb field is required"),
+  zanj: z.coerce.number().min(0, "zanj field is required"),
+  dhol: z.coerce.number().min(0, "dhol field is required"),
+  lezim: z.coerce.number().min(0, "lezim field is required"),
+  hall: z.string().optional(),
+  membership_no: z.string().optional(),
+  timing: z.string().optional(),
 });
 
 const Create = () => {
@@ -66,7 +81,17 @@ const Create = () => {
   const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
   const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
-  const khatReceiptId = 6;
+  const khatReceiptId = 1;
+  const naralReceiptId = 2;
+  const bhangarReceiptId = 3;
+  const sareeReceiptId = 4;
+  const uparaneReceiptId = 5;
+  const vasturupeeReceiptId = 6;
+  const campReceiptId = 7;
+  const libraryReceiptId = 8;
+  const hallReceiptId = 9;
+  const studyRoomReceiptId = 10;
+
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
@@ -92,6 +117,21 @@ const Create = () => {
     cheque_number: "",
     bank_details: "",
     remembrance: "",
+    description: "",
+    saree_draping_date: "",
+    return_saree: "",
+    uparane_draping_date: "",
+    return_uparane: "",
+    member_name: "",
+    from_date: "",
+    to_date: "",
+    Mallakhamb: "",
+    zanj: "",
+    lezim: "",
+    dhol: "",
+    hall: "",
+    membership_no: "",
+    timing: "",
   };
 
   const {
@@ -658,6 +698,118 @@ const Create = () => {
               </div>
             </div>
 
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="relative md:col-span-2">
+                <Label className="font-normal" htmlFor="remembrance">
+                  Remembrance:
+                </Label>
+                <Controller
+                  name="remembrance"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="remembrance"
+                      className="mt-1"
+                      type="text"
+                      placeholder="Enter remembrance"
+                    />
+                  )}
+                />
+                {errors.remembrance && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.remembrance.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="special_date">
+                  Special date:
+                </Label>
+                <Controller
+                  name="special_date"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      id="special_date"
+                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      type="date"
+                      placeholder="Enter special date"
+                    />
+                  )}
+                />
+                {errors.special_date && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.special_date.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {(selectedReceiptTypeId === bhangarReceiptId ||
+              selectedReceiptTypeId === vasturupeeReceiptId) && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="description">
+                    description:
+                  </Label>
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
+                      >
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select description" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Select description</SelectLabel>
+                            {selectedReceiptTypeId === bhangarReceiptId && (
+                              <>
+                                <SelectItem value="रद्दी पेपर वा पुस्तके">
+                                  रद्दी पेपर वा पुस्तके
+                                </SelectItem>
+                                <SelectItem value="इतर समान">
+                                  इतर समान
+                                </SelectItem>
+                              </>
+                            )}
+                            {selectedReceiptTypeId === vasturupeeReceiptId && (
+                              <>
+                                <SelectItem value="पूजा साहित्य">
+                                  पूजा साहित्य
+                                </SelectItem>
+                                <SelectItem value="सोने वा चांदी वस्तू">
+                                  सोने वा चांदी वस्तू
+                                </SelectItem>
+                                <SelectItem value="उपकरणे वा इतर">
+                                  उपकरणे वा इतर
+                                </SelectItem>
+                                <SelectItem value="देवी साडी वा उपरणे">
+                                  देवी साडी वा उपरणे
+                                </SelectItem>
+                              </>
+                            )}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.description && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.description.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             {paymentMode === "Bank" && (
               <>
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
@@ -730,35 +882,15 @@ const Create = () => {
                   </div>
                 </div>
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
-                  <div className="relative ">
-                    <Label className="font-normal" htmlFor="remembrance">
-                      Remembrance:
-                    </Label>
-                    <Controller
-                      name="remembrance"
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          id="remembrance"
-                          className="mt-1"
-                          type="text"
-                          placeholder="Enter remembrance"
-                        />
-                      )}
-                    />
-                    {errors.remembrance && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.remembrance.message}
-                      </p>
-                    )}
-                  </div>
+                  <div className="relative "></div>
                 </div>
               </>
             )}
 
             {console.log(selectedReceiptTypeId, typeof selectedReceiptTypeId)}
-            {selectedReceiptTypeId === khatReceiptId && (
+            {/* {selectedReceiptTypeId === khatReceiptId && ( */}
+            {(selectedReceiptTypeId === khatReceiptId ||
+              selectedReceiptTypeId === naralReceiptId) && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="quantity">
@@ -809,6 +941,403 @@ const Create = () => {
               </div>
             )}
 
+            {selectedReceiptTypeId === sareeReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="saree_draping_date">
+                    Saree Draping date:
+                  </Label>
+                  <Controller
+                    name="saree_draping_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="saree_draping_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter date"
+                      />
+                    )}
+                  />
+                  {errors.saree_draping_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.saree_draping_date.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="return_saree"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="return_saree"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="return_saree">
+                    Return Saree
+                  </Label>
+                  {errors.return_saree && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.return_saree.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === uparaneReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="uparane_draping_date">
+                    Uparane Draping date:
+                  </Label>
+                  <Controller
+                    name="uparane_draping_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="uparane_draping_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter date"
+                      />
+                    )}
+                  />
+                  {errors.uparane_draping_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.uparane_draping_date.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="return_uparane"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="return_uparane"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="return_uparane">
+                    Return Uparane
+                  </Label>
+                  {errors.return_uparane && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.return_uparane.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === campReceiptId && (
+              <div className="w-full  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="member_name">
+                    Member Name:
+                  </Label>
+                  <Controller
+                    name="member_name"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="member_name"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter name"
+                      />
+                    )}
+                  />
+                  {errors.member_name && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.member_name.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="from_date">
+                    From date:
+                  </Label>
+                  <Controller
+                    name="from_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="from_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter from date"
+                      />
+                    )}
+                  />
+                  {errors.from_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_date.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="to_date">
+                    To date:
+                  </Label>
+                  <Controller
+                    name="to_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="to_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter to date"
+                      />
+                    )}
+                  />
+                  {errors.to_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_date.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+            {selectedReceiptTypeId === campReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="Mallakhamb"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="Mallakhamb"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="Mallakhamb">
+                    Mallakhamb
+                  </Label>
+                  {errors.Mallakhamb && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.Mallakhamb.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="zanj"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="zanj"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="zanj">
+                    Zanj
+                  </Label>
+                  {errors.zanj && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.zanj.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="dhol"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="dhol"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="dhol">
+                    Dhol
+                  </Label>
+                  {errors.dhol && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.dhol.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                  <Controller
+                    name="lezim"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="lezim"
+                        {...field}
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="lezim">
+                    lezim
+                  </Label>
+                  {errors.lezim && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.lezim.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === hallReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="hall">
+                    Hall:
+                  </Label>
+                  <Controller
+                    name="hall"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="hall"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter hall name"
+                      />
+                    )}
+                  />
+                  {errors.hall && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.hall.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {(selectedReceiptTypeId === libraryReceiptId ||
+              selectedReceiptTypeId === studyRoomReceiptId) && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="membership_no">
+                    Membership Number:
+                  </Label>
+                  <Controller
+                    name="membership_no"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="membership_no"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter membership no."
+                      />
+                    )}
+                  />
+                  {errors.membership_no && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.membership_no.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="from_date">
+                    From date:
+                  </Label>
+                  <Controller
+                    name="from_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="from_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter from date"
+                      />
+                    )}
+                  />
+                  {errors.from_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_date.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="to_date">
+                    To date:
+                  </Label>
+                  <Controller
+                    name="to_date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="to_date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter to date"
+                      />
+                    )}
+                  />
+                  {errors.to_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_date.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === studyRoomReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="timing">
+                    Timing:
+                  </Label>
+                  <Controller
+                    name="timing"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="timing"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter timing"
+                      />
+                    )}
+                  />
+                  {errors.timing && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.timing.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="payment_mode">
@@ -845,29 +1374,7 @@ const Create = () => {
                   </p>
                 )}
               </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="special_date">
-                  Special date:
-                </Label>
-                <Controller
-                  name="special_date"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      id="special_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                      type="date"
-                      placeholder="Enter special date"
-                    />
-                  )}
-                />
-                {errors.special_date && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.special_date.message}
-                  </p>
-                )}
-              </div>
+
               <div className="relative">
                 <Label className="font-normal" htmlFor="amount">
                   Amount: <span className="text-red-500">*</span>
