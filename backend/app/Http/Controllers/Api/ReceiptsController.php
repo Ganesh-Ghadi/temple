@@ -18,6 +18,7 @@ use App\Models\BhangarReceipt;
 use App\Models\LibraryReceipt;
 use App\Models\UparaneReceipt;
 use Mpdf\Config\FontVariables;
+use App\Models\StudyRoomReceipt;
 use Mpdf\Config\ConfigVariables;
 use App\Models\VasturupeeReceipt;
 use Illuminate\Http\JsonResponse;
@@ -81,6 +82,7 @@ class ReceiptsController extends BaseController
         $campReceiptId = 7;
         $libraryReceiptId = 8;
         $hallReceiptId = 9;
+        $studyRoomReceiptId = 10;
 
 
         $receipt = new Receipt();
@@ -180,6 +182,16 @@ class ReceiptsController extends BaseController
             $library_receipt->from_date = $request->input("from_date");            
             $library_receipt->to_date = $request->input("to_date");                       
             $library_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $studyRoomReceiptId) {
+            $study_room_receipt = new StudyRoomReceipt();
+            $study_room_receipt->receipt_id = $receipt->id;
+            $study_room_receipt->membership_no = $request->input("membership_no"); 
+            $study_room_receipt->from_date = $request->input("from_date");            
+            $study_room_receipt->to_date = $request->input("to_date");    
+            $study_room_receipt->timing = $request->input("timing");                                          
+            $study_room_receipt->save();
         }
     
         

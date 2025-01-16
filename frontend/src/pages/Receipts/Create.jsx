@@ -71,7 +71,7 @@ const formSchema = z.object({
   lezim: z.coerce.number().min(0, "lezim field is required"),
   hall: z.string().optional(),
   membership_no: z.string().optional(),
-
+  timing: z.string().optional(),
 });
 
 const Create = () => {
@@ -90,6 +90,7 @@ const Create = () => {
   const campReceiptId = 7;
   const libraryReceiptId = 8;
   const hallReceiptId = 9;
+  const studyRoomReceiptId = 10;
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -129,7 +130,8 @@ const Create = () => {
     lezim: "",
     dhol: "",
     hall: "",
-    membership_no:"",
+    membership_no: "",
+    timing: "",
   };
 
   const {
@@ -1233,7 +1235,8 @@ const Create = () => {
               </div>
             )}
 
-            {selectedReceiptTypeId === libraryReceiptId && (
+            {(selectedReceiptTypeId === libraryReceiptId ||
+              selectedReceiptTypeId === studyRoomReceiptId) && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="membership_no">
@@ -1301,6 +1304,34 @@ const Create = () => {
                   {errors.to_date && (
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
                       {errors.to_date.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === studyRoomReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="timing">
+                    Timing:
+                  </Label>
+                  <Controller
+                    name="timing"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="timing"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter timing"
+                      />
+                    )}
+                  />
+                  {errors.timing && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.timing.message}
                     </p>
                   )}
                 </div>
