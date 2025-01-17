@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,14 +19,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Pencil, MoreHorizontal, PrinterCheck } from 'lucide-react';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Pencil, MoreHorizontal, PrinterCheck } from "lucide-react";
 
-import Pagination from '@/customComponents/Pagination/Pagination';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import Pagination from "@/customComponents/Pagination/Pagination";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 import {
   DropdownMenu,
@@ -35,15 +35,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import Cancel from './Cancel';
+} from "@/components/ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import Cancel from "./Cancel";
 
 const Index = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -54,12 +54,12 @@ const Index = () => {
     isLoading: isReceiptsDataLoading,
     isError: isReceiptsDataError,
   } = useQuery({
-    queryKey: ['receipts', currentPage, search], // This is the query key
+    queryKey: ["receipts", currentPage, search], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get('/api/receipts', {
+        const response = await axios.get("/api/receipts", {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           params: {
@@ -89,15 +89,15 @@ const Index = () => {
     try {
       const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        responseType: 'blob', // To ensure the response is a blob (PDF file)
+        responseType: "blob", // To ensure the response is a blob (PDF file)
       });
 
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
 
       link.href = url;
       link.download = `receipt-${receiptId}.pdf`;
@@ -109,8 +109,8 @@ const Index = () => {
       document.body.removeChild(link);
 
       // Invalidate the queries related to the "lead" data
-      queryClient.invalidateQueries('receipts');
-      toast.success('Receipt Printed Successfully');
+      queryClient.invalidateQueries("receipts");
+      toast.success("Receipt Printed Successfully");
     } catch (error) {
       // Handle errors (both response errors and network errors)
       if (axios.isAxiosError(error)) {
@@ -119,16 +119,16 @@ const Index = () => {
           if (error.response.status === 401 && errorData.status === false) {
             toast.error(errorData.errors.error);
           } else {
-            toast.error('Failed to generate Receipt');
+            toast.error("Failed to generate Receipt");
           }
         } else {
           // Network or other errors
-          console.error('Error:', error);
-          toast.error('An error occurred while printing the Receipt');
+          console.error("Error:", error);
+          toast.error("An error occurred while printing the Receipt");
         }
       } else {
-        console.error('Unexpected error:', error);
-        toast.error('An unexpected error occurred');
+        console.error("Unexpected error:", error);
+        toast.error("An unexpected error occurred");
       }
     }
   };
@@ -138,7 +138,7 @@ const Index = () => {
       <div className="w-full p-5">
         <div className="w-full mb-7">
           <Button
-            onClick={() => navigate('/receipts/create')}
+            onClick={() => navigate("/receipts/create")}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
@@ -213,8 +213,8 @@ const Index = () => {
                     // } dark:border-b dark:border-gray-600`}
                     className={`${
                       receipt.cancelled
-                        ? 'relative' // Add a bottom border for strike-through effect
-                        : ''
+                        ? "relative" // Add a bottom border for strike-through effect
+                        : ""
                     } dark:border-b dark:border-gray-600`}
                   >
                     <TableCell className="font-medium p-2">
@@ -227,14 +227,14 @@ const Index = () => {
                     <TableCell className="font-medium p-2">
                       {/* {poojaDate.pooja_date} */}
                       {new Date(receipt.receipt_date).toLocaleDateString(
-                        'en-GB'
+                        "en-GB"
                       )}
                     </TableCell>
                     <TableCell className="font-medium p-2">
                       {receipt.name}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {receipt.amount}
+                      ₹{receipt.amount}
                     </TableCell>
 
                     <TableCell className="text-right p-2 pr-5">
@@ -306,7 +306,7 @@ const Index = () => {
                       <div
                         className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-500"
                         style={{
-                          transform: 'translateY(-50%)', // Vertically center the line in the row
+                          transform: "translateY(-50%)", // Vertically center the line in the row
                         }}
                       ></div>
                     )}

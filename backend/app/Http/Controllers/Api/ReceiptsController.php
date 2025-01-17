@@ -18,6 +18,7 @@ use App\Models\BhangarReceipt;
 use App\Models\LibraryReceipt;
 use App\Models\UparaneReceipt;
 use Mpdf\Config\FontVariables;
+use App\Models\AnteshteeReceipt;
 use App\Models\StudyRoomReceipt;
 use Mpdf\Config\ConfigVariables;
 use App\Models\VasturupeeReceipt;
@@ -83,6 +84,7 @@ class ReceiptsController extends BaseController
         $libraryReceiptId = 8;
         $hallReceiptId = 9;
         $studyRoomReceiptId = 10;
+        $anteshteeReceiptId = 11;
 
 
         $receipt = new Receipt();
@@ -193,7 +195,21 @@ class ReceiptsController extends BaseController
             $study_room_receipt->timing = $request->input("timing");                                          
             $study_room_receipt->save();
         }
-    
+
+        if ($request->input("receipt_type_id") == $anteshteeReceiptId) {
+            $anteshtee_receipt = new AnteshteeReceipt();
+            $anteshtee_receipt->receipt_id = $receipt->id;
+            $anteshtee_receipt->guruji = $request->input("guruji"); 
+            $anteshtee_receipt->yajman = $request->input("yajman");            
+            $anteshtee_receipt->from_date = $request->input("from_date");    
+            $anteshtee_receipt->to_date = $request->input("to_date");   
+            $anteshtee_receipt->karma_number = $request->input("karma_number");                                          
+            $anteshtee_receipt->day_10 = $request->input("day_10");                                          
+            $anteshtee_receipt->day_11 = $request->input("day_11");                                          
+            $anteshtee_receipt->day_12 = $request->input("day_12");                                          
+            $anteshtee_receipt->day_13 = $request->input("day_13");                                                                                           
+            $anteshtee_receipt->save();
+        }
         
         
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');

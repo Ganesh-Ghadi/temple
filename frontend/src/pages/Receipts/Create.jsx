@@ -72,6 +72,15 @@ const formSchema = z.object({
   hall: z.string().optional(),
   membership_no: z.string().optional(),
   timing: z.string().optional(),
+  guruji: z.string().optional(),
+  yajman: z.string().optional(),
+  from_date: z.string().optional(),
+  to_date: z.string().optional(),
+  karma_number: z.string().optional(),
+  day_10: z.coerce.number().min(0, "day 10 field is required"),
+  day_11: z.coerce.number().min(0, "day 11 field is required"),
+  day_12: z.coerce.number().min(0, "day 12 field is required"),
+  day_13: z.coerce.number().min(0, "day 13 field is required"),
 });
 
 const Create = () => {
@@ -91,6 +100,7 @@ const Create = () => {
   const libraryReceiptId = 8;
   const hallReceiptId = 9;
   const studyRoomReceiptId = 10;
+  const anteshteeReceiptId = 11;
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -132,6 +142,14 @@ const Create = () => {
     hall: "",
     membership_no: "",
     timing: "",
+    guruji: "",
+    yajman: "",
+    from_date: "",
+    to_date: "",
+    day_10: "",
+    day_11: "",
+    day_12: "",
+    day_13: "",
   };
 
   const {
@@ -1114,6 +1132,7 @@ const Create = () => {
                 </div>
               </div>
             )}
+
             {selectedReceiptTypeId === campReceiptId && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                 <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
@@ -1334,6 +1353,221 @@ const Create = () => {
                       {errors.timing.message}
                     </p>
                   )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === anteshteeReceiptId && (
+              <div>
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="guruji">
+                      Guruji Name:
+                    </Label>
+                    <Controller
+                      name="guruji"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="guruji"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter name"
+                        />
+                      )}
+                    />
+                    {errors.guruji && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.guruji.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="yajman">
+                      Yajman Name:
+                    </Label>
+                    <Controller
+                      name="yajman"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="yajman"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter name"
+                        />
+                      )}
+                    />
+                    {errors.yajman && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.yajman.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="karma_number">
+                      Karma No:
+                    </Label>
+                    <Controller
+                      name="karma_number"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="karma_number"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter karma no"
+                        />
+                      )}
+                    />
+                    {errors.karma_number && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.karma_number.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="from_date">
+                      From date:
+                    </Label>
+                    <Controller
+                      name="from_date"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="from_date"
+                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          type="date"
+                          placeholder="Enter from date"
+                        />
+                      )}
+                    />
+                    {errors.from_date && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.from_date.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="to_date">
+                      To date:
+                    </Label>
+                    <Controller
+                      name="to_date"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="to_date"
+                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          type="date"
+                          placeholder="Enter to date"
+                        />
+                      )}
+                    />
+                    {errors.to_date && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.to_date.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                  <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
+                    <Controller
+                      name="day_10"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          id="day_10"
+                          {...field}
+                          type="checkbox"
+                          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      )}
+                    />
+                    <Label className="font-normal" htmlFor="day_10">
+                      Day 10
+                    </Label>
+                    {errors.day_10 && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.day_10.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                    <Controller
+                      name="day_11"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          id="day_11"
+                          {...field}
+                          type="checkbox"
+                          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      )}
+                    />
+                    <Label className="font-normal" htmlFor="day_11">
+                      Day 11
+                    </Label>
+                    {errors.day_11 && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.day_11.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                    <Controller
+                      name="day_12"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          id="day_12"
+                          {...field}
+                          type="checkbox"
+                          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      )}
+                    />
+                    <Label className="font-normal" htmlFor="day_12">
+                      Day 12
+                    </Label>
+                    {errors.day_12 && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.day_12.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                    <Controller
+                      name="day_13"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          id="day_13"
+                          {...field}
+                          type="checkbox"
+                          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      )}
+                    />
+                    <Label className="font-normal" htmlFor="day_13">
+                      Day 13
+                    </Label>
+                    {errors.day_13 && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.day_13.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
