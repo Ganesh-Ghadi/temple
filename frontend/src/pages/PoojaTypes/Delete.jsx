@@ -45,7 +45,7 @@ const Delete = ({ id }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("pooja_types");
-      toast.success("Pooja Type Deleted Successfully");
+      toast.success("Pooja Types details Deleted Successfully");
       setIsLoading(false);
       navigate("/pooja_types");
     },
@@ -73,8 +73,8 @@ const Delete = ({ id }) => {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. By proceeding, you will permanently
-              delete your "Devta details". Once deleted, this information cannot
-              be recovered.
+              delete your "Pooja Type details". Once deleted, this information
+              cannot be recovered.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

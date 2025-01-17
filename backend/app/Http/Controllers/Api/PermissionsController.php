@@ -31,7 +31,7 @@ class PermissionsController extends BaseController
                 $query->where('name', 'like', '%' . $searchTerm . '%');
             });
         }
-        $permissions = $query->orderBy("id", "DESC")->paginate(5);
+        $permissions = $query->orderBy("id", "DESC")->paginate(20);
 
         return $this->sendResponse(["Permissions"=>PermissionResource::collection($permissions),
         'pagination' => [

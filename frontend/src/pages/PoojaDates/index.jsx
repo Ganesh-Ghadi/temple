@@ -147,7 +147,7 @@ const Index = () => {
                 <TableHead className="p-2">Pooja Type</TableHead>
                 <TableHead className="p-2">Pooja Date</TableHead>
 
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

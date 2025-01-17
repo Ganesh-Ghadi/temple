@@ -57,7 +57,7 @@ const Create = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("devtas");
-      toast.success("Devta Add Successfully");
+      toast.success("Devta Added Successfully");
       setIsLoading(false);
       navigate("/devtas");
     },
@@ -112,7 +112,7 @@ const Create = () => {
         {/* form style strat */}
         <div className="px-5 pb-7 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
           <div className="w-full py-3 flex justify-start items-center">
-            <h2 className="text-lg  font-normal">Add Devtas</h2>
+            <h2 className="text-lg  font-normal">Add Devta</h2>
           </div>
           {/* row starts */}
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -148,7 +148,7 @@ const Create = () => {
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
                 onClick={() => navigate("/devtas")}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button

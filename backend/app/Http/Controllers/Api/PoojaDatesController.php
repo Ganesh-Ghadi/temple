@@ -36,7 +36,7 @@ class PoojaDatesController extends BaseController
 
             
         }
-        $poojaDates = $query->Orderby("id","desc")->paginate(5);
+        $poojaDates = $query->Orderby("id","desc")->paginate(20);
 
         return $this->sendResponse(["PoojaDates"=>PoojaDateResource::collection($poojaDates),
         'pagination' => [

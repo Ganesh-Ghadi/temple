@@ -30,7 +30,7 @@ class GurujisController extends BaseController
                 $query->where('guruji_name', 'like', '%' . $searchTerm . '%');
             });
         }
-        $gurujis = $query->Orderby("id","desc")->paginate(5);
+        $gurujis = $query->Orderby("id","desc")->paginate(20);
 
         return $this->sendResponse(["Gurujis"=>GurujiResource::collection($gurujis),
         'pagination' => [

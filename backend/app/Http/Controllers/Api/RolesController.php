@@ -30,7 +30,7 @@ class RolesController extends BaseController
                 $query->where('name', 'like', '%' . $searchTerm . '%');
             });
         }
-        $roles = $query->orderBy("id", "DESC")->paginate(15);
+        $roles = $query->orderBy("id", "DESC")->paginate(20);
 
         return $this->sendResponse(["Roles"=>RoleResource::collection($roles),
         'Pagination' => [

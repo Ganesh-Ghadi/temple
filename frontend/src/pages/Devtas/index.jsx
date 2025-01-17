@@ -92,7 +92,7 @@ const Index = () => {
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
-            Add Devtas
+            Add Devta
           </Button>
         </div>
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
@@ -125,7 +125,7 @@ const Index = () => {
                 }}
                 id="search"
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for Devta"
+                placeholder="Search for Devtas"
               />
             </div>
             {/* end */}
@@ -145,9 +145,9 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="">Roles</TableHead>
+                <TableHead className="">Name</TableHead>
 
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

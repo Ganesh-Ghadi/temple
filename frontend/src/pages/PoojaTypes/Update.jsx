@@ -173,7 +173,7 @@ const Update = () => {
         {/* form style strat */}
         <div className="px-5 pb-7 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
           <div className="w-full py-3 flex justify-start items-center">
-            <h2 className="text-lg  font-normal">Add Pooja Type</h2>
+            <h2 className="text-lg  font-normal">Edit Pooja Type</h2>
           </div>
           {/* row starts */}
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -276,7 +276,7 @@ const Update = () => {
                   )}
                 />
                 <Label className="font-normal" htmlFor="contribution">
-                  Multiple:
+                  Multiple
                 </Label>
                 {errors.multiple && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
@@ -292,7 +292,7 @@ const Update = () => {
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
                 onClick={() => navigate("/pooja_types")}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button

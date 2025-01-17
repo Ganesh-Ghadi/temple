@@ -133,12 +133,12 @@ const Homepage = () => {
                 </CardContent>
               </Card>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+            {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
               <Card className="col-span-4">
                 <CardHeader>
                   <CardTitle>Overview</CardTitle>
                 </CardHeader>
-                <CardContent className="pl-2">{/* <Overview /> */}</CardContent>
+                <CardContent className="pl-2"></CardContent>
               </Card>
               <Card className="col-span-3">
                 <CardHeader>
@@ -147,15 +147,15 @@ const Homepage = () => {
                     You made 265 sales this month.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>{/* <RecentSales /> */}</CardContent>
+                <CardContent></CardContent>
               </Card>
-            </div>
+            </div> */}
           </TabsContent>
         </Tabs>
       </div>
       <div>
-        <h1>HSL Color Display</h1>
-        <ColorDisplay />
+        {/* <h1>HSL Color Display</h1>
+        <ColorDisplay /> */}
       </div>
     </>
   );

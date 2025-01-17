@@ -45,7 +45,7 @@ const Delete = ({ id }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("users");
-      toast.success("Guruji Deleted Successfully");
+      toast.success("Guruji details Deleted Successfully");
       setIsLoading(false);
       navigate("/gurujis");
     },

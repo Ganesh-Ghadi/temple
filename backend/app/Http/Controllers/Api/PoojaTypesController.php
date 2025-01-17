@@ -32,7 +32,7 @@ class PoojaTypesController extends BaseController
                 $query->where('pooja_type', 'like', '%' . $searchTerm . '%');
             });
         }
-        $poojaTypes = $query->Orderby("id","desc")->paginate(5);
+        $poojaTypes = $query->Orderby("id","desc")->paginate(20);
 
         return $this->sendResponse(["PoojaTypes"=>PoojaTypeResource::collection($poojaTypes),
         'pagination' => [

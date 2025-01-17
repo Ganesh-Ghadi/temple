@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 import {
   Select,
@@ -14,12 +14,12 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
+} from "@/components/ui/select";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   n_2000: z.coerce.number().optional(),
@@ -34,33 +34,33 @@ const formSchema = z.object({
   c_5: z.coerce.number().optional(),
   c_2: z.coerce.number().optional(),
   c_1: z.coerce.number().optional(),
-  amount: z.coerce.number().min(0.01, { message: 'amount field is required' }),
-  deposit_date: z.string().min(1, 'deposit date field is required'),
+  amount: z.coerce.number().min(0.01, { message: "amount field is required" }),
+  deposit_date: z.string().min(1, "deposit date field is required"),
 });
 
 const Update = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
   const { id } = useParams();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const navigate = useNavigate();
 
   const defaultValues = {
-    n_2000: '',
-    n_500: '',
-    n_200: '',
-    n_100: '',
-    n_50: '',
-    n_20: '',
-    n_10: '',
-    c_20: '',
-    c_10: '',
-    c_5: '',
-    c_2: '',
-    c_1: '',
-    deposit_date: '',
-    amount: '',
+    n_2000: "",
+    n_500: "",
+    n_200: "",
+    n_100: "",
+    n_50: "",
+    n_20: "",
+    n_10: "",
+    c_20: "",
+    c_10: "",
+    c_5: "",
+    c_2: "",
+    c_1: "",
+    deposit_date: "",
+    amount: "",
   };
 
   const {
@@ -77,12 +77,12 @@ const Update = () => {
     isLoading: isEditDenominationDataLoading,
     isError: isEditDenominationDataError,
   } = useQuery({
-    queryKey: ['editDenomination', id], // This is the query key
+    queryKey: ["editDenomination", id], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/denominations/${id}`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
@@ -96,36 +96,36 @@ const Update = () => {
 
   useEffect(() => {
     if (editDenomination) {
-      setValue('n_2000', editDenomination.Denomination?.n_2000);
-      setValue('n_500', editDenomination.Denomination?.n_500);
-      setValue('n_200', editDenomination.Denomination?.n_200);
-      setValue('n_100', editDenomination.Denomination?.n_100);
-      setValue('n_50', editDenomination.Denomination?.n_50);
-      setValue('n_20', editDenomination.Denomination?.n_20);
-      setValue('n_10', editDenomination.Denomination?.n_10);
-      setValue('c_20', editDenomination.Denomination?.c_20);
-      setValue('c_10', editDenomination.Denomination?.c_10);
-      setValue('c_5', editDenomination.Denomination?.c_5);
-      setValue('c_2', editDenomination.Denomination?.c_2);
-      setValue('c_1', editDenomination.Denomination?.c_1);
-      setValue('amount', editDenomination.Denomination?.amount);
-      setValue('deposit_date', editDenomination.Denomination?.deposit_date);
+      setValue("n_2000", editDenomination.Denomination?.n_2000);
+      setValue("n_500", editDenomination.Denomination?.n_500);
+      setValue("n_200", editDenomination.Denomination?.n_200);
+      setValue("n_100", editDenomination.Denomination?.n_100);
+      setValue("n_50", editDenomination.Denomination?.n_50);
+      setValue("n_20", editDenomination.Denomination?.n_20);
+      setValue("n_10", editDenomination.Denomination?.n_10);
+      setValue("c_20", editDenomination.Denomination?.c_20);
+      setValue("c_10", editDenomination.Denomination?.c_10);
+      setValue("c_5", editDenomination.Denomination?.c_5);
+      setValue("c_2", editDenomination.Denomination?.c_2);
+      setValue("c_1", editDenomination.Denomination?.c_1);
+      setValue("amount", editDenomination.Denomination?.amount);
+      setValue("deposit_date", editDenomination.Denomination?.deposit_date);
     }
   }, [editDenomination, setValue]);
 
   const denominations = watch([
-    'n_2000',
-    'n_500',
-    'n_200',
-    'n_100',
-    'n_50',
-    'n_20',
-    'n_10',
-    'c_20',
-    'c_10',
-    'c_5',
-    'c_2',
-    'c_1',
+    "n_2000",
+    "n_500",
+    "n_200",
+    "n_100",
+    "n_50",
+    "n_20",
+    "n_10",
+    "c_20",
+    "c_10",
+    "c_5",
+    "c_2",
+    "c_1",
   ]);
 
   // Effect to calculate the total amount whenever denominations change
@@ -146,11 +146,11 @@ const Update = () => {
     ) // c_1
       .toFixed(2);
 
-    setValue('amount', totalAmount);
+    setValue("amount", totalAmount);
     console.log(
-      'amoutn value fron useEfect',
+      "amoutn value fron useEfect",
       totalAmount,
-      'fef',
+      "fef",
       denominations.n_2000
     );
   }, [denominations, setValue]);
@@ -159,27 +159,27 @@ const Update = () => {
     mutationFn: async (data) => {
       const response = await axios.put(`/api/denominations/${id}`, data, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries('denominations');
+      queryClient.invalidateQueries("denominations");
 
-      toast.success('Denomination Updated Successfully');
+      toast.success("Denomination Updated Successfully");
       setIsLoading(false);
-      navigate('/denominations');
+      navigate("/denominations");
     },
     onError: (error) => {
       setIsLoading(false);
-      toast.error('Faild to update denomination');
-      console.log('got error ', error);
+      toast.error("Faild to update denomination");
+      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
-    console.log('Clicked');
+    console.log("Clicked");
     setIsLoading(true);
     updateMutation.mutate(data);
   };
@@ -192,7 +192,7 @@ const Update = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate('/denominations')}
+                onClick={() => navigate("/denominations")}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -200,7 +200,7 @@ const Update = () => {
               </Button>
             </span>
             <span className="text-gray-400">/</span>
-            <span className="dark:text-gray-300">Add</span>
+            <span className="dark:text-gray-300">Edit</span>
           </div>
         </div>
         {/* breadcrumb ends */}
@@ -566,9 +566,9 @@ const Update = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate('/denominations')}
+                onClick={() => navigate("/denominations")}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button
@@ -582,7 +582,7 @@ const Update = () => {
                     Submitting...
                   </>
                 ) : (
-                  'Submit'
+                  "Submit"
                 )}
               </Button>
             </div>

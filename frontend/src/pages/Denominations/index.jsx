@@ -198,9 +198,9 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="p-2">Denomination Date</TableHead>
+                <TableHead className="p-2">Deposit Date</TableHead>
                 <TableHead className="p-2">Amount</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

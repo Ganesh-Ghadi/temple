@@ -48,7 +48,7 @@ const Delete = ({ id }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("users");
-      toast.success("Devta Deleted Successfully");
+      toast.success("Devta details Deleted Successfully");
       setIsLoading(false);
       navigate("/devtas");
     },

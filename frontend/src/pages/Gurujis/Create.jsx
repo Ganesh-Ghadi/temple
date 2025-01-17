@@ -148,7 +148,7 @@ const Create = () => {
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
                 onClick={() => navigate("/gurujis")}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button

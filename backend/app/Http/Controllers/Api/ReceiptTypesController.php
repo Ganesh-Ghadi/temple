@@ -31,7 +31,7 @@ class ReceiptTypesController extends BaseController
                 
             });
         }
-        $receiptTypes = $query->Orderby("id","desc")->paginate(5);
+        $receiptTypes = $query->Orderby("id","desc")->paginate(20);
 
         return $this->sendResponse(["ReceiptTypes"=>ReceiptTypeResource::collection($receiptTypes),
         'pagination' => [

@@ -91,7 +91,7 @@ const Index = () => {
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
-            Add Gurujis
+            Add Guruji
           </Button>
         </div>
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
@@ -144,9 +144,9 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="">Roles</TableHead>
+                <TableHead className="">Name</TableHead>
 
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

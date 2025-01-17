@@ -150,7 +150,7 @@ const Update = () => {
         {/* form style strat */}
         <div className="px-5 pb-7 pt-1 w-full dark:bg-background bg-white shadow-lg border  rounded-md">
           <div className="w-full py-3 flex justify-start items-center">
-            <h2 className="text-lg  font-normal">Update Devta</h2>
+            <h2 className="text-lg  font-normal">Edit Devta</h2>
           </div>
           {/* row starts */}
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -187,7 +187,7 @@ const Update = () => {
                 className=" shadow-xl dark:text-white bg-red-600 hover:bg-red-700"
                 onClick={() => navigate("/devtas")}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button

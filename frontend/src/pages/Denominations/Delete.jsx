@@ -35,22 +35,19 @@ const Delete = ({ id }) => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(
-        `http://127.0.0.1:8000/api/devtas/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the Bearer token
-          },
-        }
-      );
+      const response = await axios.delete(`/api/denominations/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the Bearer token
+        },
+      });
       return response.data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("users");
-      toast.success("Devta Deleted Successfully");
+      toast.success("Denomination details Deleted Successfully");
       setIsLoading(false);
-      navigate("/devtas");
+      navigate("/denominations");
     },
     onError: (error) => {
       setIsLoading(false);
@@ -76,8 +73,8 @@ const Delete = ({ id }) => {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. By proceeding, you will permanently
-              delete your "Devta details". Once deleted, this information cannot
-              be recovered.
+              delete your "Denomination details". Once deleted, this information
+              cannot be recovered.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

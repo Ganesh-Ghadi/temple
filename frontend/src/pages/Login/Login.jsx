@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import background from '../../images/doitBackground.avif';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { z } from 'zod';
-import { toast } from 'sonner';
-import axios from 'axios';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import background from "../../images/doitBackground.avif";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { z } from "zod";
+import { toast } from "sonner";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const defaultValues = {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   };
 
   const formSchema = z.object({
     email: z
       .string()
-      .email('Invalid email address')
-      .nonempty('Email is required'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
+      .email("Invalid email address")
+      .nonempty("Email is required"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
   });
 
   const {
@@ -36,29 +36,29 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/login',
+        "http://127.0.0.1:8000/api/login",
         data,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
 
-      console.log('Login successful:', response.data);
-      localStorage.setItem('user', JSON.stringify(response.data.data));
-      toast.success('Login successful! Welcome back.');
-      navigate('/');
+      console.log("Login successful:", response.data);
+      localStorage.setItem("user", JSON.stringify(response.data.data));
+      toast.success("Login successful! Welcome back.");
+      navigate("/");
       setIsLoading(false);
     } catch (error) {
       if (error.response) {
-        toast.error('Login failed: ' + error.response.data.message); // Customize error message
+        toast.error("Login failed: " + error.response.data.message); // Customize error message
         setIsLoading(false);
       } else if (error.request) {
-        toast.error('No response from server. Please try again later.');
+        toast.error("No response from server. Please try again later.");
         setIsLoading(false);
       } else {
-        toast.error('An error occurred while making the request.');
+        toast.error("An error occurred while making the request.");
         setIsLoading(false);
       }
     }
@@ -70,9 +70,9 @@ const Login = () => {
         <div
           style={{
             backgroundImage: `url(${background})`,
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'bottom',
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "bottom",
           }}
           className="absolute inset-0 "
         />
@@ -98,7 +98,7 @@ const Login = () => {
           <blockquote className="space-y-2">
             <p className="text-lg text-white font-bold">Welcome To Website</p>
             <footer className="text-sm text-white">
-              Customer Relationship Management (CRM){' '}
+              श्री गणेश मंदिर संस्थान, डोंबिवली
             </footer>
           </blockquote>
         </div>
@@ -161,18 +161,18 @@ const Login = () => {
               )}
             </div>
             <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? 'Loading...' : 'Login'}
+              {isLoading ? "Loading..." : "Login"}
             </Button>
             {/* end */}
             <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking continue, you agree to our{' '}
+              By clicking continue, you agree to our{" "}
               <Link
                 to="#"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Terms of Service
-              </Link>{' '}
-              and{' '}
+              </Link>{" "}
+              and{" "}
               <Link
                 to="#"
                 className="underline underline-offset-4 hover:text-primary"

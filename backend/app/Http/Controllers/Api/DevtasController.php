@@ -32,7 +32,7 @@ class DevtasController extends BaseController
                 $query->where('devta_name', 'like', '%' . $searchTerm . '%');
             });
         }
-        $devtas = $query->Orderby('id', 'desc')->paginate(5);
+        $devtas = $query->Orderby('id', 'desc')->paginate(20);
 
         return $this->sendResponse(["Devtas"=>DevtaResource::collection($devtas),
         'pagination' => [

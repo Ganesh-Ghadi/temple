@@ -39,7 +39,7 @@ class DenominationsController extends BaseController
                 ->orWhere('deposit_date', 'like', '%'. $searchTerm . '%');
             });
         }
-        $denominations = $query->orderBy("id", "DESC")->paginate(15);
+        $denominations = $query->orderBy("id", "DESC")->paginate(20);
 
         return $this->sendResponse(["Denominations"=>DenominationResource::collection($denominations),
         'Pagination' => [

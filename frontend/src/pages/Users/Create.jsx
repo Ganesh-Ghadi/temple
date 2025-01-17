@@ -283,7 +283,7 @@ const Create = () => {
                 className="dark:text-white shadow-xl bg-red-500 hover:bg-red-600"
                 onClick={() => navigate("/users")}
               >
-                Cancle
+                Cancel
               </Button>
 
               <Button

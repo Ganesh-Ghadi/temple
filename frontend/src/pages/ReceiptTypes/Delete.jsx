@@ -45,7 +45,7 @@ const Delete = ({ id }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("receipt_types");
-      toast.success("Receipt Type Deleted Successfully");
+      toast.success("Receipt Type details Deleted Successfully");
       setIsLoading(false);
       navigate("/receipt_types");
     },

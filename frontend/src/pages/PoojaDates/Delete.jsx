@@ -45,7 +45,7 @@ const Delete = ({ id }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("pooja_dates");
-      toast.success("Pooja Date Deleted Successfully");
+      toast.success("Pooja Date details Deleted Successfully");
       setIsLoading(false);
       navigate("/pooja_dates");
     },

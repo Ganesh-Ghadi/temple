@@ -56,7 +56,7 @@ class ReceiptsController extends BaseController
                 });
             });
         }
-        $receipts = $query->Orderby("id","desc")->paginate(5);
+        $receipts = $query->Orderby("id","desc")->paginate(20);
 
         return $this->sendResponse(["Receipts"=>ReceiptResource::collection($receipts),
         'pagination' => [

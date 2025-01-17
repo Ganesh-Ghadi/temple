@@ -31,7 +31,7 @@ class ProfilesController extends BaseController
                 $query->where('profile_name', 'like', '%' . $searchTerm . '%');
             });
         }
-        $profiles = $query->Orderby("id","desc")->paginate(5);
+        $profiles = $query->Orderby("id","desc")->paginate(20);
 
         return $this->sendResponse(["Profiles"=>ProfileResource::collection($profiles),
         'pagination' => [
