@@ -40,9 +40,9 @@ import { toast } from "sonner";
 const formSchema = z.object({
   receipt_type_id: z.coerce.number().min(1, "Receipt Type field is required"),
   receipt_date: z.string().min(1, "receipt date field is required"),
-  name: z.string().min(2, "name field must have at least 2 characters"),
+  name: z.string().optional(),
   receipt_head: z.string().min(2, "receipt head field is required"),
-  gotra: z.string().min(2, "gotra field must have at least 2 characters"),
+  gotra: z.string().optional(),
   amount: z.coerce.number().min(1, "amount filed is required"),
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
@@ -81,12 +81,15 @@ const formSchema = z.object({
   day_11: z.coerce.number().min(0, "day 11 field is required"),
   day_12: z.coerce.number().min(0, "day 12 field is required"),
   day_13: z.coerce.number().min(0, "day 13 field is required"),
+  date: z.string().optional(),
+  pooja_type_id: z.coerce.number().optional(),
 });
 
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [openReceiptHead, setOpenReceiptHead] = useState(false);
   const [openReceiptType, setOpenReceiptType] = useState(false);
+  const [openPoojaType, setOpenPoojaType] = useState(false);
   const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
   const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
@@ -101,6 +104,7 @@ const Create = () => {
   const hallReceiptId = 9;
   const studyRoomReceiptId = 10;
   const anteshteeReceiptId = 11;
+  const poojaReceiptId = 12;
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -150,6 +154,8 @@ const Create = () => {
     day_11: "",
     day_12: "",
     day_13: "",
+    pooja_type_id: "",
+    date: "",
   };
 
   const {
@@ -160,6 +166,28 @@ const Create = () => {
     setValue,
     watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
+
+  const {
+    data: allPoojaTypesData,
+    isLoading: isAllPoojaTypesDataLoading,
+    isError: isAllPoojaTypesDataError,
+  } = useQuery({
+    queryKey: ["allPoojaTypes"], // This is the query key
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`/api/all_pooja_types`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    keepPreviousData: true, // Keep previous data until the new data is available
+  });
 
   const {
     data: allReceiptTypesData,
@@ -268,9 +296,11 @@ const Create = () => {
   useEffect(() => {
     const quantity = parseFloat(receiptAmount[0]) || 0;
     const rate = parseFloat(receiptAmount[1]) || 0;
-    const totalAmount = (quantity * rate).toFixed(2); // Multiply instead of adding
-    if (totalAmount) {
+    if (quantity && rate) {
+      const totalAmount = (quantity * rate).toFixed(2); // Multiply instead of adding
       setValue("amount", totalAmount);
+    } else {
+      setValue("amount", "");
     }
   }, [receiptAmount, setValue]);
 
@@ -550,7 +580,7 @@ const Create = () => {
               </div>
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="name">
-                  Name: <span className="text-red-500">*</span>
+                  Name:
                 </Label>
                 <Controller
                   name="name"
@@ -576,7 +606,7 @@ const Create = () => {
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative ">
                 <Label className="font-normal" htmlFor="gotra">
-                  Gotra: <span className="text-red-500">*</span>
+                  Gotra:
                 </Label>
                 <Controller
                   name="gotra"
@@ -833,7 +863,7 @@ const Create = () => {
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="bank_details">
-                      bank Details:
+                      Bank Details:
                     </Label>
                     <Controller
                       name="bank_details"
@@ -1568,6 +1598,113 @@ const Create = () => {
                       </p>
                     )}
                   </div>
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === poojaReceiptId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="pooja_type_id">
+                    Pooja Type:
+                  </Label>
+                  <Controller
+                    name="pooja_type_id"
+                    control={control}
+                    render={({ field }) => (
+                      <Popover
+                        open={openPoojaType}
+                        onOpenChange={setOpenPoojaType}
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={openPoojaType ? "true" : "false"} // This should depend on the popover state
+                            className=" w-[325px] justify-between mt-1"
+                            onClick={() => setOpenPoojaType((prev) => !prev)} // Toggle popover on button click
+                          >
+                            {field.value
+                              ? allPoojaTypesData?.PoojaTypes &&
+                                allPoojaTypesData?.PoojaTypes.find(
+                                  (poojaType) => poojaType.id === field.value
+                                )?.pooja_type
+                              : "Select Pooja Type..."}
+                            <ChevronsUpDown className="opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[325px] p-0">
+                          <Command>
+                            <CommandInput
+                              placeholder="Search pooja type..."
+                              className="h-9"
+                            />
+                            <CommandList>
+                              <CommandEmpty>No pooja type found.</CommandEmpty>
+                              <CommandGroup>
+                                {allPoojaTypesData?.PoojaTypes &&
+                                  allPoojaTypesData?.PoojaTypes.map(
+                                    (poojaType) => (
+                                      <CommandItem
+                                        key={poojaType.id}
+                                        value={poojaType.id}
+                                        onSelect={(currentValue) => {
+                                          setValue(
+                                            "pooja_type_id",
+                                            poojaType.id
+                                          );
+
+                                          setOpenPoojaType(false);
+                                          // Close popover after selection
+                                        }}
+                                      >
+                                        {poojaType.pooja_type}
+                                        <Check
+                                          className={cn(
+                                            "ml-auto",
+                                            poojaType.id === field.value
+                                              ? "opacity-100"
+                                              : "opacity-0"
+                                          )}
+                                        />
+                                      </CommandItem>
+                                    )
+                                  )}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  />
+                  {errors.pooja_type_id && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.pooja_type_id.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="date">
+                    date:
+                  </Label>
+                  <Controller
+                    name="date"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="date"
+                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter to date"
+                      />
+                    )}
+                  />
+                  {errors.date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.date.message}
+                    </p>
+                  )}
                 </div>
               </div>
             )}

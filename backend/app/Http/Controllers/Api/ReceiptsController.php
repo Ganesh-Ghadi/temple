@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use File;
 use Response;
 use Mpdf\Mpdf;
+use App\Models\Pooja;
 use App\Models\Receipt;
 use Barryvdh\DomPDF\PDF;
 use App\Models\CampReceipt;
@@ -85,6 +86,7 @@ class ReceiptsController extends BaseController
         $hallReceiptId = 9;
         $studyRoomReceiptId = 10;
         $anteshteeReceiptId = 11;
+        $poojaReceiptId = 12;
 
 
         $receipt = new Receipt();
@@ -209,6 +211,14 @@ class ReceiptsController extends BaseController
             $anteshtee_receipt->day_12 = $request->input("day_12");                                          
             $anteshtee_receipt->day_13 = $request->input("day_13");                                                                                           
             $anteshtee_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $poojaReceiptId) {
+            $pooja_receipt = new Pooja();
+            $pooja_receipt->receipt_id = $receipt->id;
+            $pooja_receipt->pooja_type_id = $request->input("pooja_type_id"); 
+            $pooja_receipt->date = $request->input("date");                                                                                   
+            $pooja_receipt->save();
         }
         
         
