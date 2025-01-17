@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ReceiptsController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\PoojaDatesController;
 use App\Http\Controllers\Api\PoojaTypesController;
+use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\ReceiptHeadsController;
 use App\Http\Controllers\Api\ReceiptTypesController;
 use App\Http\Controllers\Api\DenominationsController;
@@ -39,5 +40,9 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/all_receipt_types', [ReceiptTypesController::class, 'allReceiptTypes'])->name("receipt_types.all");
    Route::get('/generate_receipt/{id}', [ReceiptsController::class, 'generateReceipt'])->name("receipts.print");
    Route::get('/cancel_receipt/{id}', [ReceiptsController::class, 'cancelReceipt'])->name("receipts.cancle");
+   Route::get('/permissions', [PermissionsController::class, 'index'])->name("permissions.index");
+   Route::get('/generate_permissions', [PermissionsController::class, 'generatePermissions'])->name("permissions.generate");
+   Route::get('/roles/{id}', [RolesController::class, 'show'])->name("roles.show");
+   Route::get('/rol', [RolesController::class, 'shfdfow'])->name("rolfdefes.sfdefhow");
 
 });

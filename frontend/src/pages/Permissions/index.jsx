@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,17 +9,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "sonner";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import {
-  File,
-  PlusCircle,
-  Search,
-  Pencil,
-  Trash,
-  MoreHorizontal,
-  ListFilter,
-} from "lucide-react";
+import { Link } from "react-router-dom";
+import { Pencil, MoreHorizontal, PrinterCheck } from "lucide-react";
+
+import Pagination from "@/customComponents/Pagination/Pagination";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,67 +38,94 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Pagination from "@/customComponents/Pagination/Pagination";
-
-import { useQuery } from "@tanstack/react-query";
-import { TbH1 } from "react-icons/tb";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-const index = () => {
+// import Delete from "./Delete";
+
+const Index = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
-  const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const queryClient = useQueryClient();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
   const {
-    data: RolesData,
-    isLoading: isRolesDataLoading,
-    isError: isRolesDataError,
+    data: PermissionsData,
+    isLoading: isPermissionsDataLoading,
+    isError: isPermissionsDataError,
   } = useQuery({
-    queryKey: ["roles", currentPage, search], // This is the query key
+    queryKey: ["permissions", currentPage, search], // This is the query key
     queryFn: async () => {
-      // The query function to fetch roles data
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/roles", {
+        const response = await axios.get("/api/permissions", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           params: {
             page: currentPage,
-            search: search, // Send the current page number in the request
+            search: search,
           },
         });
         return response.data?.data; // Return the fetched data
       } catch (error) {
-        throw new Error(error.message); // Throw error if fetch fails
+        throw new Error(error.message);
       }
     },
+    keepPreviousData: true, // Keep previous data until the new data is available
   });
 
-  const { Roles, pagination } = RolesData || {}; // Destructure Profiles and pagination from UsersData
+  // pagination start
+  const { Permissions, pagination } = PermissionsData || {};
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
 
-  if (isRolesDataError) {
+  // pagination end
+
+  if (isPermissionsDataError) {
     return <p>Error fetching data</p>;
   }
+
+  const generatePermissionMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axios.get(`/api/generate_permissions`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the Bearer token
+        },
+      });
+      return response;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("permissions");
+      toast.success("Permissions Generated Successfully");
+    },
+    onError: (error) => {
+      toast.success("Error while generating permission");
+      console.log("got error ", error);
+    },
+  });
+  const onPermissionGenerate = () => {
+    generatePermissionMutation.mutate();
+  };
+
   return (
     <>
       <div className="w-full p-5">
         <div className="w-full mb-7">
           <Button
-            onClick={() => navigate("/")}
+            onClick={() => onPermissionGenerate()}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
-            Add Roles
+            Generate Permissions
           </Button>
         </div>
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold leading-none tracking-tight">
-              Roles
+              Permissions
             </h2>
             {/* search field here */}
             <div className="relative p-0.5 ">
@@ -115,7 +152,7 @@ const index = () => {
                 }}
                 id="search"
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for Roles"
+                placeholder="Search for Permissions"
               />
             </div>
             {/* end */}
@@ -135,51 +172,18 @@ const index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="p-2">Role</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="">Permissions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Roles &&
-                Roles.map((Role) => (
+              {Permissions &&
+                Permissions.map((permission) => (
                   <TableRow
-                    key={Role.id}
+                    key={permission.id}
                     className=" dark:border-b dark:border-gray-600"
                   >
-                    <TableCell className="font-medium p-2">
-                      {Role.name}
-                      {/* {new Date(denomination.deposit_date).toLocaleDateString("en-GB")} */}
-                    </TableCell>
-
-                    <TableCell className="text-right p-2 pr-5">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="center"
-                          className="w-full flex-col items-center flex justify-center"
-                        >
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <b className="border border-gray-100 w-full"></b>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="w-full text-sm"
-                            onClick={() => navigate(`/roles/${Role.id}/edit`)}
-                          >
-                            <Pencil size={16} /> Edit
-                          </Button>
-
-                          {/* print button end */}
-                          <div className="w-full">
-                            {/* <Delete id={denomination.id} /> */}
-                          </div>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                    <TableCell className="font-medium">
+                      {permission.name}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -191,4 +195,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

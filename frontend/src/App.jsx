@@ -11,6 +11,8 @@ import MainLayout from "./layouts/MainLayout";
 import Homepage from "./pages/HomePage/Homepage";
 import Projects from "./pages/Projects/Projects";
 import Roles from "./pages/Roles/index";
+import UpdateRoles from "./pages/Roles/Update";
+
 import Users from "./pages/Users/index";
 import CreateUsers from "./pages/Users/Create";
 import UpdateUsers from "./pages/Users/Update";
@@ -35,6 +37,7 @@ import UpdateDenominations from "./pages/Denominations/Update";
 import Receipts from "./pages/Receipts/index";
 import CreateReceipts from "./pages/Receipts/Create";
 import UpdateReceipts from "./pages/Receipts/Update";
+import Permissions from "./pages/Permissions/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -57,6 +60,7 @@ const App = () => {
           <Route index element={<Homepage />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/roles" element={<Roles />} />
+          <Route path="/roles/:id/edit" element={<UpdateRoles />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/create" element={<CreateUsers />} />
           <Route path="/users/:id/edit" element={<UpdateUsers />} />
@@ -93,6 +97,7 @@ const App = () => {
           <Route path="/receipts" element={<Receipts />} />
           <Route path="/receipts/create" element={<CreateReceipts />} />
           <Route path="/receipts/:id/edit" element={<UpdateReceipts />} />
+          <Route path="/permissions" element={<Permissions />} />
         </Route>
         <Route
           errorElement={<Error />}

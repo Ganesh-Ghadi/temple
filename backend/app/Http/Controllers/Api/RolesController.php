@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
+use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\Api\BaseController;
 
     /**
@@ -38,6 +39,28 @@ class RolesController extends BaseController
             'per_page' => $roles->perPage(),
             'total' => $roles->total(),
         ]], "Roles retrived successfully");
+    }
+
+    public function show(string $id): JsonResponse
+    {    
+        $role = Role::find($id);
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
+        $permissions = Permission::get();
+        
+        return $this->sendResponse(['Role'=>new RoleResource($role), 'RolePermissions'=>$rolePermissions, 'Permissions'=>$permissions], "Permissions generated successfully");
+    }   
+       
+    public function update(Role $role, Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'guard_name' => 'required',
+        ]);    
+        $input = $request->all();
+        $role->update($input);
+        $data = $role->syncPermissions($request->permission);
+        $request->session()->flash('success', 'Role updated successfully!');
+        return redirect()->route('roles.index');       
     }
 
 }
