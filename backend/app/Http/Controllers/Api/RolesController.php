@@ -50,17 +50,15 @@ class RolesController extends BaseController
         return $this->sendResponse(['Role'=>new RoleResource($role), 'RolePermissions'=>$rolePermissions, 'Permissions'=>$permissions], "Permissions generated successfully");
     }   
        
-    public function update(Role $role, Request $request)
+    public function update(String $id, Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'guard_name' => 'required',
-        ]);    
+        $role = Role::find($id);
+        
         $input = $request->all();
         $role->update($input);
-        $data = $role->syncPermissions($request->permission);
-        $request->session()->flash('success', 'Role updated successfully!');
-        return redirect()->route('roles.index');       
+        $role->syncPermissions($request->permissions);
+        return $this->sendResponse([], "Role updated successfully");
+       
     }
 
 }

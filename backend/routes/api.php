@@ -43,6 +43,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/permissions', [PermissionsController::class, 'index'])->name("permissions.index");
    Route::get('/generate_permissions', [PermissionsController::class, 'generatePermissions'])->name("permissions.generate");
    Route::get('/roles/{id}', [RolesController::class, 'show'])->name("roles.show");
-   Route::get('/rol', [RolesController::class, 'shfdfow'])->name("rolfdefes.sfdefhow");
+   Route::put('/roles/{id}', [RolesController::class, 'update'])->name("roles.update");
 
 });
