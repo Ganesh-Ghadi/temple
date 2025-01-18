@@ -289,7 +289,14 @@ const Create = () => {
   };
 
   const handleReceiptTypeChange = (value) => {
-    setSelectedReceiptTypeId(value);
+    setSelectedReceiptTypeId(value?.id);
+
+    console.log(value?.minimum_amount, "ffff");
+    console.log(value, "ffffhh");
+
+    // setValue("amount", value?.minimum_amount);
+    setValue("amount", value?.minimum_amount || null);
+    console.log("swff", parseFloat(value?.minimum_amount));
   };
 
   const receiptAmount = watch(["quantity", "rate"]);
@@ -299,8 +306,6 @@ const Create = () => {
     if (quantity && rate) {
       const totalAmount = (quantity * rate).toFixed(2); // Multiply instead of adding
       setValue("amount", totalAmount);
-    } else {
-      setValue("amount", "");
     }
   }, [receiptAmount, setValue]);
 
@@ -548,7 +553,7 @@ const Create = () => {
                                         //     ? ""
                                         //     : currentValue
                                         // );
-                                        handleReceiptTypeChange(receiptType.id);
+                                        handleReceiptTypeChange(receiptType);
                                         setOpenReceiptType(false);
                                         // Close popover after selection
                                       }}

@@ -159,6 +159,7 @@ const Update = () => {
     day_13: "",
     pooja_type_id: "",
     date: "",
+    receipt_no: "",
   };
 
   const {
@@ -308,27 +309,112 @@ const Update = () => {
       setValue("cheque_date", editReceipt.Receipt?.cheque_date);
       setValue("amount", editReceipt.Receipt?.amount);
       setValue("receipt_head", editReceipt.Receipt?.receipt_head);
+      setValue("receipt_no", editReceipt.Receipt?.receipt_no);
 
-      if (editReceipt.Receipt?.khatReceipt?.quantity) {
+      if (selectedReceiptTypeId === 1) {
         setValue("quantity", editReceipt.Receipt?.khatReceipt?.quantity);
         setValue("rate", editReceipt.Receipt?.khatReceipt?.rate);
       }
 
-      if (editReceipt.Receipt?.NaralReceipt?.quantity) {
+      if (selectedReceiptTypeId === 2) {
         setValue("quantity", editReceipt.Receipt?.NaralReceipt?.quantity);
         setValue("rate", editReceipt.Receipt?.NaralReceipt?.rate);
       }
-      setValue("pooja_type_id", editReceipt.Receipt?.Pooja?.pooja_type_id);
-      setValue("date", editReceipt.Receipt?.Pooja?.date);
-      setValue("description", editReceipt.Receipt?.BhangarReceipt?.description);
-      setValue(
-        "saree_draping_date",
-        editReceipt.Receipt?.SareeReceipt?.saree_draping_date
-      );
-      setValue("return_saree", editReceipt.Receipt?.SareeReceipt?.return_saree);
+
+      if (selectedReceiptTypeId === 3) {
+        setValue(
+          "description",
+          editReceipt.Receipt?.BhangarReceipt?.description
+        );
+      }
+
+      if (selectedReceiptTypeId === 4) {
+        setValue(
+          "saree_draping_date",
+          editReceipt.Receipt?.SareeReceipt?.saree_draping_date
+        );
+        setValue(
+          "return_saree",
+          editReceipt.Receipt?.SareeReceipt?.return_saree
+        );
+      }
+      if (selectedReceiptTypeId === 5) {
+        setValue(
+          "uparane_draping_date",
+          editReceipt.Receipt?.UparaneReceipt?.uparane_draping_date
+        );
+        setValue(
+          "return_uparane",
+          editReceipt.Receipt?.UparaneReceipt?.return_uparane
+        );
+      }
+
+      if (selectedReceiptTypeId === 6) {
+        setValue(
+          "description",
+          editReceipt.Receipt?.VasturupeeReceipt?.description
+        );
+      }
+      if (selectedReceiptTypeId === 7) {
+        setValue("from_date", editReceipt.Receipt?.CampReceipt?.from_date);
+        setValue("to_date", editReceipt.Receipt?.CampReceipt?.to_date);
+        setValue("Mallakhamb", editReceipt.Receipt?.CampReceipt?.Mallakhamb);
+        setValue("zanj", editReceipt.Receipt?.CampReceipt?.zanj);
+        setValue("dhol", editReceipt.Receipt?.CampReceipt?.dhol);
+        setValue("lezim", editReceipt.Receipt?.CampReceipt?.lezim);
+        setValue("member_name", editReceipt.Receipt?.CampReceipt?.member_name);
+      }
+
+      if (selectedReceiptTypeId === 8) {
+        setValue("from_date", editReceipt.Receipt?.LibraryReceipt?.from_date);
+        setValue("to_date", editReceipt.Receipt?.LibraryReceipt?.to_date);
+        setValue(
+          "membership_no",
+          editReceipt.Receipt?.LibraryReceipt?.membership_no
+        );
+      }
+
+      if (selectedReceiptTypeId === 9) {
+        setValue("hall", editReceipt.Receipt?.HallReceipt?.hall);
+      }
+
       setSelectedReceiptHead(editReceipt.Receipt?.receipt_head);
       handleReceiptTypeChange(editReceipt.Receipt?.receipt_type_id);
       setPaymentMode(editReceipt.Receipt?.payment_mode);
+
+      if (selectedReceiptTypeId === 10) {
+        setValue(
+          "membership_no",
+          editReceipt.Receipt?.StudyRoomReceipt?.membership_no
+        );
+        setValue("from_date", editReceipt.Receipt?.StudyRoomReceipt?.from_date);
+        setValue("to_date", editReceipt.Receipt?.StudyRoomReceipt?.to_date);
+        setValue("timing", editReceipt.Receipt?.StudyRoomReceipt?.timing);
+      }
+
+      if (selectedReceiptTypeId === 11) {
+        setValue(
+          "membership_no",
+          editReceipt.Receipt?.AnteshteeReceipt?.membership_no
+        );
+        setValue("from_date", editReceipt.Receipt?.AnteshteeReceipt?.from_date);
+        setValue("to_date", editReceipt.Receipt?.AnteshteeReceipt?.to_date);
+        setValue("guruji", editReceipt.Receipt?.AnteshteeReceipt?.guruji);
+        setValue("yajman", editReceipt.Receipt?.AnteshteeReceipt?.yajman);
+        setValue("day_10", editReceipt.Receipt?.AnteshteeReceipt?.day_10);
+        setValue("day_11", editReceipt.Receipt?.AnteshteeReceipt?.day_11);
+        setValue("day_12", editReceipt.Receipt?.AnteshteeReceipt?.day_12);
+        setValue("day_13", editReceipt.Receipt?.AnteshteeReceipt?.day_13);
+        setValue(
+          "karma_number",
+          editReceipt.Receipt?.AnteshteeReceipt?.karma_number
+        );
+      }
+
+      if (selectedReceiptTypeId === 12) {
+        setValue("pooja_type_id", editReceipt.Receipt?.Pooja?.pooja_type_id);
+        setValue("date", editReceipt.Receipt?.Pooja?.date);
+      }
     }
   }, [editReceipt, setValue, allReceiptTypesData]);
 
@@ -1235,6 +1321,10 @@ const Update = () => {
                       <input
                         id="Mallakhamb"
                         {...field}
+                        checked={field.value === 1}
+                        onChange={(e) => {
+                          field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                        }}
                         type="checkbox"
                         className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                       />
@@ -1256,6 +1346,10 @@ const Update = () => {
                     render={({ field }) => (
                       <input
                         id="zanj"
+                        checked={field.value === 1}
+                        onChange={(e) => {
+                          field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                        }}
                         {...field}
                         type="checkbox"
                         className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -1279,6 +1373,10 @@ const Update = () => {
                       <input
                         id="dhol"
                         {...field}
+                        checked={field.value === 1}
+                        onChange={(e) => {
+                          field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                        }}
                         type="checkbox"
                         className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                       />
@@ -1301,6 +1399,10 @@ const Update = () => {
                       <input
                         id="lezim"
                         {...field}
+                        checked={field.value === 1}
+                        onChange={(e) => {
+                          field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                        }}
                         type="checkbox"
                         className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                       />
@@ -1580,6 +1682,10 @@ const Update = () => {
                         <input
                           id="day_10"
                           {...field}
+                          checked={field.value === 1}
+                          onChange={(e) => {
+                            field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -1602,6 +1708,10 @@ const Update = () => {
                         <input
                           id="day_11"
                           {...field}
+                          checked={field.value === 1}
+                          onChange={(e) => {
+                            field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -1624,6 +1734,10 @@ const Update = () => {
                         <input
                           id="day_12"
                           {...field}
+                          checked={field.value === 1}
+                          onChange={(e) => {
+                            field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -1646,6 +1760,10 @@ const Update = () => {
                         <input
                           id="day_13"
                           {...field}
+                          checked={field.value === 1}
+                          onChange={(e) => {
+                            field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -1843,20 +1961,20 @@ const Update = () => {
                 Cancel
               </Button>
 
-              <Button
+              {/* <Button
                 type="submit"
                 disabled={isLoading}
                 className=" dark:text-white  shadow-xl bg-green-600 hover:bg-green-700"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="animate-spin mr-2" /> {/* Spinner */}
+                    <Loader2 className="animate-spin mr-2" /> 
                     Submitting...
                   </>
                 ) : (
                   "Submit"
                 )}
-              </Button>
+              </Button> */}
             </div>
           </div>
         </form>
@@ -1866,13 +1984,3 @@ const Update = () => {
 };
 
 export default Update;
-
-// <h1 style="text-align: center">श्री गणेश मंदिर संस्थान - नोट विवरण तख्ता {{ \Carbon\Carbon::parse($denomination->deposit_date)->format('d/m/Y') }}</h1>
-
-// in indexheml i am writing this marahis words to print it on pdf but when pdf get generated then i am getting this
-// marathis words
-// श्री गणेश
-// मंदरी संस् थान - नोट विवरण तख्ता 22/09/1999
-
-// so what shold i do
-// when i copy this from pdf and paste in google then it correclty display words but when printting it is not

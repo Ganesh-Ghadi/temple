@@ -5,11 +5,18 @@ namespace App\Models;
 use App\Models\Pooja;
 use App\Models\Receipt;
 use App\Models\PoojaType;
+use App\Models\CampReceipt;
+use App\Models\HallReceipt;
 use App\Models\KhatReceipt;
 use App\Models\ReceiptType;
 use App\Models\NaralReceipt;
 use App\Models\SareeReceipt;
 use App\Models\BhangarReceipt;
+use App\Models\LibraryReceipt;
+use App\Models\UparaneReceipt;
+use App\Models\AnteshteeReceipt;
+use App\Models\StudyRoomReceipt;
+use App\Models\VasturupeeReceipt;
 use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
@@ -52,5 +59,33 @@ class Receipt extends Model
 
     public function sareeReceipt(){
         return $this->hasOne(SareeReceipt::class, 'receipt_id');
+    }
+
+    public function uparaneReceipt(){
+        return $this->hasOne(UparaneReceipt::class, 'receipt_id');
+    }
+
+    public function vasturupeeReceipt(){
+        return $this->hasOne(VasturupeeReceipt::class, 'receipt_id');
+    }
+
+    public function campReceipt(){
+        return $this->hasOne(CampReceipt::class, 'receipt_id');
+    }
+
+    public function hallReceipt(){
+        return $this->hasOne(HallReceipt::class, 'receipt_id');
+    }
+
+    public function libraryReceipt(){
+        return $this->hasOne(LibraryReceipt::class, 'receipt_id');
+    }
+
+    public function studyRoomReceipt(){
+        return $this->hasOne(StudyRoomReceipt::class, 'receipt_id');
+    }
+
+    public function anteshteeReceipt(){
+        return $this->hasOne(AnteshteeReceipt::class, 'receipt_id');
     }
 }

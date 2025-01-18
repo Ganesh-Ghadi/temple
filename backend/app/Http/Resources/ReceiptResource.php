@@ -50,7 +50,13 @@ class ReceiptResource extends JsonResource
             'Pooja' => $this->pooja ? $this->pooja : null,
             'BhangarReceipt' => $this->bhangarReceipt ? $this->bhangarReceipt : null,
             'SareeReceipt' => $this->sareeReceipt ? $this->sareeReceipt : null,
-
+            'UparaneReceipt' => $this->uparaneReceipt ? $this->uparaneReceipt : null,
+            'VasturupeeReceipt' => $this->vasturupeeReceipt ? $this->vasturupeeReceipt : null,
+            'CampReceipt' => $this->campReceipt ? $this->campReceipt : null,
+            'HallReceipt' => $this->hallReceipt ? $this->hallReceipt : null,
+            'LibraryReceipt' => $this->libraryReceipt ? $this->libraryReceipt : null,
+            'StudyRoomReceipt' => $this->studyRoomReceipt ? $this->studyRoomReceipt : null,
+            'AnteshteeReceipt' => $this->anteshteeReceipt ? $this->anteshteeReceipt : null,
         ];
     }
 }

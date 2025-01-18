@@ -48,7 +48,7 @@ const Create = () => {
     receipt_type: "",
     receipt_head: "",
     special_date: "",
-    minimum_amount: "0.00",
+    minimum_amount: "",
     is_pooja: "",
     show_special_date: "",
     show_remembarance: "",
