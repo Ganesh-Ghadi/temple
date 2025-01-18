@@ -274,6 +274,13 @@ const Create = () => {
             });
             // toast.error("The poo has already been taken.");
           }
+          if (serverErrors.hall) {
+            setError("hall", {
+              type: "manual",
+              message: serverErrors.hall[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
         } else {
           toast.error("Failed to add pooja type.");
         }

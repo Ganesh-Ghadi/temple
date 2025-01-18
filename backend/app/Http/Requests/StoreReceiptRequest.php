@@ -27,17 +27,22 @@ class StoreReceiptRequest extends FormRequest
             'receipt_type_id' => 'required|integer',
             'quantity' => 'nullable|numeric', // Make `quantity` nullable initially
             'rate' => 'nullable|numeric', // Make `rate` nullable initially
+            'hall' => 'nullable', // Make `rate` nullable initially
         ];
     }
 
     protected function withValidator(Validator $validator)
     {
         $validator->sometimes('quantity', 'required|numeric|min:1', function ($input) {
-            return $input->receipt_type_id == 1; // Only require `quantity` if `receipt_type_id` is 6
+            return $input->receipt_type_id == 1 || $input->receipt_type_id == 2; // Only require `quantity` if `receipt_type_id` is 1|2
         });
 
         $validator->sometimes('rate', 'required|numeric|min:1', function ($input) {
-            return $input->receipt_type_id == 1; // Only require `rate` if `receipt_type_id` is 6
+            return $input->receipt_type_id == 1 || $input->receipt_type_id == 2; // Only require `rate` if `receipt_type_id` is 1|2
+        });
+
+        $validator->sometimes('hall', 'required', function ($input) {
+            return $input->receipt_type_id == 9; // Only require `hall` if `receipt_type_id` is 9
         });
     }
 
