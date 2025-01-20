@@ -199,11 +199,7 @@ const Update = () => {
                         <input
                           {...field}
                           id={permission.name}
-                          checked={
-                            RolePermissions &&
-                            RolePermissions.includes(permission.name)
-                          }
-                          // checked={field.value === 1}
+                          checked={field.value === 1}
                           onChange={(e) => {
                             field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
                           }}
