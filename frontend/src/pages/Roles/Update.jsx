@@ -112,6 +112,18 @@ const Update = () => {
       console.log("got error ", error);
     },
   });
+
+  useEffect(() => {
+    if (Permissions) {
+      // Loop through all permissions and set their initial checked state
+      Permissions.forEach((permission) => {
+        const isChecked =
+          RolePermissions && RolePermissions.includes(permission.name);
+        setValue(permission.name, isChecked ? 1 : 0); // Set the value to 1 or 0 based on the check
+      });
+    }
+  }, [Permissions, RolePermissions, setValue]);
+
   const onSubmit = (data) => {
     console.log("Clicked");
     setIsLoading(true);
@@ -190,7 +202,8 @@ const Update = () => {
                           checked={
                             RolePermissions &&
                             RolePermissions.includes(permission.name)
-                          } // Check if permission is in RolePermissions
+                          }
+                          // checked={field.value === 1}
                           onChange={(e) => {
                             field.onChange(e.target.checked ? 1 : 0); // Map true/false to 1/0
                           }}
