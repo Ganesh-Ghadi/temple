@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
+import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 import {
   Select,
@@ -14,26 +14,26 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
+} from "@/components/ui/select";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  pooja_date: z.string().min(1, 'pooja date filed is required.'),
-  pooja_type_id: z.coerce.number().min(1, 'pooja type field is required'),
+  pooja_date: z.string().min(1, "pooja date filed is required."),
+  pooja_type_id: z.coerce.number().min(1, "pooja type field is required"),
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const navigate = useNavigate();
   const defaultValues = {
-    pooja_type_id: '',
-    pooja_date: '',
+    pooja_type_id: "",
+    pooja_date: "",
   };
 
   const {
@@ -48,18 +48,15 @@ const Create = () => {
     isLoading: isAllPoojaTypeDataLoading,
     isError: isAllPoojaTypeDataError,
   } = useQuery({
-    queryKey: ['allPoojaType'], // This is the query key
+    queryKey: ["allPoojaType"], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/all_pooja_types`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/all_pooja_types`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         return response.data?.data; // Return the fetched data
       } catch (error) {
         throw new Error(error.message);
@@ -70,19 +67,19 @@ const Create = () => {
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.post('/api/pooja_dates', data, {
+      const response = await axios.post("/api/pooja_dates", data, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries('poojaDates');
-      toast.success('Pooja Date Added Successfully');
+      queryClient.invalidateQueries("poojaDates");
+      toast.success("Pooja Date Added Successfully");
       setIsLoading(false);
-      navigate('/pooja_dates');
+      navigate("/pooja_dates");
     },
     onError: (error) => {
       setIsLoading(false);
@@ -90,14 +87,14 @@ const Create = () => {
         const serverStatus = error.response.data.status;
         const serverErrors = error.response.data.errors;
         if (serverStatus === false) {
-          toast.error('Failed to add pooja Date.');
+          toast.error("Failed to add pooja Date.");
         } else {
-          toast.error('Failed to add pooja Date.');
+          toast.error("Failed to add pooja Date.");
         }
       } else {
-        toast.error('Failed to add pooja Date.');
+        toast.error("Failed to add pooja Date.");
       }
-      console.log('got error ', error);
+      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
@@ -113,7 +110,7 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate('/pooja_dates')}
+                onClick={() => navigate("/pooja_dates")}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -195,7 +192,7 @@ const Create = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate('/pooja_dates')}
+                onClick={() => navigate("/pooja_dates")}
               >
                 Cancel
               </Button>
@@ -211,7 +208,7 @@ const Create = () => {
                     Submitting...
                   </>
                 ) : (
-                  'Submit'
+                  "Submit"
                 )}
               </Button>
             </div>

@@ -70,15 +70,12 @@ const Create = () => {
     queryKey: ["allReceiptHeads"], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/all_receipt_heads`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/all_receipt_heads`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         return response.data?.data; // Return the fetched data
       } catch (error) {
         throw new Error(error.message);
@@ -139,7 +136,7 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate('/receipt_types')}
+                onClick={() => navigate("/receipt_types")}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -362,7 +359,7 @@ const Create = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate('/receipt_types')}
+                onClick={() => navigate("/receipt_types")}
               >
                 Cancel
               </Button>
@@ -378,7 +375,7 @@ const Create = () => {
                     Submitting...
                   </>
                 ) : (
-                  'Submit'
+                  "Submit"
                 )}
               </Button>
             </div>

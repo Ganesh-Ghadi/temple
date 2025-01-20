@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const Register = () => {
   const navigate = useNavigate();
-  
+
   const formSchema = z.object({
     name: z.string().nonempty("The name field is required."),
     email: z
@@ -35,15 +35,11 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       // Make API request with axios
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/register",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("/api/register", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       toast.success("Account has been created successfully");
       navigate("/login");
     } catch (error) {

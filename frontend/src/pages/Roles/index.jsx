@@ -50,7 +50,7 @@ const index = () => {
     queryFn: async () => {
       // The query function to fetch roles data
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/roles", {
+        const response = await axios.get("/api/roles", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

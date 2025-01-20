@@ -35,15 +35,12 @@ const Delete = ({ id }) => {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(
-        `http://127.0.0.1:8000/api/devtas/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the Bearer token
-          },
-        }
-      );
+      const response = await axios.delete(`/api/devtas/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the Bearer token
+        },
+      });
       return response.data;
     },
     onSuccess: (data) => {

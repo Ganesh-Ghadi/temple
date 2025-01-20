@@ -35,15 +35,11 @@ const Login = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/login",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("/api/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       console.log("Login successful:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.data));

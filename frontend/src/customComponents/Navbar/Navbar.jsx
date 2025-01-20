@@ -52,7 +52,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const logout = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/logout", {
+      const response = await axios.get("/api/logout", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the Bearer token

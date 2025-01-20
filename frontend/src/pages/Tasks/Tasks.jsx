@@ -13,7 +13,7 @@ const Tasks = () => {
   // const { data, isLoading, isError } = useQuery({
   //   queryKey: ["tasks"],
   //   queryFn: async () => {
-  //     const response = await axios.get("http://127.0.0.1:8000/api/tasks", {
+  //     const response = await axios.get("/api/tasks", {
   //       headers: {
   //         "Content-Type": "application/json",
   //         Authorization: `Bearer ${token}`, // Include the Bearer token
@@ -36,16 +36,13 @@ const Tasks = () => {
   const { data: searchtask } = useQuery({
     queryKey: ["searchTask", query],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/tasks-search",
-        {
-          params: { query },
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.get("/api/tasks-search", {
+        params: { query },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       setTasks(response.data.data.SearchedTasks);
       return response.data.data.SearchedTasks;
     },
@@ -55,15 +52,12 @@ const Tasks = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const response = await axios.delete(
-        `http://127.0.0.1:8000/api/tasks/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(`/api/tasks/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     },
     onSuccess: (data) => {

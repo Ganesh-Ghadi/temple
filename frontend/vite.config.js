@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://127.0.0.1:8000", // Use IPv4 address explicitly
+      "/api": "https://demo19.sanmishatech.com", // Use IPv4 address explicitly
     },
   },
 });

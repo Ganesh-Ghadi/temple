@@ -74,15 +74,12 @@ const Update = () => {
     queryKey: ["allReceiptHeads"], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/all_receipt_heads`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/all_receipt_heads`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         return response.data?.data; // Return the fetched data
       } catch (error) {
         throw new Error(error.message);

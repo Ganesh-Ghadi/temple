@@ -53,15 +53,12 @@ const Update = () => {
     queryKey: ["editDevta", id], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/devtas/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/devtas/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         return response.data?.data; // Return the fetched data
       } catch (error) {
         throw new Error(error.message);
@@ -78,16 +75,12 @@ const Update = () => {
 
   const updateMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.put(
-        `http://127.0.0.1:8000/api/devtas/${id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the Bearer token
-          },
-        }
-      );
+      const response = await axios.put(`/api/devtas/${id}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the Bearer token
+        },
+      });
       return response.data;
     },
     onSuccess: (data) => {
