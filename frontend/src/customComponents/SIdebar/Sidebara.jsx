@@ -120,7 +120,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             <LayoutDashboard />
           </p>
           <p className={`text-3xl duration-300 ${!isSidebarOpen && "scale-0"}`}>
-            Designer
+            श्री गणेश मंदिर संस्थान, डोंबिवली
           </p>
         </div>
         <ul className="pb-24 pt-8">

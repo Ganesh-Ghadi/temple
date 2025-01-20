@@ -175,7 +175,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       <div className="flex items-center gap-x-4 mt-4 ">
         <LayoutDashboard size={32} />
         {isSidebarOpen && (
-          <span className="text-2xl font-semibold">Designer</span>
+          <span className="text-sm font-semibold">श्री गणेश मंदिर संस्थान</span>
         )}
       </div>
       <ul className="mt-6">

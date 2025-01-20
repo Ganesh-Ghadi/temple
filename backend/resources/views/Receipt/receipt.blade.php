@@ -7,9 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>amount = {{$receipt->amount}}</h1> <br><br>
+    {{-- <h1>amount = {{$receipt->amount}}</h1> <br><br>
     <h1>name = {{$receipt->name}}</h1> <br><br>
-    <h1>receipt head = {{$receipt->receipt_head}}</h1> <br><br>
-
+    <h1>receipt head = {{$receipt->receipt_head}}</h1> <br><br> --}}
+   <h1>Receipt</h1>
 </body>
 </html>

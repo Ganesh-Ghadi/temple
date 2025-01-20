@@ -15,19 +15,9 @@ const Homepage = () => {
   return (
     <>
       <div className="w-full p-5">
-        <Tabs defaultValue="overview" className="space-y-4">
-          {/* <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics" >
-            Analytics
-          </TabsTrigger>
-          <TabsTrigger value="reports" disabled>
-            Reports
-          </TabsTrigger>
-          <TabsTrigger value="notifications" disabled>
-            Notifications
-          </TabsTrigger>
-        </TabsList> */}
+        <h1 className="text-2xl">Dashboard</h1>
+        {/* <Tabs defaultValue="overview" className="space-y-4">
+         
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Card>
@@ -133,25 +123,9 @@ const Homepage = () => {
                 </CardContent>
               </Card>
             </div>
-            {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <Card className="col-span-4">
-                <CardHeader>
-                  <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="pl-2"></CardContent>
-              </Card>
-              <Card className="col-span-3">
-                <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
-                  <CardDescription>
-                    You made 265 sales this month.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent></CardContent>
-              </Card>
-            </div> */}
+           
           </TabsContent>
-        </Tabs>
+        </Tabs> */}
       </div>
       <div>
         {/* <h1>HSL Color Display</h1>
