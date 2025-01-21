@@ -45,6 +45,7 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/generate_permissions', [PermissionsController::class, 'generatePermissions'])->name("permissions.generate");
    Route::get('/roles/{id}', [RolesController::class, 'show'])->name("roles.show");
    Route::put('/roles/{id}', [RolesController::class, 'update'])->name("roles.update");
-   Route::post('/all_receipt_report', [ReportsController::class, 'allReceiptReport'])->name("report.all");
+   Route::post('/all_receipt_report', [ReportsController::class, 'allReceiptReport'])->name("report.all_receipt_report");
+   Route::post('/summary_receipt_report', [ReportsController::class, 'ReceiptSummaryReport'])->name("report.summary_receipt_report");
 
 });

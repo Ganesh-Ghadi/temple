@@ -140,7 +140,8 @@ class ReportsController extends BaseController
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
 
-        $receipts = Receipt::with('receiptType');
+        $receipts = Receipt::with('receiptType')->where('cancelled', false);;
+        
 
         if ($from_date && $to_date) {
             // Ensure the dates are in the correct format (e.g., Y-m-d)
@@ -149,41 +150,33 @@ class ReportsController extends BaseController
     
             $receipts->whereBetween('receipt_date', [$from_date, $to_date]);
         }
-    
-        $receipts = $receipts->get();
-        
 
-        if(!$receipts){
+        // $receipts = Receipt::with('receiptType')->get()->groupBy('receipt_head');
+        $receipts = $receipts->get()->groupBy('receipt_head');
+
+        // Calculate the total amount for each group
+        $receiptsWithTotal = $receipts->map(function($group) {
+            $totalAmount = $group->sum('amount'); // Calculate the total amount for each group
+            return [
+                'receipts' => $group,
+                'total_amount' => $totalAmount,  // Add the total amount for this group
+            ];
+        });
+    
+        
+        if(!$receiptsWithTotal){
             return $this->sendError("receipts not found", ['error'=>['receipts not found']]);
         }
         
-        $cashTotal = Receipt::where('payment_mode', 'Cash')
-        ->whereBetween('receipt_date', [$from_date, $to_date])
-        ->sum('amount');
-        
-        $chequeTotal = Receipt::where('payment_mode', 'Bank')
-        ->whereBetween('receipt_date', [$from_date, $to_date])
-        ->sum('amount');
-        
-        $cardTotal = Receipt::where('payment_mode', 'Card')
-        ->whereBetween('receipt_date', [$from_date, $to_date])
-        ->sum('amount');
-
-        $total = Receipt::whereBetween('receipt_date', [$from_date, $to_date])
-        ->sum('amount');
 
         $data = [
-            'receipts' => $receipts,
+            'receiptsWithTotal' => $receiptsWithTotal,
             'from_date' => $from_date,
             'to_date' => $to_date,
-            'cashTotal' => $cashTotal,
-            'chequeTotal' => $chequeTotal,
-            'cardTotal' => $cardTotal,
-            'Total' => $total
         ];
 
         // Render the Blade view to HTML
-        $html = view('Receipt.all_receipts.receipt', $data)->render();
+        $html = view('Receipt.ReceiptSummary.receipt', $data)->render();
 
         // Create a new mPDF instance
         // $mpdf = new Mpdf();
@@ -270,3 +263,64 @@ class ReportsController extends BaseController
             //         </tr>
             //     </table>
             // </div>';
+
+/*
+$receipts = Receipt::with('receiptType')
+                   ->whereHas('receiptType', function($query) {
+                       $query->groupBy('receipt_type');  // Group by receipt_type to ensure uniqueness
+                   })
+                   ->get();
+
+                   
+$receipts = Receipt::with('receiptType')->get()->groupBy('receiptType.receipt_type');
+
+foreach ($receipts as $receiptType => $group) {
+    // Each $group will contain all receipts with the same $receiptType
+}
+
+$receipts = Receipt::with('receiptType')->get()->groupBy('receipt_head');
+
+// Calculate the total amount for each group
+$receiptsWithTotal = $receipts->map(function($group) {
+    $totalAmount = $group->sum('amount'); // Calculate the total amount for each group
+    return [
+        'receipts' => $group,
+        'total_amount' => $totalAmount,  // Add the total amount for this group
+    ];
+});
+
+
+
+{
+    "a": {
+        "receipts": [
+            {"receipt_head": "a", "amount": 2},
+            {"receipt_head": "a", "amount": 4},
+            {"receipt_head": "a", "amount": 6}
+        ],
+        "total_amount": 12
+    },
+    "z": {
+        "receipts": [
+            {"receipt_head": "z", "amount": 5}
+        ],
+        "total_amount": 5
+    },
+    "x": {
+        "receipts": [
+            {"receipt_head": "x", "amount": 3},
+            {"receipt_head": "x", "amount": 7},
+            {"receipt_head": "x", "amount": 8}
+        ],
+        "total_amount": 18
+    },
+    "c": {
+        "receipts": [
+            {"receipt_head": "c", "amount": 10},
+            {"receipt_head": "c", "amount": 20}
+        ],
+        "total_amount": 30
+    }
+}
+
+*/
