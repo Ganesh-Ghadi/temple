@@ -281,7 +281,7 @@ class ReceiptsController extends BaseController
 
      public function generateReceipt(string $id)
      {
-         $receipt = Receipt::find($id);
+         $receipt = Receipt::with('receiptType')->find($id);
          if(!$receipt){
              return $this->sendError("receipt not found", ['error'=>['receipt not found']]);
          }
@@ -295,7 +295,7 @@ class ReceiptsController extends BaseController
          ];
  
          // Render the Blade view to HTML
-         $html = view('Receipt.receipt', $data)->render();
+         $html = view('Receipt.all_receipts.receipt', $data)->render();
  
          // Create a new mPDF instance
          // $mpdf = new Mpdf();
@@ -320,6 +320,10 @@ class ReceiptsController extends BaseController
                      ],
                  ],
                  'default_font' => 'notosansdevanagari',
+                 'margin_top' => 4,        // Set top margin to 0
+                 'margin_left' => 8,      // Optional: Set left margin if needed
+                 'margin_right' => 8,     // Optional: Set right margin if needed
+                 'margin_bottom' => 4,     // Optional: Set bottom margin if needed
              ]);
  
          // Write HTML to the PDF
