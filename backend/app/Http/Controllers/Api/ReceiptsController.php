@@ -358,4 +358,7 @@ class ReceiptsController extends BaseController
         $receipt->save();
         return $this->sendResponse([], "Receipt Cancelled successfully");
     }
+
+
+   
 }

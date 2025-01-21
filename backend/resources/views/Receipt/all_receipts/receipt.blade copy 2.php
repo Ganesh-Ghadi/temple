@@ -30,23 +30,6 @@
           <th>Mode</th>
           <th>Amount</th>
         </tr>
-      
-        <tr>
-          <td>123</td>
-          <td>22/33/2002</td>
-          <td>Test</td>
-          <td>Ganesh Ganesh GaneshGanesh Ganesh</td>
-          <td>Cash</td>
-          <td>55</td>
-        </tr>
-        <tr>
-            <td>123</td>
-            <td>22/33/2002</td>
-            <td>Test</td>
-            <td>Ganesh</td>
-            <td>Cash</td>
-            <td>55</td>
-        </tr>
         <tr>
             <td>{{$receipt->receipt_no}}</td>
             <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>

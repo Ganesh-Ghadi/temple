@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\DevtasController;
 use App\Http\Controllers\Api\GurujisController;
+use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\ProfilesController;
 use App\Http\Controllers\Api\ReceiptsController;
 use App\Http\Controllers\Api\DepartmentController;
@@ -44,5 +45,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/generate_permissions', [PermissionsController::class, 'generatePermissions'])->name("permissions.generate");
    Route::get('/roles/{id}', [RolesController::class, 'show'])->name("roles.show");
    Route::put('/roles/{id}', [RolesController::class, 'update'])->name("roles.update");
+   Route::post('/all_receipt_report', [ReportsController::class, 'allReceiptReport'])->name("report.all");
 
 });

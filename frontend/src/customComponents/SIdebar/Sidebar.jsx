@@ -23,6 +23,8 @@ import {
   ReceiptText,
   Flower,
   Paperclip,
+  ClipboardPlus,
+  ClipboardMinus,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -89,6 +91,18 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           name: "Users",
           path: "/users",
           logo: <UsersRound size={16} />,
+        },
+      ],
+    },
+    {
+      name: "Reports",
+      path: "#",
+      logo: <ClipboardPlus size={16} />,
+      children: [
+        {
+          name: "All Receipts",
+          path: "/all_receipts",
+          logo: <ClipboardMinus size={16} />,
         },
       ],
     },
