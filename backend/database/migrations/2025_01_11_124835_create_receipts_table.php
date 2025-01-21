@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('amount_in_words')->nullable(); 
             $table->string('receipt_file')->nullable(); 
             $table->boolean('print_count')->nullable(); 
-            $table->boolean('cancelled')->nullable(); 
+            $table->boolean('cancelled')->default(0); 
             $table->unsignedBigInteger('cancelled_by')->nullable(); 
             $table->unsignedBigInteger('created_by')->nullable(); 
             $table->timestamps();

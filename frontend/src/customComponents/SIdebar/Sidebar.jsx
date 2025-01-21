@@ -104,6 +104,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/all_receipts",
           logo: <ClipboardMinus size={16} />,
         },
+        {
+          name: "Receipt Summary",
+          path: "/receipt_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
       ],
     },
     {

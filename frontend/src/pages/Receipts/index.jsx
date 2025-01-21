@@ -302,13 +302,15 @@ const Index = () => {
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
-                    {receipt.cancelled && (
+                    {receipt.cancelled ? (
                       <div
                         className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-500"
                         style={{
                           transform: "translateY(-50%)", // Vertically center the line in the row
                         }}
                       ></div>
+                    ) : (
+                      ""
                     )}
                   </TableRow>
                 ))}
