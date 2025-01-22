@@ -47,5 +47,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::put('/roles/{id}', [RolesController::class, 'update'])->name("roles.update");
    Route::post('/all_receipt_report', [ReportsController::class, 'allReceiptReport'])->name("report.all_receipt_report");
    Route::post('/summary_receipt_report', [ReportsController::class, 'ReceiptSummaryReport'])->name("report.summary_receipt_report");
+   Route::post('/cheque_receipt_report', [ReportsController::class, 'ChequeReceiptReport'])->name("report.cheque_receipt_report");
 
 });

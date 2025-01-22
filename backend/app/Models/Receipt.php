@@ -34,7 +34,7 @@ class Receipt extends Model
         if ($latestNumber) {
             $lastNumber = intval(substr($latestNumber->receipt_no, 4)) + 1;
         }
-        return date('my') . str_pad($lastNumber, 3, '0', STR_PAD_LEFT);
+        return date('my') . str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
     }
 
     public function receiptType(){

@@ -109,6 +109,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/receipt_summary",
           logo: <ClipboardMinus size={16} />,
         },
+        {
+          name: "Cheque Receipt Summary",
+          path: "/cheque_receipt_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
       ],
     },
     {

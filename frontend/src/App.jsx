@@ -40,6 +40,7 @@ import UpdateReceipts from "./pages/Receipts/Update";
 import Permissions from "./pages/Permissions/index";
 import AllReceipts from "./pages/Reports/AllReceipts/index";
 import ReceiptSummary from "./pages/Reports/ReceiptSummary/index";
+import ChequeReceiptSummary from "./pages/Reports/ChequeReceiptSummary/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -102,6 +103,10 @@ const App = () => {
           <Route path="/permissions" element={<Permissions />} />
           <Route path="/all_receipts" element={<AllReceipts />} />
           <Route path="/receipt_summary" element={<ReceiptSummary />} />
+          <Route
+            path="/cheque_receipt_summary"
+            element={<ChequeReceiptSummary />}
+          />
         </Route>
         <Route
           errorElement={<Error />}

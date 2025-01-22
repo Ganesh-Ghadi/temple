@@ -295,7 +295,7 @@ class ReceiptsController extends BaseController
          ];
  
          // Render the Blade view to HTML
-         $html = view('Receipt.all_receipts.receipt', $data)->render();
+         $html = view('Receipt.receipt', $data)->render();
  
          // Create a new mPDF instance
          // $mpdf = new Mpdf();
@@ -308,7 +308,7 @@ class ReceiptsController extends BaseController
          
              $mpdf = new Mpdf([
                  'mode' => 'utf-8',
-                 'format' => 'A4',
+                 'format' => [135,135],
                  'orientation' => 'P',
                  'fontDir' => array_merge($fontDirs, [
                      storage_path('fonts/'), // Update to point to the storage/fonts directory
@@ -320,10 +320,10 @@ class ReceiptsController extends BaseController
                      ],
                  ],
                  'default_font' => 'notosansdevanagari',
-                 'margin_top' => 4,        // Set top margin to 0
-                 'margin_left' => 8,      // Optional: Set left margin if needed
-                 'margin_right' => 8,     // Optional: Set right margin if needed
-                 'margin_bottom' => 4,     // Optional: Set bottom margin if needed
+                 'margin_top' => 8,        // Set top margin to 0
+                 'margin_left' => 11,      // Optional: Set left margin if needed
+                 'margin_right' => 11,     // Optional: Set right margin if needed
+                 'margin_bottom' => 8,     // Optional: Set bottom margin if needed
              ]);
  
          // Write HTML to the PDF
