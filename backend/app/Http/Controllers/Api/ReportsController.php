@@ -156,9 +156,15 @@ class ReportsController extends BaseController
 
         // Calculate the total amount for each group
         $receiptsWithTotal = $receipts->map(function($group) {
+            $totalBank = $group->where('payment_mode', 'Bank')->sum('amount');
+            $totalCash = $group->where('payment_mode', 'Cash')->sum('amount');
+            $totalCard = $group->where('payment_mode', 'Card')->sum('amount');
             $totalAmount = $group->sum('amount'); // Calculate the total amount for each group
             return [
                 'receipts' => $group,
+                'total_bank' => $totalBank,
+                'total_cash' => $totalCash,
+                'total_card' => $totalCard,
                 'total_amount' => $totalAmount,  // Add the total amount for this group
             ];
         });
@@ -213,7 +219,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - सर्व पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - पावती सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             

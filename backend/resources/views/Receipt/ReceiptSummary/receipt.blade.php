@@ -35,42 +35,55 @@
 
 <body>
   
-    {{-- <h4 style="margin:0px; padding:0px;">श्री गणेश मंदिर संस्थान - सर्व पावत्या {{ \Carbon\Carbon::parse($from_date)->format('d/m/Y') }} ते {{ \Carbon\Carbon::parse($to_date)->format('d/m/Y') }}</h4>
-    <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p> --}}
     <table style="width: 100%">
         <thead>
-        <tr>
-            <th>Receipt Type</th>
-            <th>Bank</th>
-            <th>Cash</th>
-            <th>Card</th>
-            <th>Total</th>
-        </tr>
-    </thead>
+            <tr>
+                <th>Receipt Type</th>
+                <th>Bank</th>
+                <th>Cash</th>
+                <th>Card</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+@foreach($receiptsWithTotal as $receiptHead => $data)
+   
         <tbody>
+            <!-- Display Receipt Head Title -->
+            <tr>
+                <td colspan="5" style="font-weight: bold;">{{ $receiptHead }}</td>
+            </tr>
 
-             <tr>
-                <td colspan="5">receipt head</td>
-            </tr>
+            {{-- Loop through receipts and display them --}}
+            {{-- @foreach($data['receipts'] as $receipt) --}}
+                <tr>
+                    <td>{{  $data['receipts'][0]->receiptType->receipt_type ?? 'N/A'}}</td>
+                    {{-- <td>{{ $receipt->payment_mode == 'Bank' ? number_format($receipt->amount, 2) : '0.00' }}</td>
+                    <td>{{ $receipt->payment_mode == 'Cash' ? number_format($receipt->amount, 2) : '0.00' }}</td>
+                    <td>{{ $receipt->payment_mode == 'Card' ? number_format($receipt->amount, 2) : '0.00' }}</td>
+                    <td>{{ number_format($receipt->amount, 2) }}</td> --}}
+                    <td style="text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
+                    <td style="text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
+                    <td style="text-align:right">{{ number_format($data['total_card'], 2) }}</td>
+                    <td style="text-align:right">{{ number_format($data['total_amount'], 2) }}</td>
+                </tr>
+            {{-- @endforeach --}}
+
+            <!-- Display calculated totals -->
             <tr>
-                <td>receipt type</td>
-                <td>bank55</td>
-                <td>cash 3434</td>
-                <td>card 22</td>
-                <td>total 343</td>
+                <td style="font-weight: bold; text-align:right">H Total:</td>
+                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
+                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
+                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_card'], 2) }}</td>
+                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_amount'], 2) }}</td>
             </tr>
-            <tr>
-                <td>H total</td>
-                <td>bank55</td>
-                <td>cash 3434</td>
-                <td>card 22</td>
-                <td>total 343</td>
-            </tr>
-          
+
         </tbody>
 
+   
+        @endforeach
+
     </table>
-    
+
 
     </body>
 
@@ -78,43 +91,3 @@
 
 </html>
 
-
-/*
-<body>
-
-    @foreach($receiptsWithTotal as $receiptHead => $data)
-        <table>
-            <thead>
-                <tr>
-                    <th colspan="5">{{ $receiptHead }} Receipts</th>
-                </tr>
-                <tr>
-                    <th>Receipt Type</th>
-                    <th>Bank</th>
-                    <th>Cash</th>
-                    <th>Card</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($data['receipts'] as $receipt)
-                    <tr>
-                        <td>{{ $receipt->receiptType->receipt_type ?? 'N/A' }}</td>
-                        <td>{{ $receipt->bank ?? 'N/A' }}</td>
-                        <td>{{ $receipt->amount ?? 'N/A' }}</td>
-                        <td>{{ $receipt->card ?? 'N/A' }}</td>
-                        <td>{{ $receipt->amount + $receipt->card ?? 0 }}</td>
-                    </tr>
-                @endforeach
-
-                <!-- Add total row -->
-                <tr>
-                    <td colspan="4" style="text-align: right; font-weight: bold;">Total Amount</td>
-                    <td>{{ $data['total_amount'] }}</td>
-                </tr>
-            </tbody>
-        </table>
-    @endforeach
-
-</body>
-*/
