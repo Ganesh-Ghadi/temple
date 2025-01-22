@@ -58,7 +58,8 @@
                 <td>{{$receipt->receipt_head}}</td>
                 <td>{{$receipt->name}}</td>
                 <td>{{$receipt->cheque_number}}</td>
-                <td>{{$receipt->cheque_date }}</td>
+                {{-- <td>{{$receipt->cheque_date }}</td> --}}
+                <td>{{ $receipt->cheque_date ? \Carbon\Carbon::parse($receipt->cheque_date)->format('d/m/Y') : '' }}</td>
                 <td>{{$receipt->bank_details}}</td>
                 <td style="text-align: right;">{{$receipt->amount}}</td>
             </tr>

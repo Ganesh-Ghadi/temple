@@ -39,16 +39,16 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   receipt_type_id: z.coerce.number().min(1, "Receipt Type field is required"),
-  receipt_date: z.string().min(1, "receipt date field is required"),
+  receipt_date: z.string().min(1, "Receipt date field is required"),
   name: z.string().optional(),
-  receipt_head: z.string().min(2, "receipt head field is required"),
+  receipt_head: z.string().min(2, "Receipt head field is required"),
   gotra: z.string().optional(),
-  amount: z.coerce.number().min(1, "amount filed is required"),
+  amount: z.coerce.number().min(1, "amount field is required"),
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
   email: z.string().optional(),
   special_date: z.string().optional(),
-  payment_mode: z.string().optional(),
+  payment_mode: z.string().min(1, "Payment Mode field is required"),
   mobile: z.coerce.string().optional(),
   pincode: z.coerce.string().optional(),
   address: z.string().optional(),
@@ -1724,7 +1724,7 @@ const Create = () => {
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="payment_mode">
-                  Payment Mode:
+                  Payment Mode:<span className="text-red-500">*</span>
                 </Label>
                 <Controller
                   name="payment_mode"
