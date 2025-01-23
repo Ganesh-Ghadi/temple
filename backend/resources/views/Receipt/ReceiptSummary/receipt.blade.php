@@ -34,7 +34,7 @@
 </head>
 
 <body>
-  
+
     <table style="width: 100%">
         <thead>
             <tr>
@@ -46,50 +46,40 @@
                 <th>Total</th>
             </tr>
         </thead>
-@foreach($receiptsWithTotal as $receiptHead => $data)
-   
         <tbody>
-            <!-- Display Receipt Head Title -->
-            <tr>
-                <td colspan="6" style="font-weight: bold;">{{ $receiptHead }}</td>
-            </tr>
-
-            {{-- Loop through receipts and display them --}}
-            {{-- @foreach($data['receipts'] as $receipt) --}}
+            @foreach($receiptsWithTotal as $receiptHead => $receiptHeadData)
+                <!-- Display Receipt Head Title -->
                 <tr>
-                    <td>{{  $data['receipts'][0]->receiptType->receipt_type ?? 'N/A'}}</td>
-                    {{-- <td>{{ $receipt->payment_mode == 'Bank' ? number_format($receipt->amount, 2) : '0.00' }}</td>
-                    <td>{{ $receipt->payment_mode == 'Cash' ? number_format($receipt->amount, 2) : '0.00' }}</td>
-                    <td>{{ $receipt->payment_mode == 'Card' ? number_format($receipt->amount, 2) : '0.00' }}</td>
-                    <td>{{ number_format($receipt->amount, 2) }}</td> --}}
-                    <td style="text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
-                    <td style="text-align:right">{{ number_format($data['total_upi'], 2) }}</td>
-                    <td style="text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
-                    <td style="text-align:right">{{ number_format($data['total_card'], 2) }}</td>
-                    <td style="text-align:right">{{ number_format($data['total_amount'], 2) }}</td>
+                    <td colspan="6" style="font-weight: bold;">{{ $receiptHead }}</td>
                 </tr>
-            {{-- @endforeach --}}
 
-            <!-- Display calculated totals -->
-            <tr>
-                <td style="font-weight: bold; text-align:right">H Total:</td>
-                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
-                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_upi'], 2) }}</td>
-                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
-                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_card'], 2) }}</td>
-                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_amount'], 2) }}</td>
-            </tr>
+                {{-- Loop through each receiptType within the current receiptHead --}}
+                @foreach($receiptHeadData as $receiptTypeId => $data)
+                    <tr>
+                        <td>{{ $data['receipts']->first()->receiptType->receipt_type ?? 'N/A' }}</td>
+                        <td style="text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
+                        <td style="text-align:right">{{ number_format($data['total_upi'], 2) }}</td>
+                        <td style="text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
+                        <td style="text-align:right">{{ number_format($data['total_card'], 2) }}</td>
+                        <td style="text-align:right">{{ number_format($data['total_amount'], 2) }}</td>
+                    </tr>
+                @endforeach
 
+                <!-- Display calculated totals for the entire receiptHead -->
+                <tr>
+                    <td style="font-weight: bold; text-align:right">H Total:</td>
+                    <td style="font-weight: bold; text-align:right">{{ number_format($receiptHeadData->sum(function($data) { return $data['total_bank']; }), 2) }}</td>
+                    <td style="font-weight: bold; text-align:right">{{ number_format($receiptHeadData->sum(function($data) { return $data['total_upi']; }), 2) }}</td>
+                    <td style="font-weight: bold; text-align:right">{{ number_format($receiptHeadData->sum(function($data) { return $data['total_cash']; }), 2) }}</td>
+                    <td style="font-weight: bold; text-align:right">{{ number_format($receiptHeadData->sum(function($data) { return $data['total_card']; }), 2) }}</td>
+                    <td style="font-weight: bold; text-align:right">{{ number_format($receiptHeadData->sum(function($data) { return $data['total_amount']; }), 2) }}</td>
+                </tr>
+
+            @endforeach
         </tbody>
-
-   
-        @endforeach
-
     </table>
 
-
-    </body>
-
+</body>
 
 
 </html>

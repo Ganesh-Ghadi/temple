@@ -157,34 +157,27 @@ class ReportsController extends BaseController
             $receipts->whereBetween('receipt_date', [$from_date, $to_date]);
         }
 
-        // $receipts = $receipts->get()->groupBy('receipt_head');
-        $receipts = $receipts->get()->groupBy('receipt_head')->map(function($group) {
-            // Further group each receipt_head group by receiptType
-            return $group->groupBy('receiptType.receipt_type');
-        });
+        // $receipts = Receipt::with('receiptType')->get()->groupBy('receipt_head');
+        $receipts = $receipts->get()->groupBy('receipt_head');
 
-    
-
-        $receiptsWithTotal = $receipts->map(function($receiptHeadGroup) {
-            return $receiptHeadGroup->map(function($group) {
-                // For each receiptType group, calculate the totals by payment_mode
-                $totalBank = $group->where('payment_mode', 'Bank')->sum('amount');
-                $totalCash = $group->where('payment_mode', 'Cash')->sum('amount');
-                $totalUPI = $group->where('payment_mode', 'UPI')->sum('amount');
-                $totalCard = $group->where('payment_mode', 'Card')->sum('amount');
-                $totalAmount = $group->sum('amount'); // Calculate the total amount for this group
-    
-                return [
-                    'receipts' => $group,
-                    'total_bank' => $totalBank,
-                    'total_cash' => $totalCash,
-                    'total_upi' => $totalUPI,
-                    'total_card' => $totalCard,
-                    'total_amount' => $totalAmount,  // Add the total amount for this group
-                ];
-            });
+        // Calculate the total amount for each group
+        $receiptsWithTotal = $receipts->map(function($group) {
+            $totalBank = $group->where('payment_mode', 'Bank')->sum('amount');
+            $totalCash = $group->where('payment_mode', 'Cash')->sum('amount');
+            $totalUPI = $group->where('payment_mode', 'UPI')->sum('amount');
+            $totalCard = $group->where('payment_mode', 'Card')->sum('amount');
+            $totalAmount = $group->sum('amount'); // Calculate the total amount for each group
+            return [
+                'receipts' => $group,
+                'total_bank' => $totalBank,
+                'total_cash' => $totalCash,
+                'total_upi' => $totalUPI,
+                'total_card' => $totalCard,
+                'total_amount' => $totalAmount,  // Add the total amount for this group
+            ];
         });
     
+        
         if(!$receiptsWithTotal){
             return $this->sendError("receipts not found", ['error'=>['receipts not found']]);
         }
