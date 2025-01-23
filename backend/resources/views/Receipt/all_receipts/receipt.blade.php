@@ -50,7 +50,7 @@
     </thead>
         <tbody>
             @foreach($receipts as $receipt)
-            <tr>
+            <tr @if($receipt->cancelled == true) style="background-color: #f8d7da; color: #721c24;" @endif>
                 <td>{{$receipt->receipt_no}}</td>
                 <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
                 <td>{{$receipt->receiptType->receipt_type}}</td>

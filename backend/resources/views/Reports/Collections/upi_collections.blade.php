@@ -44,9 +44,7 @@
             <th>Receipt Date</th>
             <th>Receipt Head</th>
             <th>Name</th>
-            <th>Cheque No</th>
-            <th>Cheque Date</th>
-            <th>Bank</th>
+            <th>UPI Number</th>
             <th>Amount</th>
         </tr>
     </thead>
@@ -57,10 +55,7 @@
                 <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
                 <td>{{$receipt->receipt_head}}</td>
                 <td>{{$receipt->name}}</td>
-                <td>{{$receipt->cheque_number}}</td>
-                {{-- <td>{{$receipt->cheque_date }}</td> --}}
-                <td>{{ $receipt->cheque_date ? \Carbon\Carbon::parse($receipt->cheque_date)->format('d/m/Y') : '' }}</td>
-                <td>{{$receipt->bank_details}}</td>
+                <td>{{$receipt->upi_number}}</td>
                 <td style="text-align: right;">{{$receipt->amount}}</td>
             </tr>
             @endforeach
@@ -69,19 +64,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-
                 <td style="font-weight: bold; text-align: right;" colspan="2">TOTAL:</td>
-                <td style="font-weight: bold; text-align: right;" >{{$bankTotal}}</td>
+                <td style="font-weight: bold; text-align: right;" >{{$upiTotal}}</td>
             </tr>
         </tbody>
-
     </table>
-    
-
     </body>
-
-
-
 </html>

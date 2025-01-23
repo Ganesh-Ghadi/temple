@@ -114,6 +114,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/cheque_receipt_summary",
           logo: <ClipboardMinus size={16} />,
         },
+        {
+          name: "UPI Collection",
+          path: "/upi_collection_report",
+          logo: <ClipboardMinus size={16} />,
+        },
       ],
     },
     {

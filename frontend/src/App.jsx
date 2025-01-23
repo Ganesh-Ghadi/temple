@@ -41,6 +41,7 @@ import Permissions from "./pages/Permissions/index";
 import AllReceipts from "./pages/Reports/AllReceipts/index";
 import ReceiptSummary from "./pages/Reports/ReceiptSummary/index";
 import ChequeReceiptSummary from "./pages/Reports/ChequeReceiptSummary/index";
+import UPICollectionReport from "./pages/Reports/UPICollectionReport/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -106,6 +107,10 @@ const App = () => {
           <Route
             path="/cheque_receipt_summary"
             element={<ChequeReceiptSummary />}
+          />
+          <Route
+            path="/upi_collection_report"
+            element={<UPICollectionReport />}
           />
         </Route>
         <Route
