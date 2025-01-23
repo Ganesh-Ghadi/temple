@@ -94,7 +94,7 @@ const index = () => {
 
   const handlePrint = async (data) => {
     try {
-      const response = await axios.post(`/api/cheque_receipt_report`, data, {
+      const response = await axios.post(`/api/cheque_collection_report`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -182,7 +182,7 @@ const index = () => {
         </div>
         <div className="px-5 pb-7 dark:bg-background pt-1 w-full bg-white shadow-lg border  rounded-md">
           <div className="w-full py-3 flex justify-start items-center">
-            <h2 className="text-lg  font-normal">Cheque Receipts Summary</h2>
+            <h2 className="text-lg  font-normal">Cheque Collection Report</h2>
           </div>
           {/* row starts */}
           <form onSubmit={handleSubmit(onSubmit)}>

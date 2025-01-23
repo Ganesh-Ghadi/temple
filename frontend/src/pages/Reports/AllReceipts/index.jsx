@@ -24,6 +24,7 @@ import { toast } from "sonner";
 const formSchema = z.object({
   from_date: z.string().min(1, "From date filed is required."),
   to_date: z.string().min(1, "To date filed is required."),
+  receipt_head: z.string().optional(),
 });
 
 const index = () => {
@@ -35,6 +36,7 @@ const index = () => {
   const defaultValues = {
     from_date: "",
     to_date: "",
+    receipt_head: "",
   };
 
   const {
@@ -167,6 +169,28 @@ const index = () => {
   //     },
   //   });
 
+  const {
+    data: allReceiptHeadsData,
+    isLoading: isAllReceiptHeadsDataLoading,
+    isError: isAllReceiptHeadsDataError,
+  } = useQuery({
+    queryKey: ["allReceiptHeads"], // This is the query key
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`/api/all_receipt_heads`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    keepPreviousData: true, // Keep previous data until the new data is available
+  });
+
   const onSubmit = (data) => {
     setIsLoading(true);
     // storeMutation.mutate(data);
@@ -186,7 +210,7 @@ const index = () => {
           </div>
           {/* row starts */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-4">
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="from_date">
                   From date:<span className="text-red-500">*</span>
@@ -230,6 +254,40 @@ const index = () => {
                 {errors.to_date && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.to_date.message}
+                  </p>
+                )}
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="receipt_head">
+                  Receipt Head:
+                </Label>
+                <Controller
+                  name="receipt_head"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select receipt head" />
+                      </SelectTrigger>
+                      <SelectContent className="pb-10">
+                        <SelectGroup>
+                          <SelectLabel>Select receipt head</SelectLabel>
+                          {allReceiptHeadsData?.ReceiptHeads &&
+                            Object.keys(allReceiptHeadsData?.ReceiptHeads).map(
+                              (key) => (
+                                <SelectItem key={key} value={key}>
+                                  {allReceiptHeadsData.ReceiptHeads[key]}
+                                </SelectItem>
+                              )
+                            )}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.receipt_head && (
+                  <p className="absolute text-red-500 text-sm mt-1 left-0">
+                    {errors.receipt_head.message}
                   </p>
                 )}
               </div>

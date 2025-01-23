@@ -20,6 +20,7 @@ class ReportsController extends BaseController
     {
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
+        $receipt_head = $request->input('receipt_head');
 
         $receipts = Receipt::with('receiptType');
 
@@ -30,6 +31,10 @@ class ReportsController extends BaseController
     
             $receipts->whereBetween('receipt_date', [$from_date, $to_date]);
         }
+        
+        if ($receipt_head) {
+            $receipts->where('receipt_head', $receipt_head);
+        }
     
         $receipts = $receipts->get();
         
@@ -38,8 +43,39 @@ class ReportsController extends BaseController
             return $this->sendError("receipts not found", ['error'=>['receipts not found']]);
         }
         
-        $cashTotal = Receipt::where('payment_mode', 'Cash')
+        if ($receipt_head) {
+            $cashTotal = Receipt::where('payment_mode', 'Cash')
+        ->where('cancelled', false)
+        ->Where("receipt_head", $receipt_head) 
+        ->whereBetween('receipt_date', [$from_date, $to_date])
+        ->sum('amount');
+
+        $upiTotal = Receipt::where('payment_mode', 'UPI')
         ->where('cancelled', false) 
+        ->where("receipt_head", $receipt_head) 
+        ->whereBetween('receipt_date', [$from_date, $to_date])
+        ->sum('amount');
+        
+        $chequeTotal = Receipt::where('payment_mode', 'Bank')
+        ->where('cancelled', false) 
+        ->where("receipt_head", $receipt_head) 
+        ->whereBetween('receipt_date', [$from_date, $to_date])
+        ->sum('amount');
+        
+        $cardTotal = Receipt::where('payment_mode', 'Card')
+        ->where('cancelled', false) 
+        ->where("receipt_head", $receipt_head) 
+        ->whereBetween('receipt_date', [$from_date, $to_date])
+        ->sum('amount');
+
+        $total = Receipt::where('cancelled', false) 
+        ->where("receipt_head", $receipt_head) 
+        ->whereBetween('receipt_date', [$from_date, $to_date])
+        ->sum('amount');
+
+        }else{
+            $cashTotal = Receipt::where('payment_mode', 'Cash')
+        ->where('cancelled', false)
         ->whereBetween('receipt_date', [$from_date, $to_date])
         ->sum('amount');
 
@@ -61,6 +97,9 @@ class ReportsController extends BaseController
         $total = Receipt::where('cancelled', false) 
         ->whereBetween('receipt_date', [$from_date, $to_date])
         ->sum('amount');
+        }
+        
+        
 
         $data = [
             'receipts' => $receipts,
@@ -145,10 +184,14 @@ class ReportsController extends BaseController
     {
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
+        $receipt_head = $request->input('receipt_head');
 
         $receipts = Receipt::with('receiptType')->where('cancelled', false);;
         
-
+        if ($receipt_head) {
+            $receipts->where('receipt_head', $receipt_head);
+        }
+        //  topped here
         if ($from_date && $to_date) {
             // Ensure the dates are in the correct format (e.g., Y-m-d)
             $from_date = \Carbon\Carbon::parse($from_date)->startOfDay();
@@ -263,7 +306,7 @@ class ReportsController extends BaseController
     }
 
 
-    public function ChequeReceiptReport(Request $request)
+    public function ChequeCollectionReport(Request $request)
     {
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');

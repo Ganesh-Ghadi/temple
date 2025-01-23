@@ -40,7 +40,7 @@ import UpdateReceipts from "./pages/Receipts/Update";
 import Permissions from "./pages/Permissions/index";
 import AllReceipts from "./pages/Reports/AllReceipts/index";
 import ReceiptSummary from "./pages/Reports/ReceiptSummary/index";
-import ChequeReceiptSummary from "./pages/Reports/ChequeReceiptSummary/index";
+import ChequeCollectionReport from "./pages/Reports/ChequeCollectionReport/index";
 import UPICollectionReport from "./pages/Reports/UPICollectionReport/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -105,8 +105,8 @@ const App = () => {
           <Route path="/all_receipts" element={<AllReceipts />} />
           <Route path="/receipt_summary" element={<ReceiptSummary />} />
           <Route
-            path="/cheque_receipt_summary"
-            element={<ChequeReceiptSummary />}
+            path="/cheque_collection_report"
+            element={<ChequeCollectionReport />}
           />
           <Route
             path="/upi_collection_report"
