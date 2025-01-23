@@ -50,6 +50,7 @@ const formSchema = z.object({
   email: z.string().optional(),
   special_date: z.string().optional(),
   payment_mode: z.string().optional(),
+  upi_number: z.string().optional(),
   mobile: z.coerce.string().optional(),
   pincode: z.coerce.string().optional(),
   address: z.string().optional(),
@@ -160,6 +161,7 @@ const Update = () => {
     pooja_type_id: "",
     date: "",
     receipt_no: "",
+    upi_number: "",
   };
 
   const {
@@ -307,6 +309,7 @@ const Update = () => {
       setValue("bank_details", editReceipt.Receipt?.bank_details);
       setValue("cheque_number", editReceipt.Receipt?.cheque_number);
       setValue("cheque_date", editReceipt.Receipt?.cheque_date);
+      setValue("upi_number", editReceipt.Receipt?.upi_number);
       setValue("amount", editReceipt.Receipt?.amount);
       setValue("receipt_head", editReceipt.Receipt?.receipt_head);
       setValue("receipt_no", editReceipt.Receipt?.receipt_no);
@@ -1912,6 +1915,7 @@ const Update = () => {
                         <SelectGroup>
                           <SelectLabel>Select payment mode</SelectLabel>
                           <SelectItem value="Cash">Cash</SelectItem>
+                          <SelectItem value="UPI">UPI</SelectItem>
                           <SelectItem value="Bank">Bank</SelectItem>
                           <SelectItem value="Card">Card</SelectItem>
                         </SelectGroup>
@@ -1925,6 +1929,34 @@ const Update = () => {
                   </p>
                 )}
               </div>
+
+              {paymentMode === "UPI" && (
+                <>
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="upi_number">
+                      UPI Number:
+                    </Label>
+                    <Controller
+                      name="upi_number"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="upi_number"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter number"
+                        />
+                      )}
+                    />
+                    {errors.upi_number && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.upi_number.message}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
 
               <div className="relative">
                 <Label className="font-normal" htmlFor="amount">

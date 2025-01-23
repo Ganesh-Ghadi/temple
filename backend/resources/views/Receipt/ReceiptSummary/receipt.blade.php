@@ -40,6 +40,7 @@
             <tr>
                 <th>Receipt Type</th>
                 <th>Bank</th>
+                <th>UPI</th>
                 <th>Cash</th>
                 <th>Card</th>
                 <th>Total</th>
@@ -50,7 +51,7 @@
         <tbody>
             <!-- Display Receipt Head Title -->
             <tr>
-                <td colspan="5" style="font-weight: bold;">{{ $receiptHead }}</td>
+                <td colspan="6" style="font-weight: bold;">{{ $receiptHead }}</td>
             </tr>
 
             {{-- Loop through receipts and display them --}}
@@ -62,6 +63,7 @@
                     <td>{{ $receipt->payment_mode == 'Card' ? number_format($receipt->amount, 2) : '0.00' }}</td>
                     <td>{{ number_format($receipt->amount, 2) }}</td> --}}
                     <td style="text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
+                    <td style="text-align:right">{{ number_format($data['total_upi'], 2) }}</td>
                     <td style="text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
                     <td style="text-align:right">{{ number_format($data['total_card'], 2) }}</td>
                     <td style="text-align:right">{{ number_format($data['total_amount'], 2) }}</td>
@@ -72,6 +74,7 @@
             <tr>
                 <td style="font-weight: bold; text-align:right">H Total:</td>
                 <td style="font-weight: bold; text-align:right">{{ number_format($data['total_bank'], 2) }}</td>
+                <td style="font-weight: bold; text-align:right">{{ number_format($data['total_upi'], 2) }}</td>
                 <td style="font-weight: bold; text-align:right">{{ number_format($data['total_cash'], 2) }}</td>
                 <td style="font-weight: bold; text-align:right">{{ number_format($data['total_card'], 2) }}</td>
                 <td style="font-weight: bold; text-align:right">{{ number_format($data['total_amount'], 2) }}</td>

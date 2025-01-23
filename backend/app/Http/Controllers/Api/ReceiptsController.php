@@ -106,6 +106,7 @@ class ReceiptsController extends BaseController
         $receipt->payment_mode = $request->input("payment_mode");
         $receipt->special_date = $request->input("special_date");
         $receipt->bank_details = $request->input("bank_details");
+        $receipt->upi_number = $request->input("upi_number");
         $receipt->cheque_number = $request->input("cheque_number");
         $receipt->cheque_date = $request->input("cheque_date");
         $receipt->remembrance = $request->input("remembrance");

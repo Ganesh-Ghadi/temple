@@ -55,6 +55,7 @@ const formSchema = z.object({
   narration: z.string().optional(),
   cheque_date: z.string().optional(),
   cheque_number: z.coerce.string().optional(),
+  upi_number: z.string().optional(),
   bank_details: z.string().optional(),
   remembrance: z.string().optional(),
   description: z.string().optional(),
@@ -156,6 +157,7 @@ const Create = () => {
     day_13: "",
     pooja_type_id: "",
     date: "",
+    upi_number:"",
   };
 
   const {
@@ -1744,6 +1746,7 @@ const Create = () => {
                         <SelectGroup>
                           <SelectLabel>Select payment mode</SelectLabel>
                           <SelectItem value="Cash">Cash</SelectItem>
+                          <SelectItem value="UPI">UPI</SelectItem>
                           <SelectItem value="Bank">Bank</SelectItem>
                           <SelectItem value="Card">Card</SelectItem>
                         </SelectGroup>
@@ -1757,6 +1760,34 @@ const Create = () => {
                   </p>
                 )}
               </div>
+
+              {paymentMode === "UPI" && (
+                <>
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="upi_number">
+                      UPI Number:
+                    </Label>
+                    <Controller
+                      name="upi_number"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="upi_number"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter number"
+                        />
+                      )}
+                    />
+                    {errors.upi_number && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.upi_number.message}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
 
               <div className="relative">
                 <Label className="font-normal" htmlFor="amount">

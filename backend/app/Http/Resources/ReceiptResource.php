@@ -36,6 +36,7 @@ class ReceiptResource extends JsonResource
             'remembrance' => $this->remembrance,
             'amount' => $this->amount,
             'cheque_number'=> $this->cheque_number,
+            'upi_number'=> $this->upi_number,
             'cheque_date'=>$this->cheque_date,
             'bank_details'=>$this->bank_details,
             'amount_in_words' => $this->amount_in_words,

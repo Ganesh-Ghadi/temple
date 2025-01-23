@@ -42,6 +42,11 @@ class ReportsController extends BaseController
         ->where('cancelled', false) 
         ->whereBetween('receipt_date', [$from_date, $to_date])
         ->sum('amount');
+
+        $upiTotal = Receipt::where('payment_mode', 'UPI')
+        ->where('cancelled', false) 
+        ->whereBetween('receipt_date', [$from_date, $to_date])
+        ->sum('amount');
         
         $chequeTotal = Receipt::where('payment_mode', 'Bank')
         ->where('cancelled', false) 
@@ -62,6 +67,7 @@ class ReportsController extends BaseController
             'from_date' => $from_date,
             'to_date' => $to_date,
             'cashTotal' => $cashTotal,
+            'upiTotal' => $upiTotal,
             'chequeTotal' => $chequeTotal,
             'cardTotal' => $cardTotal,
             'Total' => $total
@@ -158,12 +164,14 @@ class ReportsController extends BaseController
         $receiptsWithTotal = $receipts->map(function($group) {
             $totalBank = $group->where('payment_mode', 'Bank')->sum('amount');
             $totalCash = $group->where('payment_mode', 'Cash')->sum('amount');
+            $totalUPI = $group->where('payment_mode', 'UPI')->sum('amount');
             $totalCard = $group->where('payment_mode', 'Card')->sum('amount');
             $totalAmount = $group->sum('amount'); // Calculate the total amount for each group
             return [
                 'receipts' => $group,
                 'total_bank' => $totalBank,
                 'total_cash' => $totalCash,
+                'total_upi' => $totalUPI,
                 'total_card' => $totalCard,
                 'total_amount' => $totalAmount,  // Add the total amount for this group
             ];

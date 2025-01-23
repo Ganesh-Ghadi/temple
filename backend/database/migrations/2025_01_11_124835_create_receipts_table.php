@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('cheque_number',50)->nullable(); 
             $table->date('cheque_date')->nullable(); 
             $table->string('bank_details',100)->nullable(); 
+            $table->string('upi_number',20)->nullable(); 
             $table->date('special_date')->nullable(); 
             $table->string('remembrance')->nullable(); 
             $table->decimal('amount',18,2)->nullable(); 
