@@ -52,5 +52,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::post('/khat_report', [ReportsController::class, 'khatReport'])->name("report.khatReport");
    Route::post('/naral_report', [ReportsController::class, 'naralReport'])->name("report.naralReport");
    Route::post('/cancelled_receipt_report', [ReportsController::class, 'cancelledReceiptReport'])->name("report.cancelled_receipt_report");
+   Route::post('/receipt_report', [ReportsController::class, 'ReceiptReport'])->name("report.receipt_report");
 
 });

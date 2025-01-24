@@ -45,6 +45,7 @@ import UPICollectionReport from "./pages/Reports/UPICollectionReport/index";
 import KhatReport from "./pages/Reports/KhatReport/index";
 import NaralReport from "./pages/Reports/NaralReport/index";
 import CancelledReceiptReport from "./pages/Reports/CancelledReceiptReport/index";
+import ReceiptsReport from "./pages/Reports/ReceiptsReport/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -121,6 +122,7 @@ const App = () => {
             path="/cancelled_receipt_report"
             element={<CancelledReceiptReport />}
           />
+          <Route path="/receipts_report" element={<ReceiptsReport />} />
         </Route>
         <Route
           errorElement={<Error />}
