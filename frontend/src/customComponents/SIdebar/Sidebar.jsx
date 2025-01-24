@@ -129,6 +129,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/naral_report",
           logo: <ClipboardMinus size={16} />,
         },
+        {
+          name: "Cancelled Receipt Report",
+          path: "/cancelled_receipt_report",
+          logo: <ClipboardMinus size={16} />,
+        },
       ],
     },
     {
