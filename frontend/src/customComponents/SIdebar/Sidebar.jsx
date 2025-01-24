@@ -119,6 +119,16 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/upi_collection_report",
           logo: <ClipboardMinus size={16} />,
         },
+        {
+          name: "Khat Report",
+          path: "/khat_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Naral Report",
+          path: "/naral_report",
+          logo: <ClipboardMinus size={16} />,
+        },
       ],
     },
     {
