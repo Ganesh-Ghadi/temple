@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use File;
 use Response;
 use Mpdf\Mpdf;
+use Carbon\Carbon;
 use App\Models\Pooja;
 use App\Models\Receipt;
 use Barryvdh\DomPDF\PDF;
@@ -373,6 +374,57 @@ class ReceiptsController extends BaseController
         return $this->sendResponse([], "Receipt Cancelled successfully");
     }
 
+     /**
+     * Saree Date.
+     */
+    public function SareeDate(): JsonResponse
+    {
+        $sareeData = Receipt::with("sareeReceipt")
+        ->where('receipt_type_id', 4)
+        ->latest() // Orders by 'created_at' descending by default
+        ->first(); // Gets the latest (first) record
+
+        if (!$sareeData || !$sareeData->sareeReceipt) {
+        // Handle case where no sareeReceipt or sareeData is found
+        return $this->sendError("No saree receipt found", ['error' => 'No saree receipt found']);
+        }
+
+        // Assuming 'saree_draping_date' is a date field in the sareeReceipt
+        $oldDate = $sareeData->sareeReceipt->saree_draping_date;
+
+        // Get the next date (for example, 1 day after the old date)
+        $newDate = Carbon::parse($oldDate)->addDay(); // You can replace `addDay()` with `addDays($number)` for multiple days.
+
+        return $this->sendResponse([
+        "SareeDrapingDate" => $newDate->format('Y-m-d'), // Format as per your requirement
+        ], "Saree Date retrieved successfully");
+    }
+
+     /**
+     * Uparane Date.
+     */
+    public function UparaneDate(): JsonResponse
+    {
+        $uparaneData = Receipt::with("uparaneReceipt")
+        ->where('receipt_type_id', 5)
+        ->latest() // Orders by 'created_at' descending by default
+        ->first(); // Gets the latest (first) record
+
+        if (!$uparaneData || !$uparaneData->uparaneReceipt) {
+        // Handle case where no sareeReceipt or sareeData is found
+        return $this->sendError("No uparane receipt found", ['error' => 'No uparane receipt found']);
+        }
+
+        // Assuming 'saree_draping_date' is a date field in the sareeReceipt
+        $oldDate = $uparaneData->uparaneReceipt->uparane_draping_date;
+
+        // Get the next date (for example, 1 day after the old date)
+        $newDate = Carbon::parse($oldDate)->addDay(); // You can replace `addDay()` with `addDays($number)` for multiple days.
+
+        return $this->sendResponse([
+        "UparaneDrapingDate" => $newDate->format('Y-m-d'), // Format as per your requirement
+        ], "Uparane Date retrieved successfully");
+    }
 
    
 }

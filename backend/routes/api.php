@@ -56,5 +56,7 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/show_pooja_dates/{id}', [PoojaDatesController::class, 'showPoojaDates'])->name("pooja_dates.showPoojaDates");
    Route::get('/all_gurujis', [GurujisController::class, 'allGurujis'])->name("gurujis.all");
    Route::post('/gotravali_summary_report', [ReportsController::class, 'gotravaliSummaryReport'])->name("report.gotravali_summary_report");
+   Route::get('/saree_date', [ReceiptsController::class, 'SareeDate'])->name("receipts.saree_date");
+   Route::get('/uparane_date', [ReceiptsController::class, 'UparaneDate'])->name("receipts.uparane_date");
 
 });

@@ -335,6 +335,80 @@ const Create = () => {
     keepPreviousData: true, // Keep previous data until the new data is available
   });
 
+  // sareeDate
+  const {
+    data: sareeDateData,
+    isLoading: isSareeDateDataLoading,
+    isError: isSareeDateDataError,
+  } = useQuery({
+    queryKey: ["sareeDate"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedReceiptTypeId === 4) {
+          return [];
+        }
+        const response = await axios.get(`/api/saree_date`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: selectedReceiptTypeId === 4, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
+  // sareeDate
+  const {
+    data: uparaneDateData,
+    isLoading: isUparaneDateDataLoading,
+    isError: isUparaneDateDataError,
+  } = useQuery({
+    queryKey: ["uparaneDate"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedReceiptTypeId === 5) {
+          return [];
+        }
+        const response = await axios.get(`/api/uparane_date`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: selectedReceiptTypeId === 5, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
+  useEffect(() => {
+    if (sareeDateData) {
+      console.log(sareeDateData);
+      // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
+      const dateFormatted = new Date(sareeDateData?.SareeDrapingDate)
+        .toISOString()
+        .split("T")[0];
+      setValue("saree_draping_date", dateFormatted);
+    }
+  }, [sareeDateData, selectedReceiptTypeId]);
+
+  useEffect(() => {
+    if (uparaneDateData) {
+      console.log(uparaneDateData);
+      // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
+      const dateFormatted = new Date(uparaneDateData?.UparaneDrapingDate)
+        .toISOString()
+        .split("T")[0];
+      setValue("uparane_draping_date", dateFormatted);
+    }
+  }, [uparaneDateData, selectedReceiptTypeId]);
+
   const storeMutation = useMutation({
     mutationFn: async (data) => {
       const response = await axios.post("/api/receipts", data, {
@@ -1375,8 +1449,8 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === hallReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
-                <div className="relative ">
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                {/* <div className="relative ">
                   <Label className="font-normal" htmlFor="hall">
                     Hall:
                   </Label>
@@ -1391,6 +1465,41 @@ const Create = () => {
                         type="text"
                         placeholder="Enter hall name"
                       />
+                    )}
+                  />
+                  {errors.hall && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.hall.message}
+                    </p>
+                  )}
+                </div> */}
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="hall">
+                    Hall:
+                  </Label>
+                  <Controller
+                    name="hall"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
+                      >
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select hall" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Select hall</SelectLabel>
+                            <SelectItem value="वक्रतुंड ३०१">
+                              वक्रतुंड ३०१
+                            </SelectItem>
+                            <SelectItem value="ओंकार १०१">ओंकार १०१</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     )}
                   />
                   {errors.hall && (
