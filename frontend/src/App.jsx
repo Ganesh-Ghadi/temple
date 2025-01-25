@@ -46,6 +46,7 @@ import KhatReport from "./pages/Reports/KhatReport/index";
 import NaralReport from "./pages/Reports/NaralReport/index";
 import CancelledReceiptReport from "./pages/Reports/CancelledReceiptReport/index";
 import ReceiptsReport from "./pages/Reports/ReceiptsReport/index";
+import GotravaliSummaryReport from "./pages/Reports/GotravaliSummaryReport/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -123,6 +124,10 @@ const App = () => {
             element={<CancelledReceiptReport />}
           />
           <Route path="/receipts_report" element={<ReceiptsReport />} />
+          <Route
+            path="/gotravali_summary_report"
+            element={<GotravaliSummaryReport />}
+          />
         </Route>
         <Route
           errorElement={<Error />}

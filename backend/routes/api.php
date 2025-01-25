@@ -55,5 +55,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::post('/receipt_report', [ReportsController::class, 'ReceiptReport'])->name("report.receipt_report");
    Route::get('/show_pooja_dates/{id}', [PoojaDatesController::class, 'showPoojaDates'])->name("pooja_dates.showPoojaDates");
    Route::get('/all_gurujis', [GurujisController::class, 'allGurujis'])->name("gurujis.all");
+   Route::post('/gotravali_summary_report', [ReportsController::class, 'gotravaliSummaryReport'])->name("report.gotravali_summary_report");
 
 });

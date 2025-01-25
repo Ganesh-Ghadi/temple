@@ -100,6 +100,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       logo: <ClipboardPlus size={16} />,
       children: [
         {
+          name: "Gotravali Summary",
+          path: "/gotravali_summary_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Receipt Report",
           path: "/receipts_report",
           logo: <ClipboardMinus size={16} />,
