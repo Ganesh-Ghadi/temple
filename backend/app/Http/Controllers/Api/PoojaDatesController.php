@@ -107,6 +107,18 @@ class PoojaDatesController extends BaseController
         return $this->sendResponse([], "Pooja Date deleted successfully");
     }
 
+
+
+    /**
+     * Show Pooja Dates.
+     */
+    public function showPoojaDates(string $id)
+    {
+        $poojaDates = PoojaDate::where('pooja_type_id', $id)->get();
+
+        return $this->sendResponse(['PoojaDates'=>PoojaDateResource::collection($poojaDates)], "Pooja Dates retrieved successfully");
+    }
+
    
     
 }

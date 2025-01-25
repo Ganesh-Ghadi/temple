@@ -87,6 +87,7 @@ class ReceiptsController extends BaseController
         $studyRoomReceiptId = 10;
         $anteshteeReceiptId = 11;
         $poojaReceiptId = 12;
+        $poojaPavtiAnekReceiptId = 13;
 
 
         $receipt = new Receipt();
@@ -111,6 +112,8 @@ class ReceiptsController extends BaseController
         $receipt->cheque_date = $request->input("cheque_date");
         $receipt->remembrance = $request->input("remembrance");
         $receipt->save();
+
+        $multiple_dates = $request->input("multiple_dates");
 
         // खत विक्री पावती
    
@@ -220,6 +223,16 @@ class ReceiptsController extends BaseController
             $pooja_receipt->pooja_type_id = $request->input("pooja_type_id"); 
             $pooja_receipt->date = $request->input("date");                                                                                   
             $pooja_receipt->save();
+        }
+
+        if ($request->input("receipt_type_id") == $poojaPavtiAnekReceiptId) {
+            foreach ($multiple_dates as $date) {
+                $multiplePooja = new Pooja();
+                $multiplePooja->receipt_id = $receipt->id;
+                $multiplePooja->pooja_type_id = $request->input("pooja_type_id"); 
+                $multiplePooja->date = $date;                                                                                   
+                $multiplePooja->save();
+            }
         }
         
         

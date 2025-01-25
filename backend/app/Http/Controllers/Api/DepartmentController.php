@@ -40,7 +40,7 @@ class DepartmentController extends BaseController
             'last_page' => $departments->lastPage(),
             'per_page' => $departments->perPage(),
             'total' => $departments->total(),
-        ]], "Department retrived successfully");
+        ]], "Department retrieved successfully");
         
     }
 

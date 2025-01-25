@@ -98,4 +98,16 @@ class GurujisController extends BaseController
         $guruji->delete();
         return $this->sendResponse([], "Guruji deleted successfully");
     }
+
+     /**
+     * Fetch All Guruji.
+     */
+    public function allGurujis(): JsonResponse
+    {
+        $gurujis = Guruji::all();
+
+        return $this->sendResponse(["Gurujis"=>GurujiResource::collection($gurujis),
+        ], "Gurujis retrieved successfully");
+
+    }
 }

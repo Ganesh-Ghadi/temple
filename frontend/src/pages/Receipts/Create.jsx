@@ -93,7 +93,10 @@ const Create = () => {
   const [openPoojaType, setOpenPoojaType] = useState(false);
   const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
   const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
+  const [selectedPoojaTypeId, setSelectedPoojaTypeId] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
+  const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
+  const [selectedDates, setSelectedDates] = useState([]);
   const khatReceiptId = 1;
   const naralReceiptId = 2;
   const bhangarReceiptId = 3;
@@ -106,6 +109,7 @@ const Create = () => {
   const studyRoomReceiptId = 10;
   const anteshteeReceiptId = 11;
   const poojaReceiptId = 12;
+  const poojaPavtiAnekReceiptId = 13;
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -157,7 +161,7 @@ const Create = () => {
     day_13: "",
     pooja_type_id: "",
     date: "",
-    upi_number:"",
+    upi_number: "",
   };
 
   const {
@@ -216,6 +220,75 @@ const Create = () => {
       }
     },
     keepPreviousData: true, // Keep previous data until the new data is available
+  });
+
+  // pooja dates
+  const {
+    data: poojaDatesData,
+    isLoading: isPoojaDatesDataLoading,
+    isError: isPoojaDatesDataError,
+  } = useQuery({
+    queryKey: ["showPoojaDate", selectedPoojaTypeId], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedPoojaTypeId) {
+          return [];
+        }
+        const response = await axios.get(
+          `/api/show_pooja_dates/${selectedPoojaTypeId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: !!selectedPoojaTypeId, // Enable the query only if selectedPoojaTypeId is truthy
+  });
+
+  // end pooja dates
+  //  function for date checkbox
+  const handleCheckboxChange = (e, poojaDate) => {
+    if (e.target.checked) {
+      // Add the date to the selectedDates array
+      setSelectedDates((prevDates) => [...prevDates, poojaDate]);
+    } else {
+      // Remove the date from the selectedDates array
+      setSelectedDates((prevDates) =>
+        prevDates.filter((date) => date !== poojaDate)
+      );
+    }
+  };
+
+  // guruji data
+  const {
+    data: AllGurujisData,
+    isLoading: isAllGurujisDataLoading,
+    isError: isAllGurujisDataError,
+  } = useQuery({
+    queryKey: ["allGurijis"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedAnteshtiId) {
+          return [];
+        }
+        const response = await axios.get(`/api/all_gurujis`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: !!selectedAnteshtiId, // Enable the query only if selectedPoojaTypeId is truthy
   });
 
   const {
@@ -292,9 +365,14 @@ const Create = () => {
       console.log("got error ", error);
     },
   });
+
   const onSubmit = (data) => {
     setIsLoading(true);
-    storeMutation.mutate(data);
+    const payload = {
+      ...data, // existing form data
+      multiple_dates: selectedDates, // your array of selected dates
+    };
+    storeMutation.mutate(payload);
   };
 
   const handleReceiptTypeChange = (value) => {
@@ -306,6 +384,9 @@ const Create = () => {
     // setValue("amount", value?.minimum_amount);
     setValue("amount", value?.minimum_amount || null);
     console.log("swff", parseFloat(value?.minimum_amount));
+    if (value?.id === 11) {
+      setSelectedAnteshtiId(true);
+    }
   };
 
   const receiptAmount = watch(["quantity", "rate"]);
@@ -562,6 +643,7 @@ const Create = () => {
                                         //     ? ""
                                         //     : currentValue
                                         // );
+
                                         handleReceiptTypeChange(receiptType);
                                         setOpenReceiptType(false);
                                         // Close popover after selection
@@ -1404,7 +1486,7 @@ const Create = () => {
             {selectedReceiptTypeId === anteshteeReceiptId && (
               <div>
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-                  <div className="relative ">
+                  {/* <div className="relative ">
                     <Label className="font-normal" htmlFor="guruji">
                       Guruji Name:
                     </Label>
@@ -1419,6 +1501,43 @@ const Create = () => {
                           type="text"
                           placeholder="Enter name"
                         />
+                      )}
+                    />
+                    {errors.guruji && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.guruji.message}
+                      </p>
+                    )}
+                  </div> */}
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="guruji">
+                      Guruji Name: <span className="text-red-500">*</span>
+                    </Label>
+                    <Controller
+                      name="guruji"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select guruji" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Select Guruji</SelectLabel>
+                              {AllGurujisData?.Gurujis &&
+                                AllGurujisData?.Gurujis.map((guruji) => (
+                                  <SelectItem
+                                    value={String(guruji.guruji_name)}
+                                  >
+                                    {guruji.guruji_name}
+                                  </SelectItem>
+                                ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       )}
                     />
                     {errors.guruji && (
@@ -1721,6 +1840,148 @@ const Create = () => {
                   )}
                 </div>
               </div>
+            )}
+
+            {/* <div className="w-full grid grid-cols-1 md:grid-cols-6 items-center gap-7 md:gap-1">
+              {selectedPoojaTypeId &&
+                poojaDatesData?.PoojaDates?.map((poojaDate) => (
+                  <div
+                    key={poojaDate.id}
+                    className="relative flex gap-2 md:pt-10 md:pl-2"
+                  >
+                    <input
+                      type="checkbox"
+                      id={poojaDate.pooja_date}
+                      className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+                    <Label
+                      className="font-normal"
+                      htmlFor={poojaDate.pooja_date}
+                    >
+                      {poojaDate.pooja_date}
+                    </Label>
+                  </div>
+                ))}
+            </div> */}
+
+            {selectedReceiptTypeId === poojaPavtiAnekReceiptId && (
+              <>
+                <div className="w-full flex justify-around">
+                  <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="pooja_type_id">
+                        Pooja Type:
+                      </Label>
+                      <Controller
+                        name="pooja_type_id"
+                        control={control}
+                        render={({ field }) => (
+                          <Popover
+                            open={openPoojaType}
+                            onOpenChange={setOpenPoojaType}
+                          >
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={openPoojaType ? "true" : "false"} // This should depend on the popover state
+                                className=" w-[325px] justify-between mt-1"
+                                onClick={() =>
+                                  setOpenPoojaType((prev) => !prev)
+                                } // Toggle popover on button click
+                              >
+                                {field.value
+                                  ? allPoojaTypesData?.PoojaTypes &&
+                                    allPoojaTypesData?.PoojaTypes.find(
+                                      (poojaType) =>
+                                        poojaType.id === field.value
+                                    )?.pooja_type
+                                  : "Select Pooja Type..."}
+                                <ChevronsUpDown className="opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[325px] p-0">
+                              <Command>
+                                <CommandInput
+                                  placeholder="Search pooja type..."
+                                  className="h-9"
+                                />
+                                <CommandList>
+                                  <CommandEmpty>
+                                    No pooja type found.
+                                  </CommandEmpty>
+                                  <CommandGroup>
+                                    {allPoojaTypesData?.PoojaTypes &&
+                                      allPoojaTypesData?.PoojaTypes.map(
+                                        (poojaType) => (
+                                          <CommandItem
+                                            key={poojaType.id}
+                                            value={poojaType.id}
+                                            onSelect={(currentValue) => {
+                                              setValue(
+                                                "pooja_type_id",
+                                                poojaType.id
+                                              );
+                                              setSelectedPoojaTypeId(
+                                                poojaType.id
+                                              );
+                                              setOpenPoojaType(false);
+                                              // Close popover after selection
+                                            }}
+                                          >
+                                            {poojaType.pooja_type}
+                                            <Check
+                                              className={cn(
+                                                "ml-auto",
+                                                poojaType.id === field.value
+                                                  ? "opacity-100"
+                                                  : "opacity-0"
+                                              )}
+                                            />
+                                          </CommandItem>
+                                        )
+                                      )}
+                                  </CommandGroup>
+                                </CommandList>
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                        )}
+                      />
+                      {errors.pooja_type_id && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.pooja_type_id.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="w-full grid grid-cols-1 md:grid-cols-4 items-center gap-7 md:gap-1">
+                    {selectedPoojaTypeId &&
+                      poojaDatesData?.PoojaDates?.map((poojaDate) => (
+                        <div
+                          key={poojaDate.id}
+                          className="relative flex gap-2 md:pt-10 md:pl-2"
+                        >
+                          <input
+                            type="checkbox"
+                            id={poojaDate.pooja_date}
+                            onChange={(e) =>
+                              handleCheckboxChange(e, poojaDate.pooja_date)
+                            }
+                            className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          />
+                          <Label
+                            className="font-normal"
+                            htmlFor={poojaDate.pooja_date}
+                          >
+                            {poojaDate.pooja_date}
+                          </Label>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </>
             )}
 
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
