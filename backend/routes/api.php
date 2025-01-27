@@ -58,5 +58,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::post('/gotravali_summary_report', [ReportsController::class, 'gotravaliSummaryReport'])->name("report.gotravali_summary_report");
    Route::get('/saree_date', [ReceiptsController::class, 'SareeDate'])->name("receipts.saree_date");
    Route::get('/uparane_date', [ReceiptsController::class, 'UparaneDate'])->name("receipts.uparane_date");
+   Route::post('/gotravali_report', [ReportsController::class, 'gotravaliReport'])->name("report.gotravali_report");
 
 });

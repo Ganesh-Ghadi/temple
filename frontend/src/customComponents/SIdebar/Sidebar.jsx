@@ -100,6 +100,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       logo: <ClipboardPlus size={16} />,
       children: [
         {
+          name: "Gotravali",
+          path: "/gotravali_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Gotravali Summary",
           path: "/gotravali_summary_report",
           logo: <ClipboardMinus size={16} />,
@@ -277,7 +282,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
                     activeParent === item.name
-                      ? "max-h-96 opacity-100"
+                      ? "max-h-full opacity-100"
                       : "max-h-0 opacity-0"
                   }`}
                 >
