@@ -114,7 +114,7 @@ const index = () => {
                     <input
                       {...field}
                       id="date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter date"
                     />

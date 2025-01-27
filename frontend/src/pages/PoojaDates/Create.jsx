@@ -174,7 +174,7 @@ const Create = () => {
                     <input
                       {...field}
                       id="pooja_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      className="mt-1 dark:bg-[var(--foreground)] text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter pooja date"
                     />

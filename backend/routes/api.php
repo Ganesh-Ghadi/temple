@@ -23,7 +23,6 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
   
-   Route::resource('departments', DepartmentController::class);  
    Route::resource('profiles', ProfilesController::class);  
    Route::resource('denominations', DenominationsController::class);  
    Route::resource('receipts', ReceiptsController::class);  

@@ -75,8 +75,6 @@ const formSchema = z.object({
   timing: z.string().optional(),
   guruji: z.string().optional(),
   yajman: z.string().optional(),
-  from_date: z.string().optional(),
-  to_date: z.string().optional(),
   karma_number: z.string().optional(),
   day_10: z.coerce.number().min(0, "day 10 field is required"),
   day_11: z.coerce.number().min(0, "day 11 field is required"),
@@ -534,7 +532,7 @@ const Create = () => {
                     <Input
                       {...field}
                       id="receipt_no"
-                      className="mt-1 bg-gray-100"
+                      className="dark:bg-[var(--foreground)] mt-1 bg-gray-100"
                       type="text"
                       readOnly
                       // disabled="true"
@@ -559,7 +557,7 @@ const Create = () => {
                     <input
                       {...field}
                       id="receipt_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1 bg-gray-100"
+                      className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1 bg-gray-100"
                       type="date"
                       readOnly
                       placeholder="Enter receipt date"
@@ -973,7 +971,7 @@ const Create = () => {
                     <input
                       {...field}
                       id="special_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter special date"
                     />
@@ -1108,7 +1106,7 @@ const Create = () => {
                         <input
                           {...field}
                           id="cheque_date"
-                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                           type="date"
                           placeholder="Enter cheque date"
                         />
@@ -1194,7 +1192,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="saree_draping_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
@@ -1244,7 +1242,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="uparane_draping_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
@@ -1317,7 +1315,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="from_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter from date"
                       />
@@ -1340,7 +1338,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="to_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter to date"
                       />
@@ -1548,7 +1546,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="from_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter from date"
                       />
@@ -1571,7 +1569,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="to_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter to date"
                       />
@@ -1737,7 +1735,7 @@ const Create = () => {
                         <input
                           {...field}
                           id="from_date"
-                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                           type="date"
                           placeholder="Enter from date"
                         />
@@ -1760,7 +1758,7 @@ const Create = () => {
                         <input
                           {...field}
                           id="to_date"
-                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                           type="date"
                           placeholder="Enter to date"
                         />
@@ -1958,7 +1956,7 @@ const Create = () => {
                       <input
                         {...field}
                         id="date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter to date"
                       />

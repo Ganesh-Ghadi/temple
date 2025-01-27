@@ -180,7 +180,7 @@ const Create = () => {
                     <input
                       {...field}
                       id="deposit_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter date"
                     />
@@ -504,7 +504,7 @@ const Create = () => {
                     <Input
                       {...field}
                       id="amount"
-                      className="mt-1 bg-gray-100"
+                      className="dark:bg-[var(--foreground)] mt-1 bg-gray-100"
                       type="number"
                       // disabled="true"
                       readOnly
