@@ -50,6 +50,10 @@ class Receipt extends Model
     }
 
     public function pooja(){
+        return $this->hasOne(Pooja::class, 'receipt_id');
+    }
+
+    public function poojas(){
         return $this->hasMany(Pooja::class, 'receipt_id');
     }
 

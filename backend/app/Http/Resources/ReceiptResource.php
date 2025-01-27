@@ -49,6 +49,8 @@ class ReceiptResource extends JsonResource
             'khatReceipt' => $this->khatReceipt ? $this->khatReceipt : null,
             'NaralReceipt' => $this->naralReceipt ? $this->naralReceipt : null,
             'Pooja' => $this->pooja ? $this->pooja : null,
+            // 'Poojas' => $this->poojas ? $this->poojas : null,
+            'Poojas' => $this->poojas ? $this->poojas->pluck('date')->toArray() : [],
             'BhangarReceipt' => $this->bhangarReceipt ? $this->bhangarReceipt : null,
             'SareeReceipt' => $this->sareeReceipt ? $this->sareeReceipt : null,
             'UparaneReceipt' => $this->uparaneReceipt ? $this->uparaneReceipt : null,
