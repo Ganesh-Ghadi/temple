@@ -53,7 +53,7 @@ const Update = () => {
     queryKey: ["editGuruji", id], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get(`/gurujis/${id}`, {
+        const response = await axios.get(`/api/gurujis/${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

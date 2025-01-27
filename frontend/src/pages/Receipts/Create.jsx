@@ -2179,7 +2179,7 @@ const Create = () => {
                 </>
               )}
 
-              <div className="relative">
+              <div className="relative col-start-3">
                 <Label className="font-normal" htmlFor="amount">
                   Amount: <span className="text-red-500">*</span>
                 </Label>
