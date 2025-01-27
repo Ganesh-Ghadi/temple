@@ -8,6 +8,7 @@ use Mpdf\Mpdf;
 use Carbon\Carbon;
 use App\Models\Pooja;
 use App\Models\Receipt;
+use Mpdf\WatermarkText;
 use Barryvdh\DomPDF\PDF;
 use App\Models\CampReceipt;
 use App\Models\HallReceipt;
@@ -294,69 +295,152 @@ class ReceiptsController extends BaseController
      * Generate Receipt
      */
 
-     public function generateReceipt(string $id)
-     {
-         $receipt = Receipt::with('receiptType')->find($id);
-         if(!$receipt){
-             return $this->sendError("receipt not found", ['error'=>['receipt not found']]);
-         }
+    //  public function generateReceipt(string $id)
+    //  {
+    //      $receipt = Receipt::with('receiptType')->find($id);
+    //      if(!$receipt){
+    //          return $this->sendError("receipt not found", ['error'=>['receipt not found']]);
+    //      }
          
-         if(!empty($receipt->receipt_file) && Storage::exists('public/Receipt/'.$receipt->receipt_file)) {
-             Storage::delete('public/Receipt/'.$receipt->receipt_file);
-         }
+    //      if(!empty($receipt->receipt_file) && Storage::exists('public/Receipt/'.$receipt->receipt_file)) {
+    //          Storage::delete('public/Receipt/'.$receipt->receipt_file);
+    //      }
  
-         $data = [
-             'receipt' => $receipt,
-         ];
+    //      $data = [
+    //          'receipt' => $receipt,
+    //      ];
+
+    //      $defaultConfig = (new ConfigVariables())->getDefaults();
+    //      $fontDirs = $defaultConfig['fontDir'];
+     
+    //      $defaultFontConfig = (new FontVariables())->getDefaults();
+    //      $fontData = $defaultFontConfig['fontdata'];
+     
+    //      $mpdf = new Mpdf([
+    //          'mode' => 'utf-8',
+    //          'format' => [135,135],
+    //          'orientation' => 'P',
+    //          'fontDir' => array_merge($fontDirs, [
+    //              storage_path('fonts/'), // Update to point to the storage/fonts directory
+    //          ]),
+    //          'fontdata' => $fontData + [
+    //              'notosansdevanagari' => [
+    //                  'R' => 'NotoSansDevanagari-Regular.ttf',
+    //                  'B' => 'NotoSansDevanagari-Bold.ttf',
+    //              ],
+    //          ],
+    //          'default_font' => 'notosansdevanagari',
+    //          'margin_top' => 8,        // Set top margin to 0
+    //          'margin_left' => 11,      // Optional: Set left margin if needed
+    //          'margin_right' => 11,     // Optional: Set right margin if needed
+    //          'margin_bottom' => 8,     // Optional: Set bottom margin if needed
+    //      ]);
+
+    //       //  strt watermar
+    //         // Add watermark "Duplicate" before content rendering
+    //     $mpdf->SetFont('notosansdevanagari', 'B', 50); // Set font and size for watermark
+    //     $mpdf->SetTextColor(200, 200, 200); // Set text color to light gray
+
+    //     // Get page width and height
+    //     $pageWidth = $mpdf->w;
+    //     $pageHeight = $mpdf->h;
+
+    //     // Place watermark diagonally from bottom-left to top-right
+    //     $mpdf->Text($pageWidth * 0.1, $pageHeight * 0.9, 'Duplicate');  // Start at bottom-left and go diagonally
+    //     $mpdf->Text($pageWidth * 0.3, $pageHeight * 0.7, 'Duplicate');
+    //     $mpdf->Text($pageWidth * 0.5, $pageHeight * 0.5, 'Duplicate');
+    //     $mpdf->Text($pageWidth * 0.7, $pageHeight * 0.3, 'Duplicate');
+    //     $mpdf->Text($pageWidth * 0.9, $pageHeight * 0.1, 'Duplicate'); // 
+    //             // end watermarkl
  
-         // Render the Blade view to HTML
-         $html = view('Receipt.receipt', $data)->render();
+    //      // Render the Blade view to HTML
+    //      $html = view('Receipt.receipt', $data)->render();
+
  
-         // Create a new mPDF instance
-         // $mpdf = new Mpdf();
-             // $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'orientation' => 'L']);  // 'P' is for portrait (default)
-             $defaultConfig = (new ConfigVariables())->getDefaults();
-             $fontDirs = $defaultConfig['fontDir'];
-         
-             $defaultFontConfig = (new FontVariables())->getDefaults();
-             $fontData = $defaultFontConfig['fontdata'];
-         
-             $mpdf = new Mpdf([
-                 'mode' => 'utf-8',
-                 'format' => [135,135],
-                 'orientation' => 'P',
-                 'fontDir' => array_merge($fontDirs, [
-                     storage_path('fonts/'), // Update to point to the storage/fonts directory
-                 ]),
-                 'fontdata' => $fontData + [
-                     'notosansdevanagari' => [
-                         'R' => 'NotoSansDevanagari-Regular.ttf',
-                         'B' => 'NotoSansDevanagari-Bold.ttf',
-                     ],
-                 ],
-                 'default_font' => 'notosansdevanagari',
-                 'margin_top' => 8,        // Set top margin to 0
-                 'margin_left' => 11,      // Optional: Set left margin if needed
-                 'margin_right' => 11,     // Optional: Set right margin if needed
-                 'margin_bottom' => 8,     // Optional: Set bottom margin if needed
-             ]);
- 
-         // Write HTML to the PDF
-         $mpdf->WriteHTML($html);
-         $randomNumber = rand(1000, 9999);
-         // Define the file path for saving the PDF
-         $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
-         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-         $receipt->receipt_file = $fileName;
-         $receipt->save();
+    //      // Write HTML to the PDF
+    //      $mpdf->WriteHTML($html);
+    //      $randomNumber = rand(1000, 9999);
+    //      // Define the file path for saving the PDF
+    //      $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
+    //      $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
+    //      $receipt->receipt_file = $fileName;
+    //      $printCount = $receipt->print_count;
+    //      if($receipt->print_count >=1){
+    //          $receipt->print_count = $printCount +1;
+    //      }else{
+    //         $receipt->print_count = 1;
+    //      }
+    //      $receipt->save();
        
-         // Save PDF to storage
-         Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
+    //      // Save PDF to storage
+    //      Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
  
-         // Output the PDF for download
-         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
-         // return $this->sendResponse([], "Invoice generated successfully");
-     }
+    //      // Output the PDF for download
+    //      return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
+    //      // return $this->sendResponse([], "Invoice generated successfully");
+    //  }
+    public function generateReceipt(string $id)
+    {
+        $receipt = Receipt::with('receiptType')->find($id);
+        if (!$receipt) {
+            return $this->sendError("receipt not found", ['error' => ['receipt not found']]);
+        }
+    
+        if (!empty($receipt->receipt_file) && Storage::exists('public/Receipt/' . $receipt->receipt_file)) {
+            Storage::delete('public/Receipt/' . $receipt->receipt_file);
+        }
+    
+        $data = [
+            'receipt' => $receipt,
+        ];
+    
+        // Initialize mPDF
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => [135, 135],
+            'orientation' => 'P',
+            'margin_top' => 8,        // Set top margin to 0
+            'margin_left' => 11,      // Optional: Set left margin if needed
+            'margin_right' => 11,     // Optional: Set right margin if needed
+            'margin_bottom' => 8,     // Optional: Set bottom margin if needed
+        ]);
+    
+        if($receipt->cancelled){
+            $mpdf->SetWatermarkText('Cancelled'); 
+            $mpdf->showWatermarkText = true; 
+        }elseif($receipt->print_count >=1)
+        {
+            $mpdf->SetWatermarkText('Duplicate'); 
+            $mpdf->showWatermarkText = true; 
+        }
+       
+        
+        $html = view('Receipt.receipt', $data)->render();
+    
+        $mpdf->WriteHTML($html);
+    
+        $randomNumber = rand(1000, 9999);
+        // Define the file path for saving the PDF
+        $filePath = 'public/Receipt/receipt' . time() . $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
+        $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
+        $receipt->receipt_file = $fileName;
+        $printCount = $receipt->print_count;
+        if ($receipt->print_count >= 1) {
+            $receipt->print_count = $printCount + 1;
+        } else {
+            $receipt->print_count = 1;
+        }
+        $receipt->save();
+    
+        // Save PDF to storage
+        Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
+    
+        // Output the PDF for download
+        return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
+    }
+    
+    
+
 
      /**
      * Cancle Receipt.
