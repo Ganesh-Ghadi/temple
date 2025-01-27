@@ -130,13 +130,13 @@ const Update = () => {
     <>
       <div className="p-5">
         {/* breadcrumb start */}
-        <div className=" mb-11 text-sm">
+        <div className="mb-7 text-sm">
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               {/* Users */}
               <Button
                 onClick={() => navigate("/users")}
-                className="p-0 text-blue-500"
+                className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
                 Users
@@ -149,7 +149,7 @@ const Update = () => {
         {/* breadcrumb ends */}
 
         {/* form style strat */}
-        <div className="px-5 pb-7 pt-1 w-full dark:bg-gray-800 bg-white shadow-lg border  rounded-md">
+        <div className="px-5 pb-7 pt-1 w-full dark:bg-background bg-white shadow-lg border  rounded-md">
           <div className="w-full py-3 flex justify-start items-center">
             <h2 className="text-lg  font-normal">Update Users</h2>
           </div>
@@ -315,7 +315,7 @@ const Update = () => {
             <div className="w-full gap-4 mt-4 flex justify-end items-center">
               <Button
                 type="button"
-                className=" shadow-xl dark:text-white bg-red-500 hover:bg-red-600"
+                className=" shadow-xl dark:text-white bg-red-600 hover:bg-red-700"
                 onClick={() => navigate("/users")}
               >
                 Cancel
@@ -324,7 +324,7 @@ const Update = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="shadow-xl dark:text-white bg-green-500 hover:bg-green-600"
+                className="shadow-xl dark:text-white bg-green-600 hover:bg-green-700"
               >
                 {isLoading ? (
                   <>
