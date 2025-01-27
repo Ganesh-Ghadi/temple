@@ -199,7 +199,7 @@ const Index = () => {
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
                 <TableHead className="p-2">Deposit Date</TableHead>
-                <TableHead className="p-2">Amount</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -216,7 +216,7 @@ const Index = () => {
                         "en-GB"
                       )}
                     </TableCell>
-                    <TableCell className="font-medium p-2">
+                    <TableCell className=" text-right font-medium p-2">
                       ₹{denomination.amount}
                     </TableCell>
 

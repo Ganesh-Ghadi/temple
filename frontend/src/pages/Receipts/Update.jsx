@@ -556,7 +556,7 @@ const Update = () => {
                     <Input
                       {...field}
                       id="receipt_no"
-                      className="mt-1 bg-gray-100"
+                      className="dark:bg-[var(--foreground)] mt-1 bg-gray-100"
                       type="text"
                       readOnly
                       // disabled="true"
@@ -581,7 +581,7 @@ const Update = () => {
                     <input
                       {...field}
                       id="receipt_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1 bg-gray-100"
+                      className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1 bg-gray-100"
                       type="date"
                       readOnly
                       placeholder="Enter receipt date"
@@ -995,7 +995,7 @@ const Update = () => {
                     <input
                       {...field}
                       id="special_date"
-                      className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                      className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                       type="date"
                       placeholder="Enter special date"
                     />
@@ -1130,7 +1130,7 @@ const Update = () => {
                         <input
                           {...field}
                           id="cheque_date"
-                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                           type="date"
                           placeholder="Enter cheque date"
                         />
@@ -1216,7 +1216,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="saree_draping_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
@@ -1270,7 +1270,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="uparane_draping_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
@@ -1343,7 +1343,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="from_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter from date"
                       />
@@ -1366,7 +1366,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="to_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter to date"
                       />
@@ -1555,7 +1555,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="from_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter from date"
                       />
@@ -1578,7 +1578,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="to_date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter to date"
                       />
@@ -1707,7 +1707,7 @@ const Update = () => {
                         <input
                           {...field}
                           id="from_date"
-                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                           type="date"
                           placeholder="Enter from date"
                         />
@@ -1730,7 +1730,7 @@ const Update = () => {
                         <input
                           {...field}
                           id="to_date"
-                          className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                           type="date"
                           placeholder="Enter to date"
                         />
@@ -1944,7 +1944,7 @@ const Update = () => {
                       <input
                         {...field}
                         id="date"
-                        className="mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter to date"
                       />

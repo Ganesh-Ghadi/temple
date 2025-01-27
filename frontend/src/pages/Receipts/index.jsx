@@ -199,7 +199,7 @@ const Index = () => {
                 <TableHead className="p-2">Receipt Type</TableHead>
                 <TableHead className="p-2">Receipt Date</TableHead>
                 <TableHead className="p-2">Name</TableHead>
-                <TableHead className="p-2">Amount</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -233,7 +233,7 @@ const Index = () => {
                     <TableCell className="font-medium p-2">
                       {receipt.name}
                     </TableCell>
-                    <TableCell className="font-medium p-2">
+                    <TableCell className="text-right font-medium p-2">
                       ₹{receipt.amount}
                     </TableCell>
 
