@@ -1,7 +1,10 @@
-import React from 'react';
-import classnames from 'classnames';
-import { usePagination, DOTS } from './usePagination';
-import './pagination.scss';
+import React from "react";
+import classnames from "classnames";
+import { usePagination, DOTS } from "./usePagination";
+import "./pagination.scss";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 const Pagination = (props) => {
   const {
     onPageChange,
@@ -35,17 +38,21 @@ const Pagination = (props) => {
   let lastPage = paginationRange[paginationRange.length - 1];
   return (
     <ul
-      className={classnames('pagination-container  ', {
+      className={classnames("pagination-container  ", {
         [className]: className,
       })}
     >
       <li
-        className={classnames('pagination-item ', {
+        className={classnames("pagination-item ", {
           disabled: currentPage === 1,
         })}
         onClick={onPrevious}
       >
-        <div className="arrow left" />
+        {/* <div className="arrow left" /> */}
+        <Button className="rounded-full p-0" variant="ghost">
+          {" "}
+          <ChevronLeft className="dark:text-white" size={16} />
+        </Button>
       </li>
       {paginationRange.map((pageNumber) => {
         if (pageNumber === DOTS) {
@@ -56,7 +63,7 @@ const Pagination = (props) => {
 
         return (
           <li
-            className={classnames('pagination-item dark:text-white', {
+            className={classnames("pagination-item dark:text-white", {
               selected: pageNumber === currentPage,
             })}
             onClick={() => onPageChange(pageNumber)}
@@ -66,12 +73,16 @@ const Pagination = (props) => {
         );
       })}
       <li
-        className={classnames('pagination-item', {
+        className={classnames("pagination-item", {
           disabled: currentPage === lastPage,
         })}
         onClick={onNext}
       >
-        <div className="arrow right" />
+        {/* <div className="arrow right" /> */}
+        <Button className="rounded-full p-0" variant="ghost">
+          {" "}
+          <ChevronRight className="dark:text-white" size={16} />
+        </Button>
       </li>
     </ul>
   );
