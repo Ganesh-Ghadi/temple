@@ -116,8 +116,7 @@ const index = () => {
       document.body.removeChild(link);
 
       // Invalidate the queries related to the "lead" data
-      queryClient.invalidateQueries("receipts");
-      toast.success("Receipt Printed Successfully");
+      toast.success("Report Printed Successfully");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -125,11 +124,11 @@ const index = () => {
           if (error.response.status === 401 && errorData.status === false) {
             toast.error(errorData.errors.error);
           } else {
-            toast.error("Failed to generate Receipt");
+            toast.error("Failed to generate Report");
           }
         } else {
           console.error("Error:", error);
-          toast.error("An error occurred while printing the Receipt");
+          toast.error("An error occurred while printing the Report");
         }
       } else {
         console.error("Unexpected error:", error);

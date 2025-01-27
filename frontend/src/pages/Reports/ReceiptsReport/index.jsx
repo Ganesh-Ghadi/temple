@@ -67,7 +67,7 @@ const index = () => {
       link.click();
       document.body.removeChild(link);
 
-      toast.success("Report Printed Successfully");
+      toast.success("Report Generated Successfully");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
