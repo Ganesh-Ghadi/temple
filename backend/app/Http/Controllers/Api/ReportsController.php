@@ -961,8 +961,8 @@ class ReportsController extends BaseController
     {
         $date = $request->input('date');
 
-        $receipts = Receipt::with(['pooja.poojaType', 'receiptType']) // Eager load related poojas and receiptType
-            ->whereHas('pooja', function ($query) use ($date) {
+        $receipts = Receipt::with(['poojas.poojaType', 'receiptType']) // Eager load related poojas and receiptType
+            ->whereHas('poojas', function ($query) use ($date) {
                 // Apply the condition on pooja's date column
                 if ($date) {
                     $query->where('date', $date); // Change 'date' to the actual column name in poojas table
@@ -984,7 +984,7 @@ class ReportsController extends BaseController
         //     });
         // })->countBy(); 
         $poojaTypeCounts = $receipts->flatMap(function ($receipt) use ($date) {
-            return $receipt->pooja->filter(function ($puja) use ($date) {
+            return $receipt->poojas->filter(function ($puja) use ($date) {
                 return !$date || $puja->date == $date;
             })->map(function ($puja) {
                 return $puja->poojaType->pooja_type;
