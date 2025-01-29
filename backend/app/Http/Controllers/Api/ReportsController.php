@@ -172,7 +172,6 @@ class ReportsController extends BaseController
         // Define the file path for saving the PDF
         $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-             Log::info("working");
         // Output the PDF for download
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
         // return $this->sendResponse([], "Invoice generated successfully");

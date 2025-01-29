@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('saree_receipts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receipt_id'); 
-            $table->date('saree_draping_date')->nullable(); 
+            $table->date('saree_draping_date_morning')->nullable(); 
+            $table->date('saree_draping_date_evening')->nullable(); 
             $table->boolean('return_saree')->nullable(); 
             $table->timestamps();
         });

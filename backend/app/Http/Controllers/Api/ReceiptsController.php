@@ -143,9 +143,35 @@ class ReceiptsController extends BaseController
         }
 
         if ($request->input("receipt_type_id") == $sareeReceiptId) {
+             
+            $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $request->input("saree_draping_date_morning"))->first();
+            $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $request->input("saree_draping_date_evening"))->first();
+
+            // if ($sareeDrapingDateMorning && !$sareeDrapingDateMorning == null) {
+            //     // Return custom response in the format you want
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'Validation failed',
+            //         'errors' => [
+            //             'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
+            //         ],
+            //     ], 422);
+            // }
+            // if ($sareeDrapingDateEvening) {
+            //     // Return custom response in the format you want
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'Validation failed',
+            //         'errors' => [
+            //             'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
+            //         ],
+            //     ], 422);
+            // }
+            
             $saree_receipt = new SareeReceipt();
             $saree_receipt->receipt_id = $receipt->id;
-            $saree_receipt->saree_draping_date = $request->input("saree_draping_date");
+            $saree_receipt->saree_draping_date_morning = $request->input("saree_draping_date_morning");
+            $saree_receipt->saree_draping_date_evening = $request->input("saree_draping_date_evening");
             $saree_receipt->return_saree = $request->input("return_saree");
             $saree_receipt->save();
         }
@@ -408,13 +434,14 @@ class ReceiptsController extends BaseController
             'margin_right' => 11,     // Optional: Set right margin if needed
             'margin_bottom' => 8,     // Optional: Set bottom margin if needed
         ]);
-    
+        $printCount = $receipt->print_count;
+
         if($receipt->cancelled){
             $mpdf->SetWatermarkText('Cancelled'); 
             $mpdf->showWatermarkText = true; 
         }elseif($receipt->print_count >=1)
         {
-            $mpdf->SetWatermarkText('Duplicate'); 
+            $mpdf->SetWatermarkText('Duplicate '.$printCount); 
             $mpdf->showWatermarkText = true; 
         }
        
@@ -428,7 +455,6 @@ class ReceiptsController extends BaseController
         $filePath = 'public/Receipt/receipt' . time() . $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
         $receipt->receipt_file = $fileName;
-        $printCount = $receipt->print_count;
         if ($receipt->print_count >= 1) {
             $receipt->print_count = $printCount + 1;
         } else {
@@ -463,29 +489,55 @@ class ReceiptsController extends BaseController
     }
 
      /**
-     * Saree Date.
+     * Saree Date morning.
      */
     public function SareeDate(): JsonResponse
     {
         $sareeData = Receipt::with("sareeReceipt")
         ->where('receipt_type_id', 4)
-        ->latest() // Orders by 'created_at' descending by default
-        ->first(); // Gets the latest (first) record
+        ->whereHas('sareeReceipt', function ($query) {
+            $query->whereNotNull('saree_draping_date_morning');  // Exclude records where saree_draping_date_morning is null
+        })
+        ->latest()
+        ->first();
 
         if (!$sareeData || !$sareeData->sareeReceipt) {
-        // Handle case where no sareeReceipt or sareeData is found
         return $this->sendError("No saree receipt found", ['error' => 'No saree receipt found']);
         }
 
-        // Assuming 'saree_draping_date' is a date field in the sareeReceipt
-        $oldDate = $sareeData->sareeReceipt->saree_draping_date;
+        $oldDate = $sareeData->sareeReceipt->saree_draping_date_morning;
 
-        // Get the next date (for example, 1 day after the old date)
         $newDate = Carbon::parse($oldDate)->addDay(); // You can replace `addDay()` with `addDays($number)` for multiple days.
 
         return $this->sendResponse([
-        "SareeDrapingDate" => $newDate->format('Y-m-d'), // Format as per your requirement
+        "SareeDrapingDateMorning" => $newDate->format('Y-m-d'), // Format as per your requirement
         ], "Saree Date retrieved successfully");
+    }
+
+    /**
+     * Saree Date evening.
+     */
+    public function SareeDateEvening(): JsonResponse
+    {
+        $sareeData = Receipt::with("sareeReceipt")
+        ->where('receipt_type_id', 4)
+        ->whereHas('sareeReceipt', function ($query) {
+            $query->whereNotNull('saree_draping_date_evening');  // Exclude records where saree_draping_date_morning is null
+        })
+        ->latest()
+        ->first();
+    
+        if (!$sareeData || !$sareeData->sareeReceipt) {
+        return $this->sendError("No saree receipt found", ['error' => 'No saree receipt found']);
+        }
+
+        $oldDate = $sareeData->sareeReceipt->saree_draping_date_evening;
+
+        $newDate = Carbon::parse($oldDate)->addDay(); // You can replace `addDay()` with `addDays($number)` for multiple days.
+
+        return $this->sendResponse([
+        "SareeDrapingDateEvening" => $newDate->format('Y-m-d'), // Format as per your requirement
+        ], "Saree evening Date retrieved successfully");
     }
 
      /**
@@ -495,6 +547,9 @@ class ReceiptsController extends BaseController
     {
         $uparaneData = Receipt::with("uparaneReceipt")
         ->where('receipt_type_id', 5)
+        ->whereHas('uparaneReceipt', function ($query) {
+            $query->whereNotNull('uparane_draping_date');  // Exclude records where saree_draping_date_morning is null
+        })
         ->latest() // Orders by 'created_at' descending by default
         ->first(); // Gets the latest (first) record
 

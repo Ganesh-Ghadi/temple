@@ -59,7 +59,8 @@ const formSchema = z.object({
   bank_details: z.string().optional(),
   remembrance: z.string().optional(),
   description: z.string().optional(),
-  saree_draping_date: z.string().optional(),
+  saree_draping_date_morning: z.string().optional(),
+  saree_draping_date_evening: z.string().optional(),
   return_saree: z.coerce.number().min(0, "return saree field is required"),
   uparane_draping_date: z.string().optional(),
   return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
@@ -142,7 +143,8 @@ const Create = () => {
     bank_details: "",
     remembrance: "",
     description: "",
-    saree_draping_date: "",
+    saree_draping_date_morning: "",
+    saree_draping_date_evening: "",
     return_saree: "",
     uparane_draping_date: "",
     return_uparane: "",
@@ -376,7 +378,7 @@ const Create = () => {
     enabled: selectedReceiptTypeId === 4, // Enable the query only if selectedReceiptTypeId is 4
   });
 
-  // sareeDate
+  // uparaneDate
   const {
     data: uparaneDateData,
     isLoading: isUparaneDateDataLoading,
@@ -402,16 +404,52 @@ const Create = () => {
     enabled: selectedReceiptTypeId === 5, // Enable the query only if selectedReceiptTypeId is 4
   });
 
+  // sareeDate
+  const {
+    data: sareeEveningDateData,
+    isLoading: isSareeEveningDateDataLoading,
+    isError: isSareeEveningDateDataError,
+  } = useQuery({
+    queryKey: ["sareeEveningDate"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedReceiptTypeId === 4) {
+          return [];
+        }
+        const response = await axios.get(`/api/saree_date_evening`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: selectedReceiptTypeId === 4, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
   useEffect(() => {
     if (sareeDateData) {
       console.log(sareeDateData);
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
-      const dateFormatted = new Date(sareeDateData?.SareeDrapingDate)
-        .toISOString()
-        .split("T")[0];
-      setValue("saree_draping_date", dateFormatted);
+      setValue(
+        "saree_draping_date_morning",
+        sareeDateData?.SareeDrapingDateMorning
+      );
     }
   }, [sareeDateData, selectedReceiptTypeId]);
+
+  useEffect(() => {
+    if (sareeEveningDateData) {
+      console.log(sareeEveningDateData);
+      setValue(
+        "saree_draping_date_evening",
+        sareeEveningDateData?.SareeDrapingDateEvening
+      );
+    }
+  }, [sareeEveningDateData, selectedReceiptTypeId]);
 
   useEffect(() => {
     if (uparaneDateData) {
@@ -420,7 +458,7 @@ const Create = () => {
       const dateFormatted = new Date(uparaneDateData?.UparaneDrapingDate)
         .toISOString()
         .split("T")[0];
-      setValue("uparane_draping_date", dateFormatted);
+      setValue("uparane_draping_date", uparaneDateData?.UparaneDrapingDate);
     }
   }, [uparaneDateData, selectedReceiptTypeId]);
 
@@ -464,6 +502,20 @@ const Create = () => {
             setError("hall", {
               type: "manual",
               message: serverErrors.hall[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+          if (serverErrors.saree_draping_date_morning) {
+            setError("saree_draping_date_morning", {
+              type: "manual",
+              message: serverErrors.saree_draping_date_morning[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+          if (serverErrors.saree_draping_date_evening) {
+            setError("saree_draping_date_evening", {
+              type: "manual",
+              message: serverErrors.saree_draping_date_evening[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
           }
@@ -1211,25 +1263,54 @@ const Create = () => {
             {selectedReceiptTypeId === sareeReceiptId && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
-                  <Label className="font-normal" htmlFor="saree_draping_date">
-                    Saree Draping date:
+                  <Label
+                    className="font-normal"
+                    htmlFor="saree_draping_date_morning"
+                  >
+                    Saree Draping date morning:
                   </Label>
                   <Controller
-                    name="saree_draping_date"
+                    name="saree_draping_date_morning"
                     control={control}
                     render={({ field }) => (
                       <input
                         {...field}
-                        id="saree_draping_date"
+                        id="saree_draping_date_morning"
                         className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
                     )}
                   />
-                  {errors.saree_draping_date && (
+                  {errors.saree_draping_date_morning && (
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.saree_draping_date.message}
+                      {errors.saree_draping_date_morning.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label
+                    className="font-normal"
+                    htmlFor="saree_draping_date_evening"
+                  >
+                    Saree Draping date evening:
+                  </Label>
+                  <Controller
+                    name="saree_draping_date_evening"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="saree_draping_date_evening"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter date"
+                      />
+                    )}
+                  />
+                  {errors.saree_draping_date_evening && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.saree_draping_date_evening.message}
                     </p>
                   )}
                 </div>

@@ -31,6 +31,19 @@ class StoreReceiptRequest extends FormRequest
         ];
     }
 
+    //   /**
+    //  * Custom error messages for validation rules.
+    //  *
+    //  * @return array
+    //  */
+    // public function messages(): array
+    // {
+    //     return [
+    //         'saree_draping_date_morning.exists' => 'The selected morning saree draping date is already taken.',
+    //         'saree_draping_date_evening.exists' => 'The selected evening saree draping date is already taken.',
+    //     ];
+    // }
+
     protected function withValidator(Validator $validator)
     {
         $validator->sometimes('quantity', 'required|numeric|min:1', function ($input) {
