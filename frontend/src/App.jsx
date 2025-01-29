@@ -156,7 +156,10 @@ const App = () => {
 
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster
+        closeButton
+        position="top-right"
+      />
       <RouterProvider router={router} />
     </>
   );

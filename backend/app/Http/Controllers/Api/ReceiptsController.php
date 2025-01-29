@@ -181,7 +181,9 @@ class ReceiptsController extends BaseController
         if ($request->input("receipt_type_id") == $hallReceiptId) {
             $hall_receipt = new HallReceipt();
             $hall_receipt->receipt_id = $receipt->id;
-            $hall_receipt->hall = $request->input("hall");            
+            $hall_receipt->hall = $request->input("hall");  
+            $hall_receipt->from_time = $request->input("from_time");            
+            $hall_receipt->to_time = $request->input("to_time");                      
             $hall_receipt->save();
         }
 

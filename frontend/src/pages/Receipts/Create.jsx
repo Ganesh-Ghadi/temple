@@ -81,6 +81,8 @@ const formSchema = z.object({
   day_12: z.coerce.number().min(0, "day 12 field is required"),
   day_13: z.coerce.number().min(0, "day 13 field is required"),
   date: z.string().optional(),
+  from_time: z.string().optional(),
+  to_time: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
 });
 
@@ -95,6 +97,7 @@ const Create = () => {
   const [paymentMode, setPaymentMode] = useState("");
   const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
+  const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
   const khatReceiptId = 1;
   const naralReceiptId = 2;
   const bhangarReceiptId = 3;
@@ -160,6 +163,8 @@ const Create = () => {
     pooja_type_id: "",
     date: "",
     upi_number: "",
+    from_time: "",
+    to_time: "",
   };
 
   const {
@@ -1448,29 +1453,6 @@ const Create = () => {
 
             {selectedReceiptTypeId === hallReceiptId && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-                {/* <div className="relative ">
-                  <Label className="font-normal" htmlFor="hall">
-                    Hall:
-                  </Label>
-                  <Controller
-                    name="hall"
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        id="hall"
-                        className="mt-1"
-                        type="text"
-                        placeholder="Enter hall name"
-                      />
-                    )}
-                  />
-                  {errors.hall && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.hall.message}
-                    </p>
-                  )}
-                </div> */}
                 <div className="relative">
                   <Label className="font-normal" htmlFor="hall">
                     Hall:
@@ -1503,6 +1485,52 @@ const Create = () => {
                   {errors.hall && (
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
                       {errors.hall.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="from_time">
+                    from Time:
+                  </Label>
+                  <Controller
+                    name="from_time"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="from_time"
+                        className="mt-1"
+                        type="time"
+                        placeholder="Enter time."
+                      />
+                    )}
+                  />
+                  {errors.from_time && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_time.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="to_time">
+                    To time:
+                  </Label>
+                  <Controller
+                    name="to_time"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="to_time"
+                        className="mt-1"
+                        type="time"
+                        placeholder="Enter time."
+                      />
+                    )}
+                  />
+                  {errors.to_time && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_time.message}
                     </p>
                   )}
                 </div>
@@ -2079,6 +2107,49 @@ const Create = () => {
                       </p>
                     )}
                   </div>
+                  {selectedReceiptTypeId === poojaPavtiAnekReceiptId &&
+                    selectedPoojaTypeId && (
+                      <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+                        <Controller
+                          name="selectAll"
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              id="selectAll"
+                              {...field}
+                              type="checkbox"
+                              // onChange={() => {
+                              //   setSelectAllCheckbox(!selectAllCheckbox);
+                              // }}
+                              checked={selectAllCheckbox} // Bind the state to the checkbox
+                              onChange={() => {
+                                setSelectAllCheckbox(!selectAllCheckbox); // Toggle the state
+                                // Select/deselect all checkboxes
+                                poojaDatesData?.PoojaDates?.forEach(
+                                  (poojaDate) => {
+                                    handleCheckboxChange(
+                                      {
+                                        target: { checked: !selectAllCheckbox },
+                                      },
+                                      poojaDate.pooja_date
+                                    );
+                                  }
+                                );
+                              }}
+                              className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                            />
+                          )}
+                        />
+                        <Label className="font-normal" htmlFor="selectAll">
+                          Select All Date
+                        </Label>
+                        {errors.selectAll && (
+                          <p className="absolute text-red-500 text-sm mt-1 left-0">
+                            {errors.selectAll.message}
+                          </p>
+                        )}
+                      </div>
+                    )}
                 </div>
               </>
             )}
@@ -2094,9 +2165,10 @@ const Create = () => {
                     <input
                       type="checkbox"
                       id={poojaDate.pooja_date}
+                      checked={selectedDates.includes(poojaDate.pooja_date)} // Check if date is in selectedDates array
                       onChange={(e) =>
                         handleCheckboxChange(e, poojaDate.pooja_date)
-                      }
+                      } //w
                       className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     />
                     <Label
@@ -2177,7 +2249,7 @@ const Create = () => {
                 </>
               )}
 
-              <div className="relative col-start-3">
+              <div className="relative md:col-start-3">
                 <Label className="font-normal" htmlFor="amount">
                   Amount: <span className="text-red-500">*</span>
                 </Label>

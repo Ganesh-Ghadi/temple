@@ -16,13 +16,15 @@ return new class extends Migration
             $table->unsignedBigInteger('receipt_id'); 
             $table->string('guruji')->nullable();
             $table->string('yajman')->nullable();
-            $table->date('from_date')->nullable();
-            $table->date('to_date')->nullable();
             $table->string('karma_number',50)->nullable();
             $table->boolean('day_10')->nullable();
             $table->boolean('day_11')->nullable();
             $table->boolean('day_12')->nullable();
             $table->boolean('day_13')->nullable();
+            $table->date('day_10_date')->nullable();
+            $table->date('day_11_date')->nullable();
+            $table->date('day_12_date')->nullable();
+            $table->date('day_13_date')->nullable();
             $table->timestamps();
         });
     }

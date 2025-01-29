@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('receipt_id'); 
             $table->string('hall')->nullable();
+            $table->time('from_time')->nullable();
+            $table->time('to_time')->nullable();
             $table->timestamps();
         });
     }
