@@ -211,13 +211,15 @@ class ReceiptsController extends BaseController
             $anteshtee_receipt->receipt_id = $receipt->id;
             $anteshtee_receipt->guruji = $request->input("guruji"); 
             $anteshtee_receipt->yajman = $request->input("yajman");            
-            $anteshtee_receipt->from_date = $request->input("from_date");    
-            $anteshtee_receipt->to_date = $request->input("to_date");   
             $anteshtee_receipt->karma_number = $request->input("karma_number");                                          
             $anteshtee_receipt->day_10 = $request->input("day_10");                                          
             $anteshtee_receipt->day_11 = $request->input("day_11");                                          
             $anteshtee_receipt->day_12 = $request->input("day_12");                                          
-            $anteshtee_receipt->day_13 = $request->input("day_13");                                                                                           
+            $anteshtee_receipt->day_13 = $request->input("day_13");  
+            $anteshtee_receipt->day_10_date = $request->input("day_10_date");    
+            $anteshtee_receipt->day_11_date = $request->input("day_11_date");   
+            $anteshtee_receipt->day_12_date = $request->input("day_12_date");    
+            $anteshtee_receipt->day_13_date = $request->input("day_13_date");                                                                                            
             $anteshtee_receipt->save();
         }
 

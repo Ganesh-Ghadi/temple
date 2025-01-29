@@ -84,6 +84,10 @@ const formSchema = z.object({
   from_time: z.string().optional(),
   to_time: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
+  day_10_date: z.string().optional(),
+  day_11_date: z.string().optional(),
+  day_12_date: z.string().optional(),
+  day_13_date: z.string().optional(),
 });
 
 const Create = () => {
@@ -165,6 +169,10 @@ const Create = () => {
     upi_number: "",
     from_time: "",
     to_time: "",
+    day_10_date: "",
+    day_11_date: "",
+    day_12_date: "",
+    day_13_date: "",
   };
 
   const {
@@ -175,6 +183,10 @@ const Create = () => {
     setValue,
     watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
+  const day10Checked = watch("day_10", false);
+  const day11Checked = watch("day_11", false);
+  const day12Checked = watch("day_12", false);
+  const day13Checked = watch("day_13", false);
 
   const {
     data: allPoojaTypesData,
@@ -467,6 +479,18 @@ const Create = () => {
 
   const onSubmit = (data) => {
     setIsLoading(true);
+    if (!data.day_10) {
+      data.day_10_date = "";
+    }
+    if (!data.day_11) {
+      data.day_11_date = "";
+    }
+    if (!data.day_12) {
+      data.day_12_date = "";
+    }
+    if (!data.day_13) {
+      data.day_13_date = "";
+    }
     const payload = {
       ...data, // existing form data
       multiple_dates: selectedDates, // your array of selected dates
@@ -1751,54 +1775,6 @@ const Create = () => {
                   </div>
                 </div>
 
-                <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-                  <div className="relative">
-                    <Label className="font-normal" htmlFor="from_date">
-                      From date:
-                    </Label>
-                    <Controller
-                      name="from_date"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          id="from_date"
-                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                          type="date"
-                          placeholder="Enter from date"
-                        />
-                      )}
-                    />
-                    {errors.from_date && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.from_date.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="relative">
-                    <Label className="font-normal" htmlFor="to_date">
-                      To date:
-                    </Label>
-                    <Controller
-                      name="to_date"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          id="to_date"
-                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                          type="date"
-                          placeholder="Enter to date"
-                        />
-                      )}
-                    />
-                    {errors.to_date && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.to_date.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
@@ -1888,6 +1864,108 @@ const Create = () => {
                       </p>
                     )}
                   </div>
+                </div>
+                <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                  {day10Checked && (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_10_date">
+                        Day 10 Date:
+                      </Label>
+                      <Controller
+                        name="day_10_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_10_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_10_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_10_date.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {day11Checked && (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_11_date">
+                        Day 11 Date:
+                      </Label>
+                      <Controller
+                        name="day_11_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_11_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_11_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_11_date.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {day12Checked && (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_12_date">
+                        Day 12 Date:
+                      </Label>
+                      <Controller
+                        name="day_12_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_12_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_12_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_12_date.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {day13Checked && (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_13_date">
+                        Day 13 Date:
+                      </Label>
+                      <Controller
+                        name="day_13_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_13_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_13_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_13_date.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
