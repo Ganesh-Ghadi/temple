@@ -26,6 +26,7 @@ use App\Models\StudyRoomReceipt;
 use Mpdf\Config\ConfigVariables;
 use App\Models\VasturupeeReceipt;
 use Illuminate\Http\JsonResponse;
+use App\Helpers\AmountToWordsHelper;
 use App\Helpers\NumberToWordsHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReceiptResource;
@@ -113,6 +114,8 @@ class ReceiptsController extends BaseController
         $receipt->cheque_number = $request->input("cheque_number");
         $receipt->cheque_date = $request->input("cheque_date");
         $receipt->remembrance = $request->input("remembrance");
+        $amountInWords = AmountToWordsHelper::amountToWords($request->input("amount"));
+        $receipt->amount_in_words = $amountInWords;
         $receipt->save();
 
         $multiple_dates = $request->input("multiple_dates");

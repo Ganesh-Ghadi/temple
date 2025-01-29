@@ -43,7 +43,7 @@ const formSchema = z.object({
   name: z.string().optional(),
   receipt_head: z.string().min(2, "Receipt head field is required"),
   gotra: z.string().optional(),
-  amount: z.coerce.number().min(1, "amount field is required"),
+  amount: z.coerce.number().min(1, "Amount field is required"),
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
   email: z.string().optional(),
