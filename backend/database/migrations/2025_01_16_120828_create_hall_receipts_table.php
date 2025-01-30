@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('hall')->nullable();
             $table->time('from_time')->nullable();
             $table->time('to_time')->nullable();
+            $table->boolean('ac_charges')->nullable();
             $table->timestamps();
         });
     }
