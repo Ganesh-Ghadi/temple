@@ -108,7 +108,8 @@ class ReportsController extends BaseController
             'upiTotal' => $upiTotal,
             'chequeTotal' => $chequeTotal,
             'cardTotal' => $cardTotal,
-            'Total' => $total
+            'Total' => $total,
+            'receiptHead' => $receipt_head,
         ];
 
         // Render the Blade view to HTML
@@ -149,7 +150,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - सर्व पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - सर्व पावत्या '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             

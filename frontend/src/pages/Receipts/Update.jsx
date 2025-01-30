@@ -60,7 +60,8 @@ const formSchema = z.object({
   bank_details: z.string().optional(),
   remembrance: z.string().optional(),
   description: z.string().optional(),
-  saree_draping_date: z.string().optional(),
+  saree_draping_date_morning: z.string().optional(),
+  saree_draping_date_evening: z.string().optional(),
   return_saree: z.coerce.number().min(0, "return saree field is required"),
   uparane_draping_date: z.string().optional(),
   return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
@@ -85,6 +86,12 @@ const formSchema = z.object({
   day_13: z.coerce.number().min(0, "day 13 field is required"),
   date: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
+  day_10_date: z.string().optional(),
+  day_11_date: z.string().optional(),
+  day_12_date: z.string().optional(),
+  day_13_date: z.string().optional(),
+  from_time: z.string().optional(),
+  to_time: z.string().optional(),
 });
 
 const Update = () => {
@@ -96,6 +103,8 @@ const Update = () => {
   const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
   const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
   const [selectedPoojaTypeId, setSelectedPoojaTypeId] = useState("");
+  const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
+  const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
   const [paymentMode, setPaymentMode] = useState("");
   const khatReceiptId = 1;
   const naralReceiptId = 2;
@@ -165,6 +174,16 @@ const Update = () => {
     date: "",
     receipt_no: "",
     upi_number: "",
+    day_10_date: "",
+    day_11_date: "",
+    day_12_date: "",
+    day_13_date: "",
+    from_date: "",
+    to_date: "",
+    from_time: "",
+    to_time: "",
+    saree_draping_date_morning: "",
+    saree_draping_date_evening: "",
   };
 
   const {
@@ -173,7 +192,12 @@ const Update = () => {
     formState: { errors },
     setValue,
     setError,
+    watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
+  const day10Checked = watch("day_10", false);
+  const day11Checked = watch("day_11", false);
+  const day12Checked = watch("day_12", false);
+  const day13Checked = watch("day_13", false);
 
   const {
     data: allPoojaTypesData,
@@ -395,8 +419,12 @@ const Update = () => {
 
       if (selectedReceiptTypeId === 4) {
         setValue(
-          "saree_draping_date",
-          editReceipt.Receipt?.SareeReceipt?.saree_draping_date
+          "saree_draping_date_morning",
+          editReceipt.Receipt?.SareeReceipt?.saree_draping_date_morning
+        );
+        setValue(
+          "saree_draping_date_evening",
+          editReceipt.Receipt?.SareeReceipt?.saree_draping_date_evening
         );
         setValue(
           "return_saree",
@@ -441,6 +469,8 @@ const Update = () => {
 
       if (selectedReceiptTypeId === 9) {
         setValue("hall", editReceipt.Receipt?.HallReceipt?.hall);
+        setValue("from_time", editReceipt.Receipt?.HallReceipt?.from_time);
+        setValue("to_time", editReceipt.Receipt?.HallReceipt?.to_time);
       }
 
       setSelectedReceiptHead(editReceipt.Receipt?.receipt_head);
@@ -470,6 +500,23 @@ const Update = () => {
         setValue("day_11", editReceipt.Receipt?.AnteshteeReceipt?.day_11);
         setValue("day_12", editReceipt.Receipt?.AnteshteeReceipt?.day_12);
         setValue("day_13", editReceipt.Receipt?.AnteshteeReceipt?.day_13);
+        setValue(
+          "day_10_date",
+          editReceipt.Receipt?.AnteshteeReceipt?.day_10_date
+        );
+        setValue(
+          "day_11_date",
+          editReceipt.Receipt?.AnteshteeReceipt?.day_10_date
+        );
+        setValue(
+          "day_12_date",
+          editReceipt.Receipt?.AnteshteeReceipt?.day_10_date
+        );
+        setValue(
+          "day_13_date",
+          editReceipt.Receipt?.AnteshteeReceipt?.day_10_date
+        );
+
         setValue(
           "karma_number",
           editReceipt.Receipt?.AnteshteeReceipt?.karma_number
@@ -1206,25 +1253,54 @@ const Update = () => {
             {selectedReceiptTypeId === sareeReceiptId && (
               <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
-                  <Label className="font-normal" htmlFor="saree_draping_date">
-                    Saree Draping date:
+                  <Label
+                    className="font-normal"
+                    htmlFor="saree_draping_date_morning"
+                  >
+                    Saree Draping date morning:
                   </Label>
                   <Controller
-                    name="saree_draping_date"
+                    name="saree_draping_date_morning"
                     control={control}
                     render={({ field }) => (
                       <input
                         {...field}
-                        id="saree_draping_date"
+                        id="saree_draping_date_morning"
                         className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
                     )}
                   />
-                  {errors.saree_draping_date && (
+                  {errors.saree_draping_date_morning && (
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.saree_draping_date.message}
+                      {errors.saree_draping_date_morning.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label
+                    className="font-normal"
+                    htmlFor="saree_draping_date_evening"
+                  >
+                    Saree Draping date evening:
+                  </Label>
+                  <Controller
+                    name="saree_draping_date_evening"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="saree_draping_date_evening"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter date"
+                      />
+                    )}
+                  />
+                  {errors.saree_draping_date_evening && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.saree_draping_date_evening.message}
                     </p>
                   )}
                 </div>
@@ -1515,6 +1591,52 @@ const Update = () => {
                     </p>
                   )}
                 </div>
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="from_time">
+                    from Time:
+                  </Label>
+                  <Controller
+                    name="from_time"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="from_time"
+                        className="mt-1"
+                        type="time"
+                        placeholder="Enter time."
+                      />
+                    )}
+                  />
+                  {errors.from_time && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_time.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="to_time">
+                    To time:
+                  </Label>
+                  <Controller
+                    name="to_time"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="to_time"
+                        className="mt-1"
+                        type="time"
+                        placeholder="Enter time."
+                      />
+                    )}
+                  />
+                  {errors.to_time && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_time.message}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
 
@@ -1695,54 +1817,6 @@ const Update = () => {
                   </div>
                 </div>
 
-                <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-                  <div className="relative">
-                    <Label className="font-normal" htmlFor="from_date">
-                      From date:
-                    </Label>
-                    <Controller
-                      name="from_date"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          id="from_date"
-                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                          type="date"
-                          placeholder="Enter from date"
-                        />
-                      )}
-                    />
-                    {errors.from_date && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.from_date.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="relative">
-                    <Label className="font-normal" htmlFor="to_date">
-                      To date:
-                    </Label>
-                    <Controller
-                      name="to_date"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          id="to_date"
-                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                          type="date"
-                          placeholder="Enter to date"
-                        />
-                      )}
-                    />
-                    {errors.to_date && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.to_date.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
@@ -1848,6 +1922,116 @@ const Update = () => {
                       </p>
                     )}
                   </div>
+                </div>
+                <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                  {day10Checked ? (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_10_date">
+                        Day 10 Date:
+                      </Label>
+                      <Controller
+                        name="day_10_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_10_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_10_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_10_date.message}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {day11Checked ? (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_11_date">
+                        Day 11 Date:
+                      </Label>
+                      <Controller
+                        name="day_11_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_11_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_11_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_11_date.message}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {day12Checked ? (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_12_date">
+                        Day 12 Date:
+                      </Label>
+                      <Controller
+                        name="day_12_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_12_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_12_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_12_date.message}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {day13Checked ? (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_13_date">
+                        Day 13 Date:
+                      </Label>
+                      <Controller
+                        name="day_13_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_13_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_13_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_13_date.message}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             )}

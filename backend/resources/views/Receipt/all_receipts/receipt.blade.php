@@ -44,6 +44,9 @@
             <th>Receipt Date</th>
             <th>Receipt Type</th>
             <th>Name</th>
+            @if($receiptHead == "वस्तुरुपी देणगी")
+            <th>Narration</th>
+            @endif
             <th>Mode</th>
             <th>Amount</th>
         </tr>
@@ -55,6 +58,9 @@
                 <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
                 <td>{{$receipt->receiptType->receipt_type}}</td>
                 <td>{{$receipt->name}}</td>
+                @if($receiptHead == "वस्तुरुपी देणगी")
+                <td>{{$receipt->narration}}</td>
+                @endif
                 <td>{{$receipt->payment_mode}}</td>
                 <td style="text-align: right;">{{$receipt->amount}}</td>
             </tr>
@@ -63,6 +69,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                @if($receiptHead == "वस्तुरुपी देणगी")
+                <td></td>
+                @endif
                 <td style="font-weight: bold;" colspan="2">Cash Total:</td>
                 <td style="font-weight: bold;  text-align: right;" >{{$cashTotal}}</td>
             </tr>
@@ -70,6 +79,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                @if($receiptHead == "वस्तुरुपी देणगी")
+                <td></td>
+                @endif
                 <td style="font-weight: bold;" colspan="2">UPI Total:</td>
                 <td style="font-weight: bold;  text-align: right;" >{{$upiTotal}}</td>
             </tr>
@@ -77,6 +89,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                @if($receiptHead == "वस्तुरुपी देणगी")
+                <td></td>
+                @endif
                 <td style="font-weight: bold;" colspan="2">Cheque Total:</td>
                 <td style="font-weight: bold; text-align: right;" >{{$chequeTotal}}</td>
             </tr>
@@ -84,6 +99,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                @if($receiptHead == "वस्तुरुपी देणगी")
+                <td></td>
+                @endif
                 <td style="font-weight: bold;" colspan="2">Card Total:</td>
                 <td style="font-weight: bold; text-align: right;" >{{$cardTotal}}</td>
             </tr>
@@ -91,6 +109,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                @if($receiptHead == "वस्तुरुपी देणगी")
+                <td></td>
+                @endif
                 <td style="font-weight: bold;" colspan="2">TOTAL:</td>
                 <td style="font-weight: bold; text-align: right;" >{{$Total}}</td>
             </tr>

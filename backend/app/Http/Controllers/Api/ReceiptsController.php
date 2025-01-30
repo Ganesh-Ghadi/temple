@@ -147,29 +147,40 @@ class ReceiptsController extends BaseController
 
         if ($request->input("receipt_type_id") == $sareeReceiptId) {
              
-            $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $request->input("saree_draping_date_morning"))->first();
-            $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $request->input("saree_draping_date_evening"))->first();
+          // Get the date from the request
+                $sareeDrapingDateMorningInput = $request->input("saree_draping_date_morning");
+                $sareeDrapingDateEveningInput = $request->input("saree_draping_date_evening");
 
-            // if ($sareeDrapingDateMorning && !$sareeDrapingDateMorning == null) {
-            //     // Return custom response in the format you want
-            //     return response()->json([
-            //         'status' => false,
-            //         'message' => 'Validation failed',
-            //         'errors' => [
-            //             'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
-            //         ],
-            //     ], 422);
-            // }
-            // if ($sareeDrapingDateEvening) {
-            //     // Return custom response in the format you want
-            //     return response()->json([
-            //         'status' => false,
-            //         'message' => 'Validation failed',
-            //         'errors' => [
-            //             'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
-            //         ],
-            //     ], 422);
-            // }
+                // Only query if the date is provided
+                if ($sareeDrapingDateMorningInput) {
+                    $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $sareeDrapingDateMorningInput)->first();
+                    
+                    // Check if the date exists in the database
+                    if ($sareeDrapingDateMorning) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Validation failed',
+                            'errors' => [
+                                'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
+                            ],
+                        ], 422);
+                    }
+                }
+
+                if ($sareeDrapingDateEveningInput) {
+                    $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
+                    
+                    // Check if the date exists in the database
+                    if ($sareeDrapingDateEvening) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Validation failed',
+                            'errors' => [
+                                'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
+                            ],
+                        ], 422);
+                    }
+                }
             
             $saree_receipt = new SareeReceipt();
             $saree_receipt->receipt_id = $receipt->id;
