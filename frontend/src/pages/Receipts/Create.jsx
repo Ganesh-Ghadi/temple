@@ -101,6 +101,7 @@ const Create = () => {
   const [selectedPoojaTypeId, setSelectedPoojaTypeId] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
   const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
+  const [selectedShradhhId, setSelectedShradhhId] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
   const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
   const khatReceiptId = 1;
@@ -116,6 +117,7 @@ const Create = () => {
   const anteshteeReceiptId = 11;
   const poojaReceiptId = 12;
   const poojaPavtiAnekReceiptId = 13;
+  const bharani_shradhhId = 14;
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -313,7 +315,7 @@ const Create = () => {
     queryKey: ["allGurijis"], // This is the query key
     queryFn: async () => {
       try {
-        if (!selectedAnteshtiId) {
+        if (!selectedAnteshtiId && !selectedShradhhId) {
           return [];
         }
         const response = await axios.get(`/api/all_gurujis`, {
@@ -327,7 +329,7 @@ const Create = () => {
         throw new Error(error.message);
       }
     },
-    enabled: !!selectedAnteshtiId, // Enable the query only if selectedPoojaTypeId is truthy
+    enabled: !!selectedAnteshtiId || !!selectedShradhhId, // Enable the query only if selectedPoojaTypeId is truthy
   });
 
   const {
@@ -561,6 +563,10 @@ const Create = () => {
     console.log("swff", parseFloat(value?.minimum_amount));
     if (value?.id === 11) {
       setSelectedAnteshtiId(true);
+    }
+
+    if (value?.id === 14) {
+      setSelectedShradhhId(true);
     }
   };
 
@@ -1745,32 +1751,49 @@ const Create = () => {
               </div>
             )}
 
+            {selectedReceiptTypeId === bharani_shradhhId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="guruji">
+                    Guruji Name: <span className="text-red-500">*</span>
+                  </Label>
+                  <Controller
+                    name="guruji"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select guruji" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Select Guruji</SelectLabel>
+                            {AllGurujisData?.Gurujis &&
+                              AllGurujisData?.Gurujis.map((guruji) => (
+                                <SelectItem value={String(guruji.guruji_name)}>
+                                  {guruji.guruji_name}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.guruji && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.guruji.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             {selectedReceiptTypeId === anteshteeReceiptId && (
               <div>
                 <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-                  {/* <div className="relative ">
-                    <Label className="font-normal" htmlFor="guruji">
-                      Guruji Name:
-                    </Label>
-                    <Controller
-                      name="guruji"
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          id="guruji"
-                          className="mt-1"
-                          type="text"
-                          placeholder="Enter name"
-                        />
-                      )}
-                    />
-                    {errors.guruji && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
-                        {errors.guruji.message}
-                      </p>
-                    )}
-                  </div> */}
                   <div className="relative">
                     <Label className="font-normal" htmlFor="guruji">
                       Guruji Name: <span className="text-red-500">*</span>

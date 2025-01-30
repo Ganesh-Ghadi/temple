@@ -91,6 +91,7 @@ class ReceiptsController extends BaseController
         $anteshteeReceiptId = 11;
         $poojaReceiptId = 12;
         $poojaPavtiAnekReceiptId = 13;
+        $bharaniShradhhId = 14;
 
 
         $receipt = new Receipt();
@@ -281,7 +282,12 @@ class ReceiptsController extends BaseController
             }
         }
         
-        
+        if ($request->input("receipt_type_id") == $bharaniShradhhId) {
+            $bharani_shradhh_receipt = new AnteshteeReceipt();
+            $bharani_shradhh_receipt->receipt_id = $receipt->id;
+            $bharani_shradhh_receipt->guruji = $request->input("guruji");                                                                                       
+            $bharani_shradhh_receipt->save();
+        }
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');
     }
 

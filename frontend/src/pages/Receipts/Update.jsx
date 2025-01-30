@@ -105,6 +105,7 @@ const Update = () => {
   const [selectedPoojaTypeId, setSelectedPoojaTypeId] = useState("");
   const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
   const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
+  const [selectedShradhhId, setSelectedShradhhId] = useState(false);
   const [paymentMode, setPaymentMode] = useState("");
   const khatReceiptId = 1;
   const naralReceiptId = 2;
@@ -119,6 +120,7 @@ const Update = () => {
   const anteshteeReceiptId = 11;
   const poojaReceiptId = 12;
   const poojaPavtiAnekReceiptId = 13;
+  const bharani_shradhhId = 14;
 
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -531,6 +533,10 @@ const Update = () => {
       if (selectedReceiptTypeId === 13) {
         setValue("pooja_type_id", editReceipt.Receipt?.Pooja?.pooja_type_id);
         setSelectedPoojaTypeId(editReceipt.Receipt?.Pooja?.pooja_type_id);
+      }
+
+      if (selectedReceiptTypeId === 14) {
+        setValue("guruji", editReceipt.Receipt?.AnteshteeReceipt?.guruji);
       }
     }
   }, [editReceipt, setValue, allReceiptTypesData]);
@@ -1737,6 +1743,34 @@ const Update = () => {
                   {errors.timing && (
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
                       {errors.timing.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedReceiptTypeId === bharani_shradhhId && (
+              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative ">
+                  <Label className="font-normal" htmlFor="guruji">
+                    Guruji Name:
+                  </Label>
+                  <Controller
+                    name="guruji"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        id="guruji"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter name"
+                      />
+                    )}
+                  />
+                  {errors.guruji && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.guruji.message}
                     </p>
                   )}
                 </div>
