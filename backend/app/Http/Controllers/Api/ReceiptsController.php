@@ -223,8 +223,23 @@ class ReceiptsController extends BaseController
             $hall_receipt = new HallReceipt();
             $hall_receipt->receipt_id = $receipt->id;
             $hall_receipt->hall = $request->input("hall");  
-            $hall_receipt->from_time = $request->input("from_time");            
-            $hall_receipt->to_time = $request->input("to_time");                      
+            // $hall_receipt->from_time = $request->input("from_time"); 
+            // $hall_receipt->to_time = $request->input("to_time");                      
+            $from_time = $request->input('from_time'); // Get the from_time object
+
+            if ($from_time && isset($from_time['hour']) && isset($from_time['minute'])) {
+                $formatted_from_time = sprintf('%02d:%02d:00', $from_time['hour'], $from_time['minute']);
+                
+                $hall_receipt->from_time = $formatted_from_time;
+            }       
+
+            $to_time = $request->input('to_time'); // Get the from_time object
+
+            if ($to_time && isset($to_time['hour']) && isset($to_time['minute'])) {
+                $formatted_to_time = sprintf('%02d:%02d:00', $to_time['hour'], $to_time['minute']);
+                
+                $hall_receipt->to_time = $formatted_to_time;
+            }       
             $hall_receipt->save();
         }
 

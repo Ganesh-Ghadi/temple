@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -67,6 +68,18 @@ const formSchema = z.object({
   member_name: z.string().optional(),
   from_date: z.string().optional(),
   to_date: z.string().optional(),
+  from_time: z
+    .object({
+      hour: z.number().min(0).max(23), // Example for hours (0-23)
+      minute: z.number().min(0).max(59), // Example for minutes (0-59)
+    })
+    .optional(), // Optional field
+  to_time: z
+    .object({
+      hour: z.number().min(0).max(23), // Example for hours (0-23)
+      minute: z.number().min(0).max(59), // Example for minutes (0-59)
+    })
+    .optional(), // Optional field
   Mallakhamb: z.coerce.number().min(0, "mallakhamb field is required"),
   zanj: z.coerce.number().min(0, "zanj field is required"),
   dhol: z.coerce.number().min(0, "dhol field is required"),
@@ -83,8 +96,8 @@ const formSchema = z.object({
   day_12: z.coerce.number().min(0, "day 12 field is required"),
   day_13: z.coerce.number().min(0, "day 13 field is required"),
   date: z.string().optional(),
-  from_time: z.string().optional(),
-  to_time: z.string().optional(),
+  // from_time: z.string().optional(),
+  // to_time: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
   day_9_date: z.string().optional(),
   day_10_date: z.string().optional(),
@@ -106,6 +119,8 @@ const Create = () => {
   const [selectedShradhhId, setSelectedShradhhId] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
   const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
+  const [fromTime, setFromTime] = useState(null);
+  const [toTime, setToTime] = useState(null);
   const khatReceiptId = 1;
   const naralReceiptId = 2;
   const bhangarReceiptId = 3;
@@ -587,6 +602,14 @@ const Create = () => {
       setValue("amount", totalAmount);
     }
   }, [receiptAmount, setValue]);
+
+  const handleFromTimeChange = (newDateTime) => {
+    setFromTime(newDateTime);
+  };
+
+  const handleToTimeChange = (newDateTime) => {
+    setToTime(newDateTime);
+  };
 
   return (
     <>
@@ -1607,7 +1630,7 @@ const Create = () => {
                     </p>
                   )}
                 </div>
-                <div className="relative ">
+                {/* <div className="relative ">
                   <Label className="font-normal" htmlFor="from_time">
                     from Time:
                   </Label>
@@ -1615,12 +1638,46 @@ const Create = () => {
                     name="from_time"
                     control={control}
                     render={({ field }) => (
-                      <Input
+                      <DatePicker
                         {...field}
                         id="from_time"
                         className="mt-1"
-                        type="time"
-                        placeholder="Enter time."
+                        selected={field.value}
+                        onChange={(date) => field.onChange(date)}
+                        showTimeSelect
+                        showTimeSelectOnly 
+                        timeFormat="hh:mm aa" 
+                        timeIntervals={15} 
+                        dateFormat="hh:mm aa" 
+                        placeholderText="Select time"
+                      />
+                    )}
+                  />
+                  {errors.from_time && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.from_time.message}
+                    </p>
+                  )}
+                </div> */}
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="from_time">
+                    From Time: <span className="text-red-500">*</span>
+                  </Label>
+                  <Controller
+                    name="from_time"
+                    control={control}
+                    render={({ field }) => (
+                      <DatePicker
+                        disableDayPicker
+                        // value={fromTime}
+                        // onChange={handleFromTimeChange}
+                        format="hh:mm A"
+                        plugins={[<TimePicker position="bottom" />]}
+                        {...field}
+                        id="from_time"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter time"
                       />
                     )}
                   />
@@ -1630,7 +1687,7 @@ const Create = () => {
                     </p>
                   )}
                 </div>
-                <div className="relative ">
+                {/* <div className="relative ">
                   <Label className="font-normal" htmlFor="to_time">
                     To time:
                   </Label>
@@ -1644,6 +1701,34 @@ const Create = () => {
                         className="mt-1"
                         type="time"
                         placeholder="Enter time."
+                      />
+                    )}
+                  />
+                  {errors.to_time && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.to_time.message}
+                    </p>
+                  )}
+                </div> */}
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="to_time">
+                    From Time: <span className="text-red-500">*</span>
+                  </Label>
+                  <Controller
+                    name="to_time"
+                    control={control}
+                    render={({ field }) => (
+                      <DatePicker
+                        disableDayPicker
+                        // value={fromTime}
+                        // onChange={handleFromTimeChange}
+                        format="hh:mm A"
+                        plugins={[<TimePicker position="bottom" />]}
+                        {...field}
+                        id="to_time"
+                        className="mt-1"
+                        type="text"
+                        placeholder="Enter time"
                       />
                     )}
                   />
