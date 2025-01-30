@@ -77,6 +77,7 @@ const formSchema = z.object({
   guruji: z.string().optional(),
   yajman: z.string().optional(),
   karma_number: z.string().optional(),
+  day_9: z.coerce.number().min(0, "day 9 field is required"),
   day_10: z.coerce.number().min(0, "day 10 field is required"),
   day_11: z.coerce.number().min(0, "day 11 field is required"),
   day_12: z.coerce.number().min(0, "day 12 field is required"),
@@ -85,6 +86,7 @@ const formSchema = z.object({
   from_time: z.string().optional(),
   to_time: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
+  day_9_date: z.string().optional(),
   day_10_date: z.string().optional(),
   day_11_date: z.string().optional(),
   day_12_date: z.string().optional(),
@@ -164,6 +166,7 @@ const Create = () => {
     yajman: "",
     from_date: "",
     to_date: "",
+    day_9: "",
     day_10: "",
     day_11: "",
     day_12: "",
@@ -173,6 +176,7 @@ const Create = () => {
     upi_number: "",
     from_time: "",
     to_time: "",
+    day_9_date: "",
     day_10_date: "",
     day_11_date: "",
     day_12_date: "",
@@ -187,6 +191,7 @@ const Create = () => {
     setValue,
     watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
+  const day9Checked = watch("day_9", false);
   const day10Checked = watch("day_10", false);
   const day11Checked = watch("day_11", false);
   const day12Checked = watch("day_12", false);
@@ -533,6 +538,9 @@ const Create = () => {
 
   const onSubmit = (data) => {
     setIsLoading(true);
+    if (!data.day_9) {
+      data.day_9_date = "";
+    }
     if (!data.day_10) {
       data.day_10_date = "";
     }
@@ -1879,7 +1887,29 @@ const Create = () => {
                   </div>
                 </div>
 
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
+                  <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2">
+                    <Controller
+                      name="day_9"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          id="day_9"
+                          {...field}
+                          type="checkbox"
+                          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      )}
+                    />
+                    <Label className="font-normal" htmlFor="day_9">
+                      Day 9
+                    </Label>
+                    {errors.day_9 && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.day_9.message}
+                      </p>
+                    )}
+                  </div>
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
                       name="day_10"
@@ -1969,7 +1999,32 @@ const Create = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-8 md:mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                  {day9Checked && (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="day_9_date">
+                        Day 9 Date:
+                      </Label>
+                      <Controller
+                        name="day_9_date"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            id="day_9_date"
+                            className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                            type="date"
+                            placeholder="Enter date"
+                          />
+                        )}
+                      />
+                      {errors.day_9_date && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.day_9_date.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   {day10Checked && (
                     <div className="relative">
                       <Label className="font-normal" htmlFor="day_10_date">
@@ -2045,6 +2100,8 @@ const Create = () => {
                       )}
                     </div>
                   )}
+                </div>
+                <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   {day13Checked && (
                     <div className="relative">
                       <Label className="font-normal" htmlFor="day_13_date">

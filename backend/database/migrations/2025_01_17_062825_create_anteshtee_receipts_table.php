@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('guruji')->nullable();
             $table->string('yajman')->nullable();
             $table->string('karma_number',50)->nullable();
+            $table->boolean('day_9')->nullable();
             $table->boolean('day_10')->nullable();
             $table->boolean('day_11')->nullable();
             $table->boolean('day_12')->nullable();
             $table->boolean('day_13')->nullable();
+            $table->date('day_9_date')->nullable();
             $table->date('day_10_date')->nullable();
             $table->date('day_11_date')->nullable();
             $table->date('day_12_date')->nullable();
