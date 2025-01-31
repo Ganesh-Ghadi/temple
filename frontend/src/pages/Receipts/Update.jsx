@@ -94,6 +94,8 @@ const formSchema = z.object({
   day_13_date: z.string().optional(),
   from_time: z.string().optional(),
   to_time: z.string().optional(),
+  ac_charges: z.coerce.number().min(0, "ac charges is required"),
+  ac_amount: z.coerce.number().optional(),
 });
 
 const Update = () => {
@@ -190,6 +192,8 @@ const Update = () => {
     to_time: "",
     saree_draping_date_morning: "",
     saree_draping_date_evening: "",
+    ac_charges: "",
+    ac_amount: "0",
   };
 
   const {
@@ -205,6 +209,7 @@ const Update = () => {
   const day11Checked = watch("day_11", false);
   const day12Checked = watch("day_12", false);
   const day13Checked = watch("day_13", false);
+  const acChargesChecked = watch("ac_charges", false);
 
   const {
     data: allPoojaTypesData,
@@ -478,6 +483,8 @@ const Update = () => {
         setValue("hall", editReceipt.Receipt?.HallReceipt?.hall);
         setValue("from_time", editReceipt.Receipt?.HallReceipt?.from_time);
         setValue("to_time", editReceipt.Receipt?.HallReceipt?.to_time);
+        setValue("ac_charges", editReceipt.Receipt?.HallReceipt?.ac_charges);
+        setValue("ac_amount", editReceipt.Receipt?.HallReceipt?.ac_amount);
       }
 
       setSelectedReceiptHead(editReceipt.Receipt?.receipt_head);
@@ -1583,74 +1590,129 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === hallReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
-                <div className="relative ">
-                  <Label className="font-normal" htmlFor="hall">
-                    Hall:
-                  </Label>
-                  <Controller
-                    name="hall"
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        id="hall"
-                        className="mt-1"
-                        type="text"
-                        placeholder="Enter hall name"
-                      />
+              <div>
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="hall">
+                      Hall:
+                    </Label>
+                    <Controller
+                      name="hall"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="hall"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter hall name"
+                        />
+                      )}
+                    />
+                    {errors.hall && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.hall.message}
+                      </p>
                     )}
-                  />
-                  {errors.hall && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.hall.message}
-                    </p>
-                  )}
+                  </div>
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="from_time">
+                      from Time:
+                    </Label>
+                    <Controller
+                      name="from_time"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="from_time"
+                          className="mt-1"
+                          type="time"
+                          placeholder="Enter time."
+                        />
+                      )}
+                    />
+                    {errors.from_time && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.from_time.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative ">
+                    <Label className="font-normal" htmlFor="to_time">
+                      To time:
+                    </Label>
+                    <Controller
+                      name="to_time"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="to_time"
+                          className="mt-1"
+                          type="time"
+                          placeholder="Enter time."
+                        />
+                      )}
+                    />
+                    {errors.to_time && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.to_time.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div className="relative ">
-                  <Label className="font-normal" htmlFor="from_time">
-                    from Time:
-                  </Label>
-                  <Controller
-                    name="from_time"
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        id="from_time"
-                        className="mt-1"
-                        type="time"
-                        placeholder="Enter time."
-                      />
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                  <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
+                    <Controller
+                      name="ac_charges"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          id="ac_charges"
+                          {...field}
+                          checked={field.value === 1}
+                          type="checkbox"
+                          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      )}
+                    />
+                    <Label className="font-normal" htmlFor="ac_charges">
+                      Ac Charges
+                    </Label>
+                    {errors.ac_charges && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.ac_charges.message}
+                      </p>
                     )}
-                  />
-                  {errors.from_time && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.from_time.message}
-                    </p>
-                  )}
-                </div>
-                <div className="relative ">
-                  <Label className="font-normal" htmlFor="to_time">
-                    To time:
-                  </Label>
-                  <Controller
-                    name="to_time"
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        id="to_time"
-                        className="mt-1"
-                        type="time"
-                        placeholder="Enter time."
+                  </div>
+                  {acChargesChecked ? (
+                    <div className="relative">
+                      <Label className="font-normal" htmlFor="ac_amount">
+                        Ac Amount: <span className="text-red-500">*</span>
+                      </Label>
+                      <Controller
+                        name="ac_amount"
+                        control={control}
+                        render={({ field }) => (
+                          <Input
+                            {...field}
+                            id="ac_amount"
+                            className="mt-1"
+                            type="number"
+                            onBlur={(e) => handleAcAmountChange(e)}
+                            placeholder="Enter amount"
+                          />
+                        )}
                       />
-                    )}
-                  />
-                  {errors.to_time && (
-                    <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.to_time.message}
-                    </p>
+                      {errors.ac_amount && (
+                        <p className="absolute text-red-500 text-sm mt-1 left-0">
+                          {errors.ac_amount.message}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    ""
                   )}
                 </div>
               </div>
