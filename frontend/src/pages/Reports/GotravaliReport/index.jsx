@@ -35,13 +35,26 @@ const index = () => {
     date: "",
   };
 
+ 
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     setError,
+    watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
+  const currentDate = new Date();
+
+  // Extract the day, month, and year
+  const day = String(currentDate.getDate()).padStart(2, "0"); // Ensures 2-digit day
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Ensures 2-digit month (months are 0-indexed)
+  const year = currentDate.getFullYear(); // Full 4-digit year
+
+  // Format the date as dd/mm/yyyy
+  const formattedDate = `${day}/${month}/${year}`;
+  
   const handlePrint = async (data) => {
     try {
       const response = await axios.post(`/api/gotravali_report`, data, {
@@ -57,7 +70,7 @@ const index = () => {
       const link = document.createElement("a");
 
       link.href = url;
-      link.download = `GotravaliReport-${Date.now()}.pdf`; // Use current timestamp for unique file name
+      link.download = `GotravaliReport-${formattedDate}.pdf`; // Use current timestamp for unique file name
 
       document.body.appendChild(link);
       link.click();
