@@ -223,6 +223,8 @@ class ReceiptsController extends BaseController
             $hall_receipt = new HallReceipt();
             $hall_receipt->receipt_id = $receipt->id;
             $hall_receipt->hall = $request->input("hall");  
+            $hall_receipt->ac_charges = $request->input("ac_charges"); 
+            $hall_receipt->ac_amount = $request->input("ac_amount");   
             // $hall_receipt->from_time = $request->input("from_time"); 
             // $hall_receipt->to_time = $request->input("to_time");                      
             $from_time = $request->input('from_time'); // Get the from_time object

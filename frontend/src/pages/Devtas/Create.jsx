@@ -34,18 +34,12 @@ const formSchema = z.object({
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [dateTime, setDateTime] = useState(null);
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const navigate = useNavigate();
   const defaultValues = {
     devta_name: "",
-    from_time: "",
-  };
-
-  const handleDateTimeChange = (newDateTime) => {
-    setDateTime(newDateTime);
   };
 
   const {
@@ -148,34 +142,6 @@ const Create = () => {
                 {errors.devta_name && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.devta_name.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="from_time">
-                  Name: <span className="text-red-500">*</span>
-                </Label>
-                <Controller
-                  name="from_time"
-                  control={control}
-                  render={({ field }) => (
-                    <DatePicker
-                      disableDayPicker
-                      // value={dateTime}
-                      // onChange={handleDateTimeChange}
-                      format="hh:mm A"
-                      plugins={[<TimePicker position="bottom" />]}
-                      {...field}
-                      id="from_time"
-                      className="mt-1"
-                      type="text"
-                      placeholder="Enter name"
-                    />
-                  )}
-                />
-                {errors.from_time && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.from_time.message}
                   </p>
                 )}
               </div>
