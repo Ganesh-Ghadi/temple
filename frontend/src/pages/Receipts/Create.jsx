@@ -91,6 +91,17 @@ const formSchema = z.object({
       z.string().optional(), // Allow a string as an alternative
     ])
     .optional(), // Optional field
+  to_time: z
+    .union([
+      z
+        .object({
+          hour: z.number().min(0).max(23), // Example for hours (0-23)
+          minute: z.number().min(0).max(59), // Example for minutes (0-59)
+        })
+        .optional(), // Optional object
+      z.string().optional(), // Allow a string as an alternative
+    ])
+    .optional(), // Optional field
   Mallakhamb: z.coerce.number().min(0, "mallakhamb field is required"),
   zanj: z.coerce.number().min(0, "zanj field is required"),
   dhol: z.coerce.number().min(0, "dhol field is required"),
@@ -107,8 +118,6 @@ const formSchema = z.object({
   day_12: z.coerce.number().min(0, "day 12 field is required"),
   day_13: z.coerce.number().min(0, "day 13 field is required"),
   date: z.string().optional(),
-  // from_time: z.string().optional(),
-  // to_time: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
   day_9_date: z.string().optional(),
   day_10_date: z.string().optional(),
@@ -1713,7 +1722,7 @@ const Create = () => {
                   </div>
                 </div>
 
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
                       name="ac_charges"
