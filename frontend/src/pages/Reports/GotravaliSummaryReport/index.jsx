@@ -57,7 +57,7 @@ const index = () => {
       const link = document.createElement("a");
 
       link.href = url;
-      link.download = `Report-${Date.now()}.pdf`; // Use current timestamp for unique file name
+      link.download = `GotravaliSummaryReport-${Date.now()}.pdf`; // Use current timestamp for unique file name
 
       document.body.appendChild(link);
       link.click();
