@@ -23,6 +23,15 @@ import {
   SquareUserRound,
   CircleGauge,
   HandCoins,
+  AlignStartVertical,
+  CircleChevronLeft,
+  UsersRound,
+  Notebook,
+  ReceiptText,
+  Flower,
+  Paperclip,
+  ClipboardPlus,
+  ClipboardMinus,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlignJustify } from "lucide-react";
@@ -31,29 +40,69 @@ import { IoLogoSlack } from "react-icons/io";
 
 const MobileSidebar = ({ open, setOpen }) => {
   const [activeParent, setActiveParent] = useState(null);
-
-  const items = [
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.user?.role?.name;
+  // const items = [
+  //   {
+  //     name: "Home",
+  //     path: "/",
+  //     logo: <LayoutDashboard size={20} />,
+  //   },
+  //   {
+  //     name: "User Management",
+  //     path: "#",
+  //     logo: <Users size={20} />,
+  //     children: [
+  //       {
+  //         name: "Roles",
+  //         path: "/roles",
+  //         logo: <IoLogoSlack />,
+  //       },
+  //       {
+  //         name: "Users",
+  //         path: "/users",
+  //         logo: <IoLogoSlack />,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     name: "Masters",
+  //     path: "#",
+  //     logo: <Settings size={16} />,
+  //     children: [
+  //       {
+  //         name: "Devtas",
+  //         path: "/devtas",
+  //         logo: <Sun />,
+  //       },
+  //       {
+  //         name: "Pooja Types",
+  //         path: "/pooja_types",
+  //         logo: <Sun />,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     name: "Denominations",
+  //     path: "/denominations",
+  //     logo: <HandCoins size={16} />,
+  //   },
+  //   {
+  //     name: "Services",
+  //     path: "/services",
+  //     logo: <Network size={20} />,
+  //   },
+  //   {
+  //     name: "Contact",
+  //     path: "/contact",
+  //     logo: <SquareUserRound size={20} />,
+  //   },
+  // ];
+  const adminItems = [
     {
-      name: "Home",
+      name: "Dashboard",
       path: "/",
-      logo: <LayoutDashboard size={20} />,
-    },
-    {
-      name: "User Management",
-      path: "#",
-      logo: <Users size={20} />,
-      children: [
-        {
-          name: "Roles",
-          path: "/roles",
-          logo: <IoLogoSlack />,
-        },
-        {
-          name: "Users",
-          path: "/users",
-          logo: <IoLogoSlack />,
-        },
-      ],
+      logo: <LayoutDashboard size={16} />,
     },
     {
       name: "Masters",
@@ -63,12 +112,106 @@ const MobileSidebar = ({ open, setOpen }) => {
         {
           name: "Devtas",
           path: "/devtas",
-          logo: <Sun />,
+          logo: <Sun size={16} />,
         },
         {
           name: "Pooja Types",
           path: "/pooja_types",
-          logo: <Sun />,
+          logo: <AlignStartVertical size={16} />,
+        },
+        {
+          name: "Pooja Dates",
+          path: "/pooja_dates",
+          logo: <Settings size={16} />,
+        },
+        {
+          name: "Receipt types",
+          path: "/receipt_types",
+          logo: <ReceiptText size={16} />,
+        },
+        {
+          name: "Gurujis",
+          path: "/gurujis",
+          logo: <Flower size={16} />,
+        },
+      ],
+    },
+    {
+      name: "User Management",
+      path: "#",
+      logo: <Users size={16} />,
+      children: [
+        {
+          name: "Permissions",
+          path: "/permissions",
+          logo: <Paperclip size={16} />,
+        },
+        {
+          name: "Roles",
+          path: "/roles",
+          logo: <Notebook size={16} />,
+        },
+        {
+          name: "Users",
+          path: "/users",
+          logo: <UsersRound size={16} />,
+        },
+      ],
+    },
+    {
+      name: "Reports",
+      path: "#",
+      logo: <ClipboardPlus size={16} />,
+      children: [
+        {
+          name: "Gotravali",
+          path: "/gotravali_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Gotravali Summary",
+          path: "/gotravali_summary_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Receipt Report",
+          path: "/receipts_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "All Receipts",
+          path: "/all_receipts",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Receipt Summary",
+          path: "/receipt_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Cheque Collection",
+          path: "/cheque_collection_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "UPI Collection",
+          path: "/upi_collection_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Khat Report",
+          path: "/khat_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Naral Report",
+          path: "/naral_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Cancelled Receipt Report",
+          path: "/cancelled_receipt_report",
+          logo: <ClipboardMinus size={16} />,
         },
       ],
     },
@@ -78,16 +221,54 @@ const MobileSidebar = ({ open, setOpen }) => {
       logo: <HandCoins size={16} />,
     },
     {
-      name: "Services",
-      path: "/services",
-      logo: <Network size={20} />,
-    },
-    {
-      name: "Contact",
-      path: "/contact",
-      logo: <SquareUserRound size={20} />,
+      name: "Receipts",
+      path: "/receipts",
+      logo: <ReceiptText size={16} />,
     },
   ];
+
+  const limitedItems = [
+    {
+      name: "Dashboard",
+      path: "/",
+      logo: <LayoutDashboard size={16} />,
+    },
+    {
+      name: "Masters",
+      path: "#",
+      logo: <Settings size={16} />,
+      children: [
+        {
+          name: "Devtas",
+          path: "/devtas",
+          logo: <Sun size={16} />,
+        },
+        {
+          name: "Pooja Dates",
+          path: "/pooja_dates",
+          logo: <Settings size={16} />,
+        },
+        {
+          name: "Gurujis",
+          path: "/gurujis",
+          logo: <Flower size={16} />,
+        },
+      ],
+    },
+
+    {
+      name: "Denominations",
+      path: "/denominations",
+      logo: <HandCoins size={16} />,
+    },
+    {
+      name: "Receipts",
+      path: "/receipts",
+      logo: <ReceiptText size={16} />,
+    },
+  ];
+
+  const items = role === "admin" ? adminItems : limitedItems;
 
   const toggleChildren = (itemName) => {
     setActiveParent((prev) => (prev === itemName ? null : itemName)); // If same item clicked, close, else open it

@@ -54,8 +54,10 @@ const MainLayout = ({ toggleTheme, darkMode }) => {
       navigate("/login");
     } catch (error) {
       console.log(error);
-      if (error.response) {
-        toast.error("logout failed: " + error.response.data); // Customize error message
+      if (error?.response?.data?.message === "Unauthenticated.") {
+        localStorage.removeItem("user");
+        toast.success("Logged-out successfully");
+        navigate("/login");
       } else if (error.request) {
         toast.error("No response from server. Please try again later.");
       } else {
