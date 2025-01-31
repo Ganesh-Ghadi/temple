@@ -466,9 +466,10 @@ class ReceiptsController extends BaseController
         // Initialize mPDF
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
-            'format' => [135, 135],
+            // 'format' => [135, 135],
+            'format' => [152.4, 154.94],            
             'orientation' => 'P',
-            'margin_top' => 8,        // Set top margin to 0
+            'margin_top' => 50.8,        // Set top margin to 0
             'margin_left' => 11,      // Optional: Set left margin if needed
             'margin_right' => 11,     // Optional: Set right margin if needed
             'margin_bottom' => 8,     // Optional: Set bottom margin if needed
@@ -484,8 +485,12 @@ class ReceiptsController extends BaseController
             $mpdf->showWatermarkText = true; 
         }
        
-        
-        $html = view('Receipt.receipt', $data)->render();
+        if($receipt->receipt_type_id == 12){
+            $html = view('Receipt.dainandin_abhishek_receipt.index', $data)->render();
+        }
+        else{
+            $html = view('Receipt.receipt', $data)->render();
+        }
     
         $mpdf->WriteHTML($html);
     

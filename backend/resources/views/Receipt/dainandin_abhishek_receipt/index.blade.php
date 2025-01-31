@@ -8,10 +8,17 @@
     <style>
           body {
         font-family: "freeserif";
+        width: 100%; 
+        height: 100%;
     }
     </style>
 </head>
 <body>
     
+    <div style="">
+        <h4 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h4>
+    </div>
+
+
 </body>
 </html>
