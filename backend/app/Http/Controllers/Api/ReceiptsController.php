@@ -450,7 +450,7 @@ class ReceiptsController extends BaseController
     //  }
     public function generateReceipt(string $id)
     {
-        $receipt = Receipt::with('khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
+        $receipt = Receipt::with('naralReceipt','khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
         if (!$receipt) {
             return $this->sendError("receipt not found", ['error' => ['receipt not found']]);
         }
@@ -490,6 +490,9 @@ class ReceiptsController extends BaseController
         }
         else if($receipt->receipt_type_id == 1){
             $html = view('Receipt.khat_vikri_receipt.index', $data)->render();
+        }
+        else if($receipt->receipt_type_id == 2){
+            $html = view('Receipt.naral_vikri_receipt.index', $data)->render();
         }
         else{
             $html = view('Receipt.receipt', $data)->render();
