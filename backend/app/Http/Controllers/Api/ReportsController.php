@@ -113,7 +113,7 @@ class ReportsController extends BaseController
         ];
 
         // Render the Blade view to HTML
-        $html = view('Receipt.all_receipts.receipt', $data)->render();
+        $html = view('Reports.AllReceiptReport.index', $data)->render();
 
         // Create a new mPDF instance
         // $mpdf = new Mpdf();
@@ -345,7 +345,7 @@ class ReportsController extends BaseController
         ];
 
         // Render the Blade view to HTML
-        $html = view('Receipt.ReceiptSummary.receipt', $data)->render();
+        $html = view('Reports.ReceiptSummaryReport.index', $data)->render();
 
         // Create a new mPDF instance
         // $mpdf = new Mpdf();
@@ -451,7 +451,7 @@ class ReportsController extends BaseController
         ];
 
         // Render the Blade view to HTML
-        $html = view('Receipt.cheque_receipts.receipt', $data)->render();
+        $html = view('Reports.Collections.cheque_collections', $data)->render();
 
         // Create a new mPDF instance
         // $mpdf = new Mpdf();

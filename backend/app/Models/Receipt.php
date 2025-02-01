@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Pooja;
+use App\Models\Profile;
 use App\Models\Receipt;
 use App\Models\PoojaType;
 use App\Models\CampReceipt;
@@ -91,5 +92,9 @@ class Receipt extends Model
 
     public function anteshteeReceipt(){
         return $this->hasOne(AnteshteeReceipt::class, 'receipt_id');
+    }
+
+    public function profile(){
+        return $this->belongsTo(Profile::class, 'created_by');
     }
 }

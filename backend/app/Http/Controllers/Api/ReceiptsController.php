@@ -450,7 +450,7 @@ class ReceiptsController extends BaseController
     //  }
     public function generateReceipt(string $id)
     {
-        $receipt = Receipt::with('receiptType')->find($id);
+        $receipt = Receipt::with('profile','pooja.poojaType','receiptType')->find($id);
         if (!$receipt) {
             return $this->sendError("receipt not found", ['error' => ['receipt not found']]);
         }
@@ -469,10 +469,10 @@ class ReceiptsController extends BaseController
             // 'format' => [135, 135],
             'format' => [152.4, 154.94],            
             'orientation' => 'P',
-            'margin_top' => 50.8,        // Set top margin to 0
-            'margin_left' => 11,      // Optional: Set left margin if needed
-            'margin_right' => 11,     // Optional: Set right margin if needed
-            'margin_bottom' => 8,     // Optional: Set bottom margin if needed
+            'margin_top' => 40,        // Set top margin to 0
+            'margin_left' => 25,      // Optional: Set left margin if needed
+            'margin_right' => 25,     // Optional: Set right margin if needed
+            'margin_bottom' => 15,     // Optional: Set bottom margin if needed
         ]);
         $printCount = $receipt->print_count;
 
