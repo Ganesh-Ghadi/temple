@@ -9,20 +9,40 @@
           body {
         font-family: "freeserif";
         position: relative; 
+        /* width: 100%; 
+        height: 100%; */
         padding: 0;
+        /* background: red; */
     }
-   
+    /* table {
+            width: 100%; 
+            border-spacing: 0;
+        } */
+
+        /* td {
+            padding: 5px;
+        } */
+
+        /* .receipt-container {
+            width: 100%;
+        } */
+
+        /* .receipt-no {
+            padding: 5px;
+        } */
         .bottom-text {
             position: absolute;
-            bottom: 1.5cm;
+            bottom: 1.5cm; /* Position the text at the very bottom */
             width: 100%;
+            /* text-align: ; */
+            /* padding: 20px 0; Adjust this padding to match your desired margin */
             margin-bottom: 0; 
         }
     </style>
 </head>
 <body>
     
-        <h4 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h4>
+        <h3 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h3>
 
         <table style=" width: 100%; border-spacing: 0;">
             <tr>
@@ -35,7 +55,7 @@
 
         <table style="width: 100%; margin-top:40px; border-spacing: 0;">
             <tr>
-                <td style=" padding: 5px;">{{$receipt->narration}}</td>
+                <td style=" padding: 5px;">नग : {{$receipt->khatReceipt->quantity}} X रु. {{$receipt->khatReceipt->rate}}</td>
                 <td style="text-align:right">{{$receipt->amount}}</td>
             </tr>
         </table>

@@ -157,12 +157,19 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
-
+        
             
             $mpdf->SetHTMLFooter($footerHtml);
 
@@ -264,10 +271,18 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
 
             
@@ -389,10 +404,18 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
 
             
@@ -495,10 +518,18 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
 
             
@@ -602,10 +633,18 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
 
             
@@ -709,12 +748,19 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
-            $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
-            </div>';
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
 
+            $footerHtml = '
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
+            </div>';
             
             $mpdf->SetHTMLFooter($footerHtml);
 
@@ -809,10 +855,18 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
 
             
@@ -935,12 +989,19 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
-            $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
-            </div>';
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
 
+            $footerHtml = '
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
+            </div>';
             
             $mpdf->SetHTMLFooter($footerHtml);
 
@@ -1051,10 +1112,18 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+
             $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
             </div>';
 
             
@@ -1176,12 +1245,19 @@ class ReportsController extends BaseController
             // Set the header for each page
             $mpdf->SetHTMLHeader($headerHtml);
             
-            $footerHtml = '
-            <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
-                <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
-                <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
-            </div>';
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
 
+            $footerHtml = '
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
+            </div>';
             
             $mpdf->SetHTMLFooter($footerHtml);
 
