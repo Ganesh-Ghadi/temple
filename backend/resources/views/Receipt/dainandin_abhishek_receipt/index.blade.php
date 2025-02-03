@@ -34,8 +34,9 @@
             position: absolute;
             bottom: 1.5cm; /* Position the text at the very bottom */
             width: 100%;
-            /* text-align: ; */
+            /* text-align:  ; */
             /* padding: 20px 0; Adjust this padding to match your desired margin */
+            padding-left:80px;
             margin-bottom: 0; 
         }
     </style>

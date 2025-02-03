@@ -567,10 +567,10 @@ const Create = () => {
             // toast.error("The poo has already been taken.");
           }
         } else {
-          toast.error("Failed to add pooja type.");
+          toast.error("Failed to add Receipt.");
         }
       } else {
-        toast.error("Failed to add pooja type.");
+        toast.error("Failed to add Receipt.");
       }
       console.log("got error ", error);
     },

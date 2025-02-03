@@ -36,13 +36,14 @@
             width: 100%;
             /* text-align: ; */
             /* padding: 20px 0; Adjust this padding to match your desired margin */
+            padding-left:80px;
             margin-bottom: 0; 
         }
     </style>
 </head>
 <body>
     
-        <h3 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h3>
+        <h4 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h4>
 
         <table style=" width: 100%; border-spacing: 0;">
             <tr>
