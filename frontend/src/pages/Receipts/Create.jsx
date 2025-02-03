@@ -37,7 +37,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-
+import { AutoComplete } from "@/components/ui/autocomplete";
+import Autocompeleteadd from "@/customComponents/Autocompleteadd/Autocompleteadd";
 const formSchema = z.object({
   receipt_type_id: z.coerce.number().min(1, "Receipt Type field is required"),
   receipt_date: z.string().min(1, "Receipt date field is required"),
@@ -143,6 +144,10 @@ const Create = () => {
   const [selectAllCheckbox, setSelectAllCheckbox] = useState(false);
   const [fromTime, setFromTime] = useState(null);
   const [toTime, setToTime] = useState(null);
+  const [values, setValues] = useState([]);
+  const [takeinput, setTakeinput] = useState();
+  const [inputvaluearray, setInputvaluearray] = useState({});
+
   const khatReceiptId = 1;
   const naralReceiptId = 2;
   const bhangarReceiptId = 3;
@@ -157,6 +162,26 @@ const Create = () => {
   const poojaReceiptId = 12;
   const poojaPavtiAnekReceiptId = 13;
   const bharani_shradhhId = 14;
+
+  const frameworks = {
+    hallName: [
+      { value: "लंबोदर १०२", label: "लंबोदर १०२" },
+      { value: "ओंकार १०४", label: "ओंकार १०४" },
+      { value: "विनायक २०१", label: "विनायक २०१" },
+      { value: "ववरद २०२", label: "वरद २०२" },
+      { value: "वक्रतुंड ३०१", label: "वक्रतुंड ३०१" },
+      { value: "विघ्नहर्ता ४०१", label: "विघ्नहर्ता ४०१" },
+    ],
+  };
+
+  useEffect(() => {
+    console.log("Values:", values?.value);
+    if (takeinput !== values?.value) {
+      setValues(takeinput);
+
+      setValue("companyName", takeinput);
+    }
+  }, [takeinput]);
 
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -1633,27 +1658,51 @@ const Create = () => {
                       name="hall"
                       control={control}
                       render={({ field }) => (
-                        <Select
-                          value={field.value}
+                        // <Select
+                        //   value={field.value}
+                        //   onValueChange={(value) => {
+                        //     field.onChange(value);
+                        //   }}
+                        // >
+                        //   <SelectTrigger className="mt-1">
+                        //     <SelectValue placeholder="Select hall" />
+                        //   </SelectTrigger>
+                        //   <SelectContent>
+                        //     <SelectGroup>
+                        //       <SelectLabel>Select hall</SelectLabel>
+                        //       <SelectItem value="लंबोदर १०२">
+                        //         लंबोदर १०२
+                        //       </SelectItem>
+                        //       <SelectItem value="ओंकार १०४">
+                        //         ओंकार १०४
+                        //       </SelectItem>
+                        //       <SelectItem value="विनायक २०१">
+                        //         विनायक २०१
+                        //       </SelectItem>
+                        //       <SelectItem value="वरद २०२">वरद २०२</SelectItem>
+                        //       <SelectItem value="वक्रतुंड ३०१">
+                        //         वक्रतुंड ३०१
+                        //       </SelectItem>
+                        //       <SelectItem value="विघ्नहर्ता ४०१">
+                        //         विघ्नहर्ता ४०१
+                        //       </SelectItem>
+                        //     </SelectGroup>
+                        //   </SelectContent>
+                        // </Select>
+                        <Autocompeleteadd
+                          options={frameworks.hallName}
+                          placeholder="Select Hall Name..."
+                          emptyMessage="No Hall Name Found."
+                          value={values}
+                          array={inputvaluearray}
+                          setarray={setInputvaluearray}
+                          variable="hall"
                           onValueChange={(value) => {
-                            field.onChange(value);
+                            setValues(value);
+                            console.log(value);
+                            setValue("hall", value?.value);
                           }}
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select hall" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>Select hall</SelectLabel>
-                              <SelectItem value="वक्रतुंड ३०१">
-                                वक्रतुंड ३०१
-                              </SelectItem>
-                              <SelectItem value="ओंकार १०१">
-                                ओंकार १०१
-                              </SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
+                        />
                       )}
                     />
                     {errors.hall && (
