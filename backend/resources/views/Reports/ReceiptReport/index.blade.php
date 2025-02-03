@@ -89,7 +89,7 @@
                 <td></td>
                 <td></td>
                 <td style="font-weight: bold; text-align:right">TOTAL:</td>
-                <td style="font-weight: bold; text-align:right">{{$TOTAL}}</td>
+                <td style="font-weight: bold; text-align:right">{{number_format($TOTAL,2)}}</td>
             </tr>
         </tbody>
     </table>
