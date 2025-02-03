@@ -1108,7 +1108,7 @@ const Create = () => {
               </div>
             </div>
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-8 md:mb-0 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="remembrance">
                   Remembrance:
