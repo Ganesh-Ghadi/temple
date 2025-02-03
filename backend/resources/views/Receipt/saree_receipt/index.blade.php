@@ -39,13 +39,11 @@
             padding-left:80px;
             margin-bottom: 0; 
         }
-        
     </style>
 </head>
 <body>
     
         <h4 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h4>
-
         <table style=" width: 100%; border-spacing: 0;">
             <tr>
                 <td style=" padding: 5px;">{{$receipt->receipt_no}}</td>
@@ -57,10 +55,27 @@
 
         <table style="width: 100%; margin-top:40px; border-spacing: 0;">
             <tr>
-                <td style=" padding: 5px;">नग : {{$receipt->naralReceipt->quantity}} X रु. {{$receipt->naralReceipt->rate}}</td>
+                @if(@$receipt->sareeReceipt->saree_draping_date_morning)
+                <td style=" padding: 5px;">साडी नेसविन्याचा दिनांक सकाळी: {{\Carbon\Carbon::parse(@$receipt->sareeReceipt->saree_draping_date_morning)->format('d/m/Y')}}</td>
+                @else
+                <td></td>
+                @endif
                 <td style="text-align:right">{{$receipt->amount}}</td>
             </tr>
         </table>
+        @if(@$receipt->sareeReceipt->saree_draping_date_evening)
+        <p style="margin:0;">साडी नेसविन्याचा दिनांक सांध्याकाळी: {{\Carbon\Carbon::parse(@$receipt->sareeReceipt->saree_draping_date_evening)->format('d/m/Y')}}</p>
+        @endif
+
+        @if(@$receipt->sareeReceipt->return_saree)
+        <p style="margin:0;">प्रसादाची साडी परत हवी आहे</p>
+        <p style="margin:0;">टिप: प्रसादाची साडी नेसविलेल्या दिवसापासून १५ दिवसांच्या आत संबंधितांनी घेतून जावी. नंतर मंदिर जबाबदार राहणार नाही.</p>
+        @else
+        <p style="margin:0;">प्रसादाची साडी परत नको</p>
+        @endif
+        <p style="margin:0;">{{@$receipt->narration}}</p>
+
+
         @if(@$receipt->special_date)
         <p style="padding-top: 0; margin-top:0;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
           @endif
@@ -78,7 +93,7 @@
           <p style="padding: 0; margin:0; font-size:10px;">यू.पी.आय क्र: {{@$receipt->upi_number}}</p>
           </p>
           @endif
-          
+
           <div style="position: absolute; bottom:3.3cm;">
             <table style=" width: 90%; border-spacing: 0;">
                 <tr>

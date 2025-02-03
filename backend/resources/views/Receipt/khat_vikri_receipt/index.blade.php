@@ -51,7 +51,7 @@
             </tr>
         </table>
 
-        <p>{{$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
 
         <table style="width: 100%; margin-top:40px; border-spacing: 0;">
             <tr>
@@ -59,15 +59,31 @@
                 <td style="text-align:right">{{$receipt->amount}}</td>
             </tr>
         </table>
+        @if(@$receipt->special_date)
+        <p style="padding-top: 0; margin-top:0;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
+          @endif
 
+          @if(@$receipt->payment_mode == "Bank")
+          <p style="margin-top:2px;">
+            <p style="padding: 0; margin:0; font-size:10px;">बँकेचे नाव: {{@$receipt->bank_details}}</p>
+            <p style="padding: 0; margin:0; font-size:10px;">धनादेश क्र: {{@$receipt->cheque_number}}</p>
+            <p style="padding: 0; margin:0; font-size:10px;">धनादेश दिनांक: {{@$receipt->cheque_date}}</p>
+            <p style="padding: 0; margin:0; font-size:10px;">Cheques are subjected to realization.</p>
+          </p>
+          @elseif(@$receipt->payment_mode == "UPI")
+          <p style="margin-top:2px;">
+          <p style="padding: 0; margin:0; font-size:10px;">यू.पी.आय क्र: {{@$receipt->upi_number}}</p>
+          </p>
+          @endif
 
-
-        <table style="margin-top:50px; width: 100%; border-spacing: 0;">
-            <tr>
-                <td style=" padding: 5px;">{{$receipt->amount_in_words}}</td>
-                <td style="text-align:right">{{$receipt->amount}}</td>
-            </tr>
-        </table>
+          <div style="position: absolute; bottom:3.3cm;">
+            <table style=" width: 90%; border-spacing: 0;">
+                <tr>
+                    <td style=" padding: 5px;">{{$receipt->amount_in_words}}</td>
+                    <td style="text-align:right">{{$receipt->amount}}</td>
+                </tr>
+            </table>
+        </div>
 
         <p class="bottom-text">: {{$receipt->profile->profile_name}}&nbsp;&nbsp;&nbsp;{{ \Carbon\Carbon::parse($receipt->created_at)->format('d/m/Y h:i A') }}</p>
 
