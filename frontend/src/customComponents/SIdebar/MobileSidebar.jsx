@@ -239,11 +239,6 @@ const MobileSidebar = ({ open, setOpen }) => {
       logo: <Settings size={16} />,
       children: [
         {
-          name: "Devtas",
-          path: "/devtas",
-          logo: <Sun size={16} />,
-        },
-        {
           name: "Pooja Dates",
           path: "/pooja_dates",
           logo: <Settings size={16} />,
@@ -255,7 +250,63 @@ const MobileSidebar = ({ open, setOpen }) => {
         },
       ],
     },
-
+    {
+      name: "Reports",
+      path: "#",
+      logo: <ClipboardPlus size={16} />,
+      children: [
+        {
+          name: "Gotravali",
+          path: "/gotravali_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Gotravali Summary",
+          path: "/gotravali_summary_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Receipt Report",
+          path: "/receipts_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "All Receipts",
+          path: "/all_receipts",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Receipt Summary",
+          path: "/receipt_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Cheque Collection",
+          path: "/cheque_collection_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "UPI Collection",
+          path: "/upi_collection_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Khat Report",
+          path: "/khat_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Naral Report",
+          path: "/naral_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Cancelled Receipt Report",
+          path: "/cancelled_receipt_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+      ],
+    },
     {
       name: "Denominations",
       path: "/denominations",
