@@ -56,7 +56,7 @@
         <table style="width: 100%; margin-top:40px; border-spacing: 0;">
             <tr>
                 @if(@$receipt->uparaneReceipt->uparane_draping_date)
-                <td style=" padding: 5px;">उपरणे नेसविन्याचा दिनांक: {{\Carbon\Carbon::parse(@$receipt->sareeReceipt->saree_draping_date_morning)->format('d/m/Y')}}</td>
+                <td style=" padding: 5px;">उपरणे नेसविन्याचा दिनांक: {{\Carbon\Carbon::parse(@$receipt->uparaneReceipt->uparane_draping_date)->format('d/m/Y')}}</td>
                 @else
                 <td></td>
                 @endif
