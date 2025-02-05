@@ -50,7 +50,7 @@ class PermissionsController extends BaseController
         Artisan::call("optimize");
 
         Artisan::call("permissions:generate");
-        Artisan::call("db:seed");
+        // Artisan::call("db:seed");
 
        return $this->sendResponse([], "Permissions generated successfully");
 

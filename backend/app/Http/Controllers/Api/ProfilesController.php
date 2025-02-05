@@ -106,12 +106,16 @@ class ProfilesController extends BaseController
         if(!$profile){
             return $this->sendError("Profile not found", ['error'=>'Profile not found']);
         }
+        
 
         $user = User::find($profile->user_id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->active = $request->input('active');
+        if($request->input('password'))
+       {
         $user->password = Hash::make($request->input('password'));
+       }
         $user->save();
 
         $memberRole = $request->input("role");
