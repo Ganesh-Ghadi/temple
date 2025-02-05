@@ -178,9 +178,9 @@ class DenominationsController extends BaseController
             return $this->sendError("Denomination not found", ['error'=>['Denomination not found']]);
         }
         
-        if(!empty($denomination->denomination_file) && Storage::exists('public/Denomination/'.$denomination->denomination_file)) {
-            Storage::delete('public/Denomination/'.$denomination->denomination_file);
-        }
+        // if(!empty($denomination->denomination_file) && Storage::exists('public/Denomination/'.$denomination->denomination_file)) {
+        //     Storage::delete('public/Denomination/'.$denomination->denomination_file);
+        // }
 
         $data = [
             'denomination' => $denomination,
@@ -220,11 +220,11 @@ class DenominationsController extends BaseController
         // Define the file path for saving the PDF
         $filePath = 'public/Denomination/denomination' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-        $denomination->denomination_file = $fileName;
+        // $denomination->denomination_file = $fileName;
         $denomination->save();
       
         // Save PDF to storage
-        Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
+        // Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
 
         // Output the PDF for download
         return $mpdf->Output('denomination.pdf', 'D'); // Download the PDF

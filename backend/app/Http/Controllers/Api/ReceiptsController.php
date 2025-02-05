@@ -455,9 +455,9 @@ class ReceiptsController extends BaseController
             return $this->sendError("receipt not found", ['error' => ['receipt not found']]);
         }
     
-        if (!empty($receipt->receipt_file) && Storage::exists('public/Receipt/' . $receipt->receipt_file)) {
-            Storage::delete('public/Receipt/' . $receipt->receipt_file);
-        }
+        // if (!empty($receipt->receipt_file) && Storage::exists('public/Receipt/' . $receipt->receipt_file)) {
+        //     Storage::delete('public/Receipt/' . $receipt->receipt_file);
+        // }
     
         $data = [
             'receipt' => $receipt,
@@ -469,7 +469,7 @@ class ReceiptsController extends BaseController
             // 'format' => [135, 135],
             'format' => [152.4, 154.94],            
             'orientation' => 'P',
-            'margin_top' => 40,        // Set top margin to 0
+            'margin_top' => 36,        // Set top margin to 0
             'margin_left' => 25,      // Optional: Set left margin if needed
             'margin_right' => 25,     // Optional: Set right margin if needed
             'margin_bottom' => 15,     // Optional: Set bottom margin if needed
@@ -528,7 +528,7 @@ class ReceiptsController extends BaseController
         // Define the file path for saving the PDF
         $filePath = 'public/Receipt/receipt' . time() . $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-        $receipt->receipt_file = $fileName;
+        // $receipt->receipt_file = $fileName;
         if ($receipt->print_count >= 1) {
             $receipt->print_count = $printCount + 1;
         } else {
@@ -537,7 +537,7 @@ class ReceiptsController extends BaseController
         $receipt->save();
     
         // Save PDF to storage
-        Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
+        // Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
     
         // Output the PDF for download
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF

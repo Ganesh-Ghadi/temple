@@ -85,6 +85,53 @@ const Index = () => {
     return <p>Error fetching data</p>;
   }
 
+  // const handlePrint = async (receiptId) => {
+  //   try {
+  //     const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       responseType: "blob", // To ensure the response is a blob (PDF file)
+  //     });
+
+  //     const blob = response.data;
+  //     const url = window.URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+
+  //     link.href = url;
+  //     link.download = `receipt-${receiptId}.pdf`;
+
+  //     document.body.appendChild(link);
+
+  //     link.click();
+
+  //     document.body.removeChild(link);
+
+  //     // Invalidate the queries related to the "lead" data
+  //     queryClient.invalidateQueries("receipts");
+  //     toast.success("Receipt Printed Successfully");
+  //   } catch (error) {
+  //     // Handle errors (both response errors and network errors)
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response) {
+  //         const errorData = error.response.data;
+  //         if (error.response.status === 401 && errorData.status === false) {
+  //           toast.error(errorData.errors.error);
+  //         } else {
+  //           toast.error("Failed to generate Receipt");
+  //         }
+  //       } else {
+  //         // Network or other errors
+  //         console.error("Error:", error);
+  //         toast.error("An error occurred while printing the Receipt");
+  //       }
+  //     } else {
+  //       console.error("Unexpected error:", error);
+  //       toast.error("An unexpected error occurred");
+  //     }
+  //   }
+  // };
   const handlePrint = async (receiptId) => {
     try {
       const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
@@ -92,21 +139,19 @@ const Index = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        responseType: "blob", // To ensure the response is a blob (PDF file)
+        responseType: "blob", // Ensure the response is a blob (PDF file)
       });
 
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
 
-      link.href = url;
-      link.download = `receipt-${receiptId}.pdf`;
+      // Open a new window or tab with the PDF
+      const newWindow = window.open(url, "_blank");
 
-      document.body.appendChild(link);
-
-      link.click();
-
-      document.body.removeChild(link);
+      // Optionally, check if the window was successfully opened
+      if (!newWindow) {
+        toast.error("Unable to open the PDF in a new window.");
+      }
 
       // Invalidate the queries related to the "lead" data
       queryClient.invalidateQueries("receipts");

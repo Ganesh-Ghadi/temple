@@ -39,6 +39,7 @@ const MainLayout = ({ toggleTheme, darkMode }) => {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
+  const user_email = user?.user?.email;
   const navigate = useNavigate();
   const logout = async () => {
     try {
@@ -109,10 +110,10 @@ const MainLayout = ({ toggleTheme, darkMode }) => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel>{user_email}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
+                    {/* <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>Support</DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => setIsLogoutDialogOpen(true)}
