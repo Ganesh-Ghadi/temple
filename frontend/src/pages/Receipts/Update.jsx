@@ -600,7 +600,7 @@ const Update = () => {
               </Button>
             </span>
             <span className="text-gray-400">/</span>
-            <span className="dark:text-gray-300">Add</span>
+            <span className="dark:text-gray-300">View</span>
           </div>
         </div>
         {/* breadcrumb ends */}

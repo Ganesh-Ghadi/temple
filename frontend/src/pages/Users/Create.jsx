@@ -28,14 +28,7 @@ const formSchema = z.object({
     .nonempty("Email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   name: z.string().min(2, "Name must be at least 2 characters"),
-  mobile: z.coerce
-    .number()
-    .min(1000000000, {
-      message: "Mobile number must be at least 10 digits long.",
-    }) // Ensure the number is 10 digits or longer
-    .max(9999999999, {
-      message: "Mobile number must be exactly 10 digits long.",
-    }), // Ensure the number is 10 digits or shorter
+  mobile: z.string().optional(),
   role: z.string().min(1, "Role field is required"),
   active: z.coerce.number().optional(),
 });
@@ -78,7 +71,6 @@ const Create = () => {
     },
     onError: (error) => {
       setIsLoading(false);
-
     },
   });
   const onSubmit = (data) => {

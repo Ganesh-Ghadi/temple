@@ -28,7 +28,7 @@ const formSchema = z.object({
     .nonempty("Email is required"),
   password: z.string().optional(),
   name: z.string().min(2, "Name must be at least 2 characters"),
-  mobile: z.coerce.number().optional(), // Ensure the number is 10 digits or shorter
+  mobile: z.string().optional(), // Ensure the number is 10 digits or shorter
   role: z.string().min(1, "Role field is required"),
   active: z.coerce.number().optional(),
 });
@@ -83,7 +83,7 @@ const Update = () => {
     if (editUser) {
       setValue("email", editUser.Profile?.email);
       setValue("name", editUser.Profile?.profile_name);
-      setValue("mobile", editUser?.Profile?.mobile);
+      setValue("mobile", editUser?.Profile?.mobile || "");
       // setValue("password", editUser?.User?.password);
 
       setValue("role", editUser?.User?.role.name);
