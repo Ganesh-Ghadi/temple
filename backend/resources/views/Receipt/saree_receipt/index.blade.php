@@ -53,7 +53,7 @@
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
 
-        <table style="width: 100%; margin-top:40px; border-spacing: 0;">
+        <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
                 @if(@$receipt->sareeReceipt->saree_draping_date_morning)
                 <td style=" padding: 5px;">साडी नेसविन्याचा दिनांक सकाळी: {{\Carbon\Carbon::parse(@$receipt->sareeReceipt->saree_draping_date_morning)->format('d/m/Y')}}</td>
@@ -94,7 +94,7 @@
           </p>
           @endif
 
-          <div style="position: absolute; bottom:3.3cm;">
+          <div style="position: absolute; bottom:3.1cm;">
             <table style=" width: 90%; border-spacing: 0;">
                 <tr>
                     <td style=" padding: 5px;">{{$receipt->amount_in_words}}</td>

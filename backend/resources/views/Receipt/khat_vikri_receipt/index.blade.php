@@ -43,22 +43,23 @@
 </head>
 <body>
     
-        <h4 style="font-weight: bold; text-align:center">{{$receipt->receiptType->receipt_type}}</h4>
+        <h4 style="font-weight: bold; text-align:center">{{@$receipt->receiptType->receipt_type}}</h4>
         <table style=" width: 100%; border-spacing: 0;">
             <tr>
-                <td style=" padding: 5px;">{{$receipt->receipt_no}}</td>
-                <td style="text-align:right">{{\Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y')}}</td>
+                <td style=" padding: 5px;">{{@$receipt->receipt_no}}</td>
+                <td style="text-align:right">{{\Carbon\Carbon::parse(@$receipt->receipt_date)->format('d/m/Y')}}</td>
             </tr>
         </table>
 
-        <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
 
-        <table style="width: 100%; margin-top:40px; border-spacing: 0;">
+        <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
-                <td style=" padding: 5px;">नग : {{$receipt->khatReceipt->quantity}} X रु. {{$receipt->khatReceipt->rate}}</td>
-                <td style="text-align:right">{{$receipt->amount}}</td>
+                <td style=" padding: 5px;">नग : {{@$receipt->khatReceipt->quantity}} X रु. {{@$receipt->khatReceipt->rate}}</td>
+                <td style="text-align:right">{{@$receipt->amount}}</td>
             </tr>
         </table>
+        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->narration}}</p>
         @if(@$receipt->special_date)
         <p style="padding-top: 0; margin-top:0;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
           @endif
@@ -76,16 +77,16 @@
           </p>
           @endif
 
-          <div style="position: absolute; bottom:3.3cm;">
+          <div style="position: absolute; bottom:3.1cm;">
             <table style=" width: 90%; border-spacing: 0;">
                 <tr>
-                    <td style=" padding: 5px;">{{$receipt->amount_in_words}}</td>
-                    <td style="text-align:right">{{$receipt->amount}}</td>
+                    <td style=" padding: 5px;">{{@$receipt->amount_in_words}}</td>
+                    <td style="text-align:right">{{@$receipt->amount}}</td>
                 </tr>
             </table>
         </div>
 
-        <p class="bottom-text">: {{$receipt->profile->profile_name}}&nbsp;&nbsp;&nbsp;{{ \Carbon\Carbon::parse($receipt->created_at)->format('d/m/Y h:i A') }}</p>
+        <p class="bottom-text">: {{@$receipt->profile->profile_name}}&nbsp;&nbsp;&nbsp;{{ \Carbon\Carbon::parse($receipt->created_at)->format('d/m/Y h:i A') }}</p>
 
 
 </body>

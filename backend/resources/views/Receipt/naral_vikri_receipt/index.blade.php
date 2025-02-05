@@ -55,12 +55,13 @@
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
 
-        <table style="width: 100%; margin-top:40px; border-spacing: 0;">
+        <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
                 <td style=" padding: 5px;">नग : {{$receipt->naralReceipt->quantity}} X रु. {{$receipt->naralReceipt->rate}}</td>
                 <td style="text-align:right">{{$receipt->amount}}</td>
             </tr>
         </table>
+        <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->narration}}</p>
         @if(@$receipt->special_date)
         <p style="padding-top: 0; margin-top:0;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
           @endif
@@ -79,7 +80,7 @@
           </p>
           @endif
           
-          <div style="position: absolute; bottom:3.3cm;">
+          <div style="position: absolute; bottom:3.1cm;">
             <table style=" width: 90%; border-spacing: 0;">
                 <tr>
                     <td style=" padding: 5px;">{{$receipt->amount_in_words}}</td>

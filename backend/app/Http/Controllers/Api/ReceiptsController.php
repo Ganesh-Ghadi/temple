@@ -450,7 +450,7 @@ class ReceiptsController extends BaseController
     //  }
     public function generateReceipt(string $id)
     {
-        $receipt = Receipt::with('vasturupeeReceipt','poojas','bhangarReceipt','anteshteeReceipt','uparaneReceipt','sareeReceipt','naralReceipt','khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
+        $receipt = Receipt::with('libraryReceipt','hallReceipt','vasturupeeReceipt','poojas','bhangarReceipt','anteshteeReceipt','uparaneReceipt','sareeReceipt','naralReceipt','khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
         if (!$receipt) {
             return $this->sendError("receipt not found", ['error' => ['receipt not found']]);
         }
@@ -505,6 +505,12 @@ class ReceiptsController extends BaseController
         }
         else if($receipt->receipt_type_id == 6){
             $html = view('Receipt.vasturupi_receipt.index', $data)->render();
+        }
+        else if($receipt->receipt_type_id == 8 || $receipt->receipt_type_id == 42 || $receipt->receipt_type_id == 43){
+            $html = view('Receipt.library_receipt.index', $data)->render();
+        }
+        else if($receipt->receipt_type_id == 9){
+            $html = view('Receipt.hall_receipt.index', $data)->render();
         }
         else if($receipt->receipt_type_id == 11){
             $html = view('Receipt.anteshti_karma_receipt.index', $data)->render();

@@ -52,7 +52,7 @@
         </table>
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
-
+        <p style="padding: 1 0 0 0 ; margin:0; font-size:10px;">{{@$receipt->narration}}</p>
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
                 <td style=" padding: 5px;">{{@$receipt->poojas[0]->poojaType->pooja_type}}</td>
@@ -85,7 +85,7 @@
           </p>
           @endif
 
-          <div style="position: absolute; bottom:3.3cm;">
+          <div style="position: absolute; bottom:3.1cm;">
             <table style=" width: 90%; border-spacing: 0;">
                 <tr>
                     <td style=" padding: 5px;">{{@$receipt->amount_in_words}}</td>
