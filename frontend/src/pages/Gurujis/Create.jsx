@@ -76,7 +76,6 @@ const Create = () => {
       } else {
         toast.error("Failed to add Guruji details.");
       }
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {

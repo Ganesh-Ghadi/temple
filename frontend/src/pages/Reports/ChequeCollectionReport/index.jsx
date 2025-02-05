@@ -163,7 +163,6 @@ const index = () => {
   //       } else {
   //         toast.error("Failed to Generate report.");
   //       }
-  //       console.log("got error ", error);
   //     },
   //   });
 

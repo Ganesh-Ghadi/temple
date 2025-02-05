@@ -103,7 +103,6 @@ const Index = () => {
     },
     onError: (error) => {
       toast.success("Error while generating permission");
-      console.log("got error ", error);
     },
   });
   const onPermissionGenerate = () => {

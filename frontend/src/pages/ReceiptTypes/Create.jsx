@@ -120,7 +120,6 @@ const Create = () => {
       } else {
         toast.error("Failed to add pooja type.");
       }
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {

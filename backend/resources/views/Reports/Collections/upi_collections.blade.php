@@ -50,13 +50,13 @@
     </thead>
         <tbody>
             @foreach($receipts as $receipt)
-            <tr @if($receipt->cancelled == true) style="background-color: #f8d7da; color: #721c24;" @endif>
-                <td>{{$receipt->receipt_no}}</td>
-                <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
-                <td>{{$receipt->receipt_head}}</td>
-                <td>{{$receipt->name}}</td>
-                <td>{{$receipt->upi_number}}</td>
-                <td style="text-align: right;">{{$receipt->amount}}</td>
+            <tr>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->receipt_no}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->receipt_head}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->name}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->upi_number}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through; text-align: right;"@else style="text-align: right;" @endif>{{$receipt->amount}}</td>
             </tr>
             @endforeach
            

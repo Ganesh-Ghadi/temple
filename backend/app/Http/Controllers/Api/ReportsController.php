@@ -307,7 +307,7 @@ class ReportsController extends BaseController
         $to_date = $request->input('to_date');
         $receipt_head = $request->input('receipt_head');
 
-        $receipts = Receipt::with('receiptType')->where('cancelled', false);;
+        $receipts = Receipt::with('receiptType')->where('cancelled', false);
         
         if ($receipt_head) {
             $receipts->where('receipt_head', $receipt_head);
@@ -542,7 +542,6 @@ class ReportsController extends BaseController
         // Define the file path for saving the PDF
         $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-             Log::info("working");
         // Output the PDF for download
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
         // return $this->sendResponse([], "Invoice generated successfully");
@@ -657,7 +656,6 @@ class ReportsController extends BaseController
         // Define the file path for saving the PDF
         $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-             Log::info("working");
         // Output the PDF for download
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
         // return $this->sendResponse([], "Invoice generated successfully");
@@ -879,7 +877,6 @@ class ReportsController extends BaseController
         // Define the file path for saving the PDF
         $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
         $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-             Log::info("working");
         // Output the PDF for download
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
         // return $this->sendResponse([], "Invoice generated successfully");
@@ -1022,7 +1019,8 @@ class ReportsController extends BaseController
     {
         $date = $request->input('date');
 
-        $receipts = Receipt::with(['poojas.poojaType', 'receiptType']) // Eager load related poojas and receiptType
+        $receipts = Receipt::with(['poojas.poojaType', 'receiptType'])
+            ->where("cancelled", false)
             ->whereHas('poojas', function ($query) use ($date) {
                 // Apply the condition on pooja's date column
                 if ($date) {
@@ -1146,6 +1144,7 @@ class ReportsController extends BaseController
         $date = $request->input('date');
 
         $receipts = Receipt::with(['poojas.poojaType']) // Eager load related poojas and receiptType
+             ->where("cancelled", false)
             ->whereHas('poojas', function ($query) use ($date) {
                 // Apply the condition on pooja's date column
                 if ($date) {

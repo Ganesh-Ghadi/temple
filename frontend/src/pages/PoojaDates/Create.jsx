@@ -94,7 +94,6 @@ const Create = () => {
       } else {
         toast.error("Failed to add pooja Date.");
       }
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {

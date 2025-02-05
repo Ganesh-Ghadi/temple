@@ -49,7 +49,6 @@ export const AutoComplete = ({
   useEffect(() => {
     setSelected(defaultValue);
     setTakeinput(defaultValue || "");
-    console.log("defaultValue:", defaultValue);
   }, [defaultValue]);
 
   const updateSelectedValue = useCallback(() => {

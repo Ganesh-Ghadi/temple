@@ -41,7 +41,6 @@ const Login = () => {
         },
       });
 
-      console.log("Login successful:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
       toast.success("Login successful! Welcome back.");
       navigate("/");

@@ -469,7 +469,7 @@ class ReceiptsController extends BaseController
             // 'format' => [135, 135],
             'format' => [152.4, 154.94],            
             'orientation' => 'P',
-            'margin_top' => 36,        // Set top margin to 0
+            'margin_top' => 37,        // Set top margin to 0
             'margin_left' => 25,      // Optional: Set left margin if needed
             'margin_right' => 25,     // Optional: Set right margin if needed
             'margin_bottom' => 15,     // Optional: Set bottom margin if needed

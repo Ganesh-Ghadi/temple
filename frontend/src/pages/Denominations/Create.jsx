@@ -103,12 +103,7 @@ const Create = () => {
       .toFixed(2);
 
     setValue('amount', totalAmount);
-    console.log(
-      'amoutn value fron useEfect',
-      totalAmount,
-      'fef',
-      denominations.n_2000
-    );
+  
   }, [denominations, setValue]);
 
   const storeMutation = useMutation({
@@ -131,11 +126,9 @@ const Create = () => {
       setIsLoading(false);
       toast.error('Faild to Store denomination');
 
-      console.log('got error ', error);
     },
   });
   const onSubmit = (data) => {
-    console.log(data);
     setIsLoading(true);
 
     storeMutation.mutate(data);

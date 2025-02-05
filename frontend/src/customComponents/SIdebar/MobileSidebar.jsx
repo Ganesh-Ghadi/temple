@@ -239,11 +239,6 @@ const MobileSidebar = ({ open, setOpen }) => {
       logo: <Settings size={16} />,
       children: [
         {
-          name: "Pooja Dates",
-          path: "/pooja_dates",
-          logo: <Settings size={16} />,
-        },
-        {
           name: "Gurujis",
           path: "/gurujis",
           logo: <Flower size={16} />,

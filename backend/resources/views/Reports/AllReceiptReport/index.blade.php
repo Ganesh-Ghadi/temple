@@ -53,16 +53,16 @@
     </thead>
         <tbody>
             @foreach($receipts as $receipt)
-            <tr @if($receipt->cancelled == true) style="background-color: #f8d7da; color: #721c24;" @endif>
-                <td>{{$receipt->receipt_no}}</td>
-                <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
-                <td>{{$receipt->receiptType->receipt_type}}</td>
-                <td>{{$receipt->name}}</td>
+            <tr>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif >{{$receipt->receipt_no}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->receiptType->receipt_type}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->name}}</td>
                 @if($receiptHead == "वस्तुरुपी देणगी")
-                <td>{{$receipt->narration}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->narration}}</td>
                 @endif
-                <td>{{$receipt->payment_mode}}</td>
-                <td style="text-align: right;">{{$receipt->amount}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->payment_mode}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through; text-align: right;"@else style="text-align: right;" @endif >{{$receipt->amount}}</td>
             </tr>
             @endforeach
              <tr>

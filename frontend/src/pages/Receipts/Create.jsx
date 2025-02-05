@@ -175,7 +175,6 @@ const Create = () => {
   };
 
   useEffect(() => {
-    console.log("Values:", values?.value);
     if (takeinput !== values?.value) {
       setValues(takeinput);
 
@@ -504,7 +503,6 @@ const Create = () => {
 
   useEffect(() => {
     if (sareeDateData) {
-      console.log(sareeDateData);
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
       setValue(
         "saree_draping_date_morning",
@@ -515,7 +513,6 @@ const Create = () => {
 
   useEffect(() => {
     if (sareeEveningDateData) {
-      console.log(sareeEveningDateData);
       setValue(
         "saree_draping_date_evening",
         sareeEveningDateData?.SareeDrapingDateEvening
@@ -525,7 +522,6 @@ const Create = () => {
 
   useEffect(() => {
     if (uparaneDateData) {
-      console.log(uparaneDateData);
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
       const dateFormatted = new Date(uparaneDateData?.UparaneDrapingDate)
         .toISOString()
@@ -597,7 +593,6 @@ const Create = () => {
       } else {
         toast.error("Failed to add Receipt.");
       }
-      console.log("got error ", error);
     },
   });
 
@@ -632,12 +627,9 @@ const Create = () => {
   const handleReceiptTypeChange = (value) => {
     setSelectedReceiptTypeId(value?.id);
 
-    console.log(value?.minimum_amount, "ffff");
-    console.log(value, "ffffhh");
 
     // setValue("amount", value?.minimum_amount);
     setValue("amount", value?.minimum_amount || null);
-    console.log("swff", parseFloat(value?.minimum_amount));
     if (value?.id === 11) {
       setSelectedAnteshtiId(true);
     }
@@ -661,7 +653,6 @@ const Create = () => {
   const handleAcAmountChange = (e) => {
     const acAmount = parseInt(e.target.value) || 0;
     const currentAmount = parseFloat(watch("amount")) || 0;
-    console.log(acAmount, "fefcedf", currentAmount);
     setValue("amount", currentAmount + acAmount);
   };
 
@@ -1297,7 +1288,6 @@ const Create = () => {
               </>
             )}
 
-            {console.log(selectedReceiptTypeId, typeof selectedReceiptTypeId)}
             {/* {selectedReceiptTypeId === khatReceiptId && ( */}
             {(selectedReceiptTypeId === khatReceiptId ||
               selectedReceiptTypeId === naralReceiptId) && (
@@ -1699,7 +1689,6 @@ const Create = () => {
                           variable="hall"
                           onValueChange={(value) => {
                             setValues(value);
-                            console.log(value);
                             setValue("hall", value?.value);
                           }}
                         />

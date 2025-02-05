@@ -49,12 +49,10 @@ const MainLayout = ({ toggleTheme, darkMode }) => {
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
-      console.log(response);
       toast.success("Logged-out successfully");
       localStorage.removeItem("user");
       navigate("/login");
     } catch (error) {
-      console.log(error);
       if (error?.response?.data?.message === "Unauthenticated.") {
         localStorage.removeItem("user");
         toast.success("Logged-out successfully");

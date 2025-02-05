@@ -84,12 +84,10 @@ const Create = () => {
       } else {
         toast.error("Failed to add Devta details.");
       }
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
     setIsLoading(true);
-    console.log(data.from_time);
     storeMutation.mutate(data);
   };
 

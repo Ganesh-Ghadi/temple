@@ -109,11 +109,9 @@ const Update = () => {
       } else {
         toast.error("Failed to update Guruji details b.");
       }
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
-    console.log("Clicked");
     setIsLoading(true);
     updateMutation.mutate(data);
   };

@@ -52,7 +52,6 @@ const Delete = ({ id }) => {
     onError: (error) => {
       setIsLoading(false);
       toast.error("Faild to delete pooja Date");
-      console.log("got error ", error);
     },
   });
   const onDelete = () => {

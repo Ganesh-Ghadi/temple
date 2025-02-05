@@ -290,7 +290,6 @@ const Update = () => {
     queryFn: async () => {
       try {
         if (selectedReceiptHead) {
-          console.log("working");
           setValue("receipt_type_id", "");
           handleReceiptTypeChange("");
         }
@@ -578,11 +577,9 @@ const Update = () => {
     onError: (error) => {
       setIsLoading(false);
       toast.error("Failed to update Receipt");
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
-    console.log("Clicked");
     setIsLoading(true);
     updateMutation.mutate(data);
   };
@@ -1219,7 +1216,6 @@ const Update = () => {
               </>
             )}
 
-            {console.log(selectedReceiptTypeId, typeof selectedReceiptTypeId)}
             {/* {selectedReceiptTypeId === khatReceiptId && ( */}
             {(selectedReceiptTypeId === khatReceiptId ||
               selectedReceiptTypeId === naralReceiptId) && (

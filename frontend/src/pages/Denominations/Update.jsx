@@ -147,12 +147,7 @@ const Update = () => {
       .toFixed(2);
 
     setValue("amount", totalAmount);
-    console.log(
-      "amoutn value fron useEfect",
-      totalAmount,
-      "fef",
-      denominations.n_2000
-    );
+   
   }, [denominations, setValue]);
 
   const updateMutation = useMutation({
@@ -175,11 +170,9 @@ const Update = () => {
     onError: (error) => {
       setIsLoading(false);
       toast.error("Faild to update denomination");
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
-    console.log("Clicked");
     setIsLoading(true);
     updateMutation.mutate(data);
   };

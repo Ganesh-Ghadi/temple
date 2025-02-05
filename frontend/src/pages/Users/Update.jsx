@@ -118,7 +118,6 @@ const Update = () => {
     onError: (error) => {
       setIsLoading(false);
 
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {

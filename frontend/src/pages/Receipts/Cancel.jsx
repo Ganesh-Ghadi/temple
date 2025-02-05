@@ -52,7 +52,6 @@ const Delete = ({ id }) => {
     onError: (error) => {
       setIsLoading(false);
 
-      console.log('got error ', error);
     },
   });
   const onCancel = () => {

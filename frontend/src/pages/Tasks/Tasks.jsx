@@ -19,16 +19,12 @@ const Tasks = () => {
   //         Authorization: `Bearer ${token}`, // Include the Bearer token
   //       },
   //     });
-  //     console.log(response.data);
   //     setTasks(response.data.data.Task);
   //     return response.data.data.Task;
   //   },
   //   onSuccess: (data) => {
-  //     console.log("the data is ", data);
   //   },
   //   onError: (error) => {
-  //     console.log("error = ", error);
-  //     console.log("error message = ", error.message);
   //   },
   // });
 
@@ -61,12 +57,10 @@ const Tasks = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log(data);
       toast.success("Task deleted successfully");
       queryClient.invalidateQueries("tasks");
     },
     onError: (error) => {
-      console.log("error = ", error);
     },
   });
 

@@ -88,12 +88,10 @@ const Update = () => {
     onError: (error) => {
       setIsLoading(false);
       toast.error("Failed to update Role details.");
-      console.log("Error:", error);
     },
   });
 
   const onSubmit = (data) => {
-    console.log("Submitted data:", { ...data, permissions: selectedPermissions }); // Log the full data
     if (selectedPermissions.length === 0) {
       toast.error("Please select at least one permission.");
       return;

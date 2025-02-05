@@ -135,11 +135,9 @@ const Update = () => {
       } else {
         toast.error("Failed to add pooja Date.");
       }
-      console.log("got error ", error);
     },
   });
   const onSubmit = (data) => {
-    console.log("Clicked");
     setIsLoading(true);
     updateMutation.mutate(data);
   };
