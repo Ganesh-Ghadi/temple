@@ -66,25 +66,25 @@
           </p>
            <p style="margin:0; font-size:12px;">
             @if(@$receipt->anteshteeReceipt->day_9)
-                दिवस ९वा: {{@$receipt->anteshteeReceipt->day_9_date}}
+                दिवस ९वा: {{\Carbon\Carbon::parse(@$receipt->anteshteeReceipt->day_9_date)->format('d/m/Y')}}
             @endif
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             @if(@$receipt->anteshteeReceipt->day_10)
-                दिवस १०वा: {{@$receipt->anteshteeReceipt->day_10_date}}
+                दिवस १०वा: {{\Carbon\Carbon::parse(@$receipt->anteshteeReceipt->day_10_date)->format('d/m/Y')}}
             @endif
           </p>
           <p style="margin:0; font-size:12px;">
             @if(@$receipt->anteshteeReceipt->day_11)
-                दिवस ११वा: {{@$receipt->anteshteeReceipt->day_11_date}}
+                दिवस ११वा: {{\Carbon\Carbon::parse(@$receipt->anteshteeReceipt->day_11_date)->format('d/m/Y')}}
             @endif
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             @if(@$receipt->anteshteeReceipt->day_12)
-                दिवस १२वा: {{@$receipt->anteshteeReceipt->day_12_date}}
+                दिवस १२वा: {{\Carbon\Carbon::parse(@$receipt->anteshteeReceipt->day_12_date)->format('d/m/Y')}}
             @endif
           </p>
           <p style="margin:0; font-size:12px;">
             @if(@$receipt->anteshteeReceipt->day_13)
-                दिवस १३वा: {{@$receipt->anteshteeReceipt->day_13_date}}
+                दिवस १३वा: {{\Carbon\Carbon::parse(@$receipt->anteshteeReceipt->day_13_date)->format('d/m/Y')}}
             @endif
           </p>
         

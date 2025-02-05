@@ -69,7 +69,7 @@
           <p style="margin-top:2px;">
             <p style="padding: 0; margin:0; font-size:10px;">बँकेचे नाव: {{@$receipt->bank_details}}</p>
             <p style="padding: 0; margin:0; font-size:10px;">धनादेश क्र: {{@$receipt->cheque_number}}</p>
-            <p style="padding: 0; margin:0; font-size:10px;">धनादेश दिनांक: {{@$receipt->cheque_date}}</p>
+            <p style="padding: 0; margin:0; font-size:10px;">धनादेश दिनांक: {{\Carbon\Carbon::parse(@$receipt->cheque_date)->format('d/m/Y')}}</p>
             <p style="padding: 0; margin:0; font-size:10px;">Cheques are subjected to realization.</p>
           </p>
           @elseif(@$receipt->payment_mode == "UPI")
@@ -88,7 +88,6 @@
         </div>
 
         <p class="bottom-text">: {{@$receipt->profile->profile_name}}&nbsp;&nbsp;&nbsp;{{ \Carbon\Carbon::parse(@$receipt->created_at)->format('d/m/Y h:i A') }}</p>
-
 
 </body>
 </html>
