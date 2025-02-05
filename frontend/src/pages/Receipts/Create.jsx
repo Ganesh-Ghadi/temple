@@ -542,6 +542,7 @@ const Create = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("receipts");
+      queryClient.invalidateQueries("dashboards");
       toast.success("Receipt Added Successfully");
       setIsLoading(false);
       navigate("/receipts");
@@ -626,7 +627,6 @@ const Create = () => {
 
   const handleReceiptTypeChange = (value) => {
     setSelectedReceiptTypeId(value?.id);
-
 
     // setValue("amount", value?.minimum_amount);
     setValue("amount", value?.minimum_amount || null);

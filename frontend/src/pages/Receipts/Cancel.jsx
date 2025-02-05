@@ -45,6 +45,7 @@ const Delete = ({ id }) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries('receipts');
+      queryClient.invalidateQueries("dashboards");
       toast.success('Receipt Cancelled Successfully');
       setIsLoading(false);
       navigate('/receipts');

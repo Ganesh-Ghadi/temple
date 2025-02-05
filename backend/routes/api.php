@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\GurujisController;
 use App\Http\Controllers\Api\ReportsController;
 use App\Http\Controllers\Api\ProfilesController;
 use App\Http\Controllers\Api\ReceiptsController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\PoojaDatesController;
 use App\Http\Controllers\Api\PoojaTypesController;
@@ -59,5 +60,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/uparane_date', [ReceiptsController::class, 'UparaneDate'])->name("receipts.uparane_date");
    Route::post('/gotravali_report', [ReportsController::class, 'gotravaliReport'])->name("report.gotravali_report");
    Route::get('/saree_date_evening', [ReceiptsController::class, 'SareeDateEvening'])->name("receipts.saree_date_evening");
+   Route::get('/dashboards', [DashboardController::class, 'index'])->name("dashboards.index");
 
 });
