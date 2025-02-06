@@ -22,18 +22,28 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  pooja_date: z.string().min(1, "pooja date filed is required."),
+  // pooja_date: z.array(z.string().min(1, "Pooja date is required.")),
+  // pooja_date: z
+  //   .array(
+  //     z.string().refine((val) => !isNaN(Date.parse(val)), {
+  //       message: "Invalid date format",
+  //     })
+  //   )
+  //   .min(1, "At least one pooja date is required."),
   pooja_type_id: z.coerce.number().min(1, "pooja type field is required"),
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const [poojaDates, setPoojaDates] = useState([{ pooja_date: "" }]); // Initialize with one empty date
+
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const navigate = useNavigate();
   const defaultValues = {
     pooja_type_id: "",
-    pooja_date: "",
+    // pooja_date: "",
+    pooja_date: poojaDates.map((dateObj) => dateObj.pooja_date), // Map the pooja dates to defaultValues
   };
 
   const {
@@ -98,7 +108,41 @@ const Create = () => {
   });
   const onSubmit = (data) => {
     setIsLoading(true);
-    storeMutation.mutate(data);
+    const poojaTypeId = data.pooja_type_id; // Assuming `pooja_type_id` is passed in form data
+
+    // Extract the pooja dates (this assumes that poojaDates state has been updated accordingly)
+    const poojaDatesArray = poojaDates.map((dateObj) => dateObj.pooja_date);
+
+    // Check for any invalid date entries
+    const invalidDates = poojaDatesArray.filter(
+      (date) => !date || isNaN(Date.parse(date))
+    );
+
+    if (invalidDates.length > 0) {
+      toast.error("Please fill in all the pooja dates with valid formats.");
+      setIsLoading(false);
+      return;
+    }
+
+    // Prepare the payload with only the dates
+    const poojaData = {
+      pooja_type_id: poojaTypeId, // Include pooja_type_id
+      pooja_dates: poojaDatesArray, // Only send the pooja dates array
+    };
+
+    // Send the mutation request
+    storeMutation.mutate(poojaData);
+  };
+
+  // Handle adding new date field
+  const addDateField = () => {
+    setPoojaDates([...poojaDates, { pooja_date: "" }]);
+  };
+
+  const handleDateChange = (index, value) => {
+    const updatedPoojaDates = [...poojaDates];
+    updatedPoojaDates[index].pooja_date = value;
+    setPoojaDates(updatedPoojaDates);
   };
 
   return (
@@ -162,32 +206,40 @@ const Create = () => {
                   </p>
                 )}
               </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="pooja_date">
-                  Pooja date:<span className="text-red-500">*</span>
-                </Label>
-                <Controller
-                  name="pooja_date"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      id="pooja_date"
-                      className="mt-1 dark:bg-[var(--foreground)] text-sm w-full p-2 pr-3 rounded-md border border-1"
-                      type="date"
-                      placeholder="Enter pooja date"
-                    />
+              {poojaDates.map((dateField, index) => (
+                <div key={index} className="relative">
+                  <Label
+                    className="font-normal"
+                    htmlFor={`pooja_date_${index}`}
+                  >
+                    Pooja Date {index + 1}:{" "}
+                    <span className="text-red-500">*</span>
+                  </Label>
+                  <input
+                    id={`pooja_date_${index}`}
+                    className="mt-1 dark:bg-[var(--foreground)] text-sm w-full p-2 pr-3 rounded-md border border-1"
+                    type="date"
+                    value={dateField.pooja_date}
+                    onChange={(e) => handleDateChange(index, e.target.value)}
+                    placeholder="Enter pooja date"
+                  />
+                  {errors.pooja_date && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.pooja_date.message}
+                    </p>
                   )}
-                />
-                {errors.pooja_date && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.pooja_date.message}
-                  </p>
-                )}
-              </div>
+                </div>
+              ))}
             </div>
             {/* row ends */}
             <div className="w-full gap-4 mt-4 flex justify-end items-center">
+              <Button
+                type="button"
+                className="dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
+                onClick={addDateField}
+              >
+                Add Another Date
+              </Button>
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"

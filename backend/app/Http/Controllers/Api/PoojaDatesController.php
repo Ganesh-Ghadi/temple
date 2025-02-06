@@ -51,18 +51,42 @@ class PoojaDatesController extends BaseController
     /**
      * Store Pooja Date.
      */
+    // public function store(Request $request)
+    // {
+    //     $poojaDate = new PoojaDate();
+    //     $poojaDate->pooja_type_id = $request->input("pooja_type_id");
+    //     $poojaDate->pooja_date = $request->input("pooja_date");
+        
+    //     if(!$poojaDate->save()) {
+    //         return $this->sendError("Error while saving data", ['error'=>['Error while saving data']]);
+    //     }
+    //     return $this->sendResponse(['PoojaDate'=> new PoojaDateResource($poojaDate)], 'Pooja Dates Created Successfully');
+    // }
     public function store(Request $request)
     {
-        $poojaDate = new PoojaDate();
-        $poojaDate->pooja_type_id = $request->input("pooja_type_id");
-        $poojaDate->pooja_date = $request->input("pooja_date");
-        
-        if(!$poojaDate->save()) {
-            return $this->sendError("Error while saving data", ['error'=>['Error while saving data']]);
+        // Validate the incoming data to ensure pooja_type_id is present and pooja_dates is an array
+        $request->validate([
+            'pooja_type_id' => 'required|integer|exists:pooja_types,id', // Adjust validation based on your schema
+            'pooja_dates' => 'required|array|min:1',  // Validate pooja_dates as an array and at least one date
+            'pooja_dates.*' => 'required|date', // Ensure each item in the pooja_dates array is a valid date
+        ]);
+    
+        // Loop through the pooja_dates array and save each date as a new record
+        foreach ($request->input('pooja_dates') as $date) {
+            $poojaDate = new PoojaDate();
+            $poojaDate->pooja_type_id = $request->input('pooja_type_id');
+            $poojaDate->pooja_date = $date;
+    
+            // Save the record and handle any errors
+            if (!$poojaDate->save()) {
+                return $this->sendError("Error while saving data", ['error' => ['Error while saving data']]);
+            }
         }
-        return $this->sendResponse(['PoojaDate'=> new PoojaDateResource($poojaDate)], 'Pooja Dates Created Successfully');
+    
+        // Return success response after all dates are saved
+        return $this->sendResponse([], 'Pooja Dates Created Successfully');
     }
-
+    
     /**
      * Show Pooja Date.
      */
