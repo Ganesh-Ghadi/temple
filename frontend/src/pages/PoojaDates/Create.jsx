@@ -145,6 +145,11 @@ const Create = () => {
     setPoojaDates(updatedPoojaDates);
   };
 
+  const removeDateField = (index) => {
+    const updatedPoojaDates = poojaDates.filter((_, i) => i !== index); // Remove the date at the given index
+    setPoojaDates(updatedPoojaDates);
+  };
+
   return (
     <>
       <div className="p-5">
@@ -227,6 +232,17 @@ const Create = () => {
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
                       {errors.pooja_date.message}
                     </p>
+                  )}
+
+                  {/* Remove Button */}
+                  {poojaDates.length > 1 && (
+                    <Button
+                      type="button"
+                      className="absolute top-0 right-0 text-sm bg-red-600 text-white rounded-full"
+                      onClick={() => removeDateField(index)}
+                    >
+                      Remove
+                    </Button>
                   )}
                 </div>
               ))}
