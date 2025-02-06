@@ -87,11 +87,11 @@ const Login = () => {
               d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"
             />
           </svg>
-          Logo
+          {/* Logo */}
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
-            <p className="text-lg text-white font-bold">Welcome To Website</p>
+            {/* <p className="text-lg text-white font-bold">Welcome To Website</p> */}
             <footer className="text-sm text-white">
               श्री गणेश मंदिर संस्थान, डोंबिवली
             </footer>
@@ -130,12 +130,12 @@ const Login = () => {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <a
+                {/* <a
                   href="#"
                   className="ml-auto text-sm underline-offset-2 hover:underline"
                 >
                   Forgot your password?
-                </a>
+                </a> */}
               </div>
               <Controller
                 name="password"
@@ -159,7 +159,7 @@ const Login = () => {
               {isLoading ? "Loading..." : "Login"}
             </Button>
             {/* end */}
-            <p className="px-8 text-center text-sm text-muted-foreground">
+            {/* <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
                 to="#"
@@ -175,7 +175,7 @@ const Login = () => {
                 Privacy Policy
               </Link>
               .
-            </p>
+            </p> */}
           </div>
         </div>
       </form>

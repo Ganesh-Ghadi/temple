@@ -71,7 +71,7 @@ class DenominationsController extends BaseController
     {
         $denomination = new Denomination();
         $denomination->deposit_date = $request->input("deposit_date");
-        $denomination->n_2000 = $request->input("n_2000");
+        // $denomination->n_2000 = $request->input("n_2000");
         $denomination->n_500 = $request->input("n_500");
         $denomination->n_200 = $request->input("n_200");
         $denomination->n_100 = $request->input("n_100");
@@ -131,7 +131,7 @@ class DenominationsController extends BaseController
             return $this->sendError("Denomination not found", ['error'=>['Denomination not found']]);
         }
         $denomination->deposit_date = $request->input("deposit_date");
-        $denomination->n_2000 = $request->input("n_2000");
+        // $denomination->n_2000 = $request->input("n_2000");
         $denomination->n_500 = $request->input("n_500");
         $denomination->n_200 = $request->input("n_200");
         $denomination->n_100 = $request->input("n_100");
@@ -213,6 +213,19 @@ class DenominationsController extends BaseController
                 ],
                 'default_font' => 'notosansdevanagari',
             ]);
+
+            
+            $footerHtml = '
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
+            </div>';
+        
+            
+            $mpdf->SetHTMLFooter($footerHtml);
+        
 
         // Write HTML to the PDF
         $mpdf->WriteHTML($html);

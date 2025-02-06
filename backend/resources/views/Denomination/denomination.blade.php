@@ -40,7 +40,7 @@
                                 Notes
                             </th>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td
                                 style="
                                     border: 1px solid black;
@@ -61,7 +61,7 @@
                                 {{number_format(2000 *
                                 $denomination->n_2000,2)}}
                             </td>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <td
                                 style="
@@ -333,7 +333,7 @@
                                 {{number_format(1 * $denomination->c_1,2)}}
                             </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td
                                 style="
                                     border: 1px solid black;
@@ -349,7 +349,7 @@
                                     text-align: right;
                                 "
                             ></td>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <td
                                 style="

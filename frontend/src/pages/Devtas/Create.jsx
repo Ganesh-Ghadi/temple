@@ -23,14 +23,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  devta_name: z.string().min(2, "Name must be at least 2 characters"),
-  devta_name: z.string().min(2, "Name must be at least 2 characters"),
-  from_time: z
-    .object({
-      hour: z.number().min(0).max(23), // Example for hours (0-23)
-      minute: z.number().min(0).max(59), // Example for minutes (0-59)
-    })
-    .optional(), // Optional field
+  // devta_name: z.string().min(2, "Name must be at least 2 characters"),
+  devta_name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .regex(/^[A-Za-z\s\u0900-\u097F]+$/, "Name can only contain letters."), // Allow letters and spaces, including Marathi
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);

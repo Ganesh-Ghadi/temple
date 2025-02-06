@@ -22,7 +22,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  n_2000: z.coerce.number().optional(),
+  // n_2000: z.coerce.number().optional(),
   n_500: z.coerce.number().optional(),
   n_200: z.coerce.number().optional(),
   n_100: z.coerce.number().optional(),
@@ -47,7 +47,7 @@ const Update = () => {
   const navigate = useNavigate();
 
   const defaultValues = {
-    n_2000: "",
+    // n_2000: "",
     n_500: "",
     n_200: "",
     n_100: "",
@@ -96,7 +96,7 @@ const Update = () => {
 
   useEffect(() => {
     if (editDenomination) {
-      setValue("n_2000", editDenomination.Denomination?.n_2000);
+      // setValue("n_2000", editDenomination.Denomination?.n_2000);
       setValue("n_500", editDenomination.Denomination?.n_500);
       setValue("n_200", editDenomination.Denomination?.n_200);
       setValue("n_100", editDenomination.Denomination?.n_100);
@@ -114,7 +114,7 @@ const Update = () => {
   }, [editDenomination, setValue]);
 
   const denominations = watch([
-    "n_2000",
+    // "n_2000",
     "n_500",
     "n_200",
     "n_100",
@@ -130,24 +130,23 @@ const Update = () => {
 
   // Effect to calculate the total amount whenever denominations change
   useEffect(() => {
-    const totalAmount = (
-      (denominations[0] || 0) * 2000 + // n_2000
-      (denominations[1] || 0) * 500 + // n_500
-      (denominations[2] || 0) * 200 + // n_200
-      (denominations[3] || 0) * 100 + // n_100
-      (denominations[4] || 0) * 50 + // n_50
-      (denominations[5] || 0) * 20 + // n_20
-      (denominations[6] || 0) * 10 + // n_10
-      (denominations[7] || 0) * 20 + // c_20
-      (denominations[8] || 0) * 10 + // c_10
-      (denominations[9] || 0) * 5 + // c_5
-      (denominations[10] || 0) * 2 + // c_2
-      (denominations[11] || 0) * 1
-    ) // c_1
-      .toFixed(2);
+    const totalAmount = // (denominations[0] || 0) * 2000 + // n_2000
+      (
+        (denominations[1] || 0) * 500 + // n_500
+        (denominations[2] || 0) * 200 + // n_200
+        (denominations[3] || 0) * 100 + // n_100
+        (denominations[4] || 0) * 50 + // n_50
+        (denominations[5] || 0) * 20 + // n_20
+        (denominations[6] || 0) * 10 + // n_10
+        (denominations[7] || 0) * 20 + // c_20
+        (denominations[8] || 0) * 10 + // c_10
+        (denominations[9] || 0) * 5 + // c_5
+        (denominations[10] || 0) * 2 + // c_2
+        (denominations[11] || 0) * 1
+      ) // c_1
+        .toFixed(2);
 
     setValue("amount", totalAmount);
-   
   }, [denominations, setValue]);
 
   const updateMutation = useMutation({
@@ -237,7 +236,7 @@ const Update = () => {
             </div>
             {/* row starts */}
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
-              <div className="relative">
+              {/* <div className="relative">
                 <Label className="font-normal" htmlFor="pooja_type">
                   2000 x:
                 </Label>
@@ -259,7 +258,7 @@ const Update = () => {
                     {errors.n_2000.message}
                   </p>
                 )}
-              </div>
+              </div> */}
               <div className="relative">
                 <Label className="font-normal" htmlFor="n_500">
                   500 x:
@@ -329,8 +328,6 @@ const Update = () => {
                   </p>
                 )}
               </div>
-            </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="n_50">
                   50 x:
@@ -354,6 +351,8 @@ const Update = () => {
                   </p>
                 )}
               </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="n_20">
                   20 x:

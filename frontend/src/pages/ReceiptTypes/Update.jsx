@@ -24,12 +24,23 @@ import { toast } from "sonner";
 const formSchema = z.object({
   receipt_type: z
     .string()
-    .min(2, "Receipt type must be at least 2 characters."),
+    .min(2, "Receipt type must be at least 2 characters.")
+    .regex(
+      /^[A-Za-z0-9\s\u0900-\u097F]+$/,
+      "Receipt Type can only contain letters and numbers"
+    ),
   receipt_head: z.string().min(2, "Receipt head field is required."),
   special_date: z.string().optional(),
-  list_order: z.string().optional(),
-  minimum_amount: z.coerce.number().optional(),
-
+  // list_order: z.string().optional(),
+  // minimum_amount: z.coerce.number().optional(),
+  minimum_amount: z.coerce
+    .number()
+    .max(99999, "Amount must be at most 5 digits")
+    .optional(),
+  list_order: z.coerce
+    .number()
+    .max(999, "List Order must be at most 3 digits")
+    .optional(),
   is_pooja: z.coerce.number().min(0, "is Pooja field is required"),
   show_special_date: z.coerce
     .number()

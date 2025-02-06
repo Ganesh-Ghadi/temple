@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 import {
   Select,
@@ -14,15 +14,15 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
+} from "@/components/ui/select";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  n_2000: z.coerce.number().optional(),
+  // n_2000: z.coerce.number().optional(),
   n_500: z.coerce.number().optional(),
   n_200: z.coerce.number().optional(),
   n_100: z.coerce.number().optional(),
@@ -34,30 +34,30 @@ const formSchema = z.object({
   c_5: z.coerce.number().optional(),
   c_2: z.coerce.number().optional(),
   c_1: z.coerce.number().optional(),
-  amount: z.coerce.number().min(0.01, { message: 'amount field is required' }),
-  deposit_date: z.string().min(1, 'deposit date field is required'),
+  amount: z.coerce.number().min(0.01, { message: "amount field is required" }),
+  deposit_date: z.string().min(1, "deposit date field is required"),
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const navigate = useNavigate();
   const defaultValues = {
-    n_2000: '',
-    n_500: '',
-    n_200: '',
-    n_100: '',
-    n_50: '',
-    n_20: '',
-    n_10: '',
-    c_20: '',
-    c_10: '',
-    c_5: '',
-    c_2: '',
-    c_1: '',
-    deposit_date: '',
-    amount: '',
+    // n_2000: '',
+    n_500: "",
+    n_200: "",
+    n_100: "",
+    n_50: "",
+    n_20: "",
+    n_10: "",
+    c_20: "",
+    c_10: "",
+    c_5: "",
+    c_2: "",
+    c_1: "",
+    deposit_date: "",
+    amount: "",
   };
 
   const {
@@ -70,62 +70,60 @@ const Create = () => {
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const denominations = watch([
-    'n_2000',
-    'n_500',
-    'n_200',
-    'n_100',
-    'n_50',
-    'n_20',
-    'n_10',
-    'c_20',
-    'c_10',
-    'c_5',
-    'c_2',
-    'c_1',
+    // 'n_2000',
+    "n_500",
+    "n_200",
+    "n_100",
+    "n_50",
+    "n_20",
+    "n_10",
+    "c_20",
+    "c_10",
+    "c_5",
+    "c_2",
+    "c_1",
   ]);
 
   // Effect to calculate the total amount whenever denominations change
   useEffect(() => {
-    const totalAmount = (
-      (denominations[0] || 0) * 2000 + // n_2000
-      (denominations[1] || 0) * 500 + // n_500
-      (denominations[2] || 0) * 200 + // n_200
-      (denominations[3] || 0) * 100 + // n_100
-      (denominations[4] || 0) * 50 + // n_50
-      (denominations[5] || 0) * 20 + // n_20
-      (denominations[6] || 0) * 10 + // n_10
-      (denominations[7] || 0) * 20 + // c_20
-      (denominations[8] || 0) * 10 + // c_10
-      (denominations[9] || 0) * 5 + // c_5
-      (denominations[10] || 0) * 2 + // c_2
-      (denominations[11] || 0) * 1
-    ) // c_1
-      .toFixed(2);
+    const totalAmount = // (denominations[0] || 0) * 2000 + // n_2000
+      (
+        (denominations[0] || 0) * 500 + // n_500
+        (denominations[1] || 0) * 200 + // n_200
+        (denominations[2] || 0) * 100 + // n_100
+        (denominations[3] || 0) * 50 + // n_50
+        (denominations[4] || 0) * 20 + // n_20
+        (denominations[5] || 0) * 10 + // n_10
+        (denominations[6] || 0) * 20 + // c_20
+        (denominations[7] || 0) * 10 + // c_10
+        (denominations[8] || 0) * 5 + // c_5
+        (denominations[9] || 0) * 2 + // c_2
+        (denominations[10] || 0) * 1
+      ) // c_1
+        .toFixed(2);
 
-    setValue('amount', totalAmount);
-  
+    setValue("amount", totalAmount);
   }, [denominations, setValue]);
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.post('/api/denominations', data, {
+      const response = await axios.post("/api/denominations", data, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries('denominations');
-      toast.success('Denominations Added Successfully');
+      queryClient.invalidateQueries("denominations");
+      toast.success("Denominations Added Successfully");
       setIsLoading(false);
-      navigate('/denominations');
+      navigate("/denominations");
     },
     onError: (error) => {
       setIsLoading(false);
-      toast.error('Faild to Store denomination');
-
+      toast.error("Faild to Store denomination");
     },
   });
   const onSubmit = (data) => {
@@ -142,7 +140,7 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate('/denominations')}
+                onClick={() => navigate("/denominations")}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -194,7 +192,7 @@ const Create = () => {
             </div>
             {/* row starts */}
             <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
-              <div className="relative">
+              {/* <div className="relative">
                 <Label className="font-normal" htmlFor="pooja_type">
                   2000 x:
                 </Label>
@@ -216,7 +214,7 @@ const Create = () => {
                     {errors.n_2000.message}
                   </p>
                 )}
-              </div>
+              </div> */}
               <div className="relative">
                 <Label className="font-normal" htmlFor="n_500">
                   500 x:
@@ -286,8 +284,6 @@ const Create = () => {
                   </p>
                 )}
               </div>
-            </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="n_50">
                   50 x:
@@ -311,6 +307,8 @@ const Create = () => {
                   </p>
                 )}
               </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="n_20">
                   20 x:
@@ -517,7 +515,7 @@ const Create = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate('/denominations')}
+                onClick={() => navigate("/denominations")}
               >
                 Cancel
               </Button>
@@ -533,7 +531,7 @@ const Create = () => {
                     Submitting...
                   </>
                 ) : (
-                  'Submit'
+                  "Submit"
                 )}
               </Button>
             </div>

@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css"; // Import styles for the phone input
 
 const formSchema = z.object({
   email: z
@@ -28,9 +30,13 @@ const formSchema = z.object({
     .nonempty("Email is required"),
   password: z.string().optional(),
   name: z.string().min(2, "Name must be at least 2 characters"),
-  mobile: z.string().optional(), // Ensure the number is 10 digits or shorter
+  // mobile: z.string().optional(), // Ensure the number is 10 digits or shorter
   role: z.string().min(1, "Role field is required"),
   active: z.coerce.number().optional(),
+  mobile: z
+    .string()
+    .regex(/^\+(\d{1,2})(\d{10})?$/, "Mobile number must include 10 digits.")
+    .optional(),
 });
 
 const Update = () => {
@@ -55,6 +61,7 @@ const Update = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    setError,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const {
@@ -110,9 +117,38 @@ const Update = () => {
     },
     onError: (error) => {
       setIsLoading(false);
+      if (error.response && error.response.data.errors) {
+        const serverStatus = error.response.data.status;
+        const serverErrors = error.response.data.errors;
+        if (serverStatus === false) {
+          if (serverErrors.email) {
+            setError("email", {
+              type: "manual",
+              message: serverErrors.email[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+          if (serverErrors.mobile) {
+            setError("mobile", {
+              type: "manual",
+              message: serverErrors.mobile[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+        } else {
+          toast.error("Failed to User details.");
+        }
+      } else {
+        toast.error("Failed to add User details.");
+      }
     },
   });
   const onSubmit = (data) => {
+    if (data.mobile && data.mobile.length <= 3) {
+      // Checking if it's only the country code
+      data.mobile = ""; // Set the mobile to an empty string if only country code is entered
+    }
+
     setIsLoading(true);
     updateMutation.mutate(data);
   };
@@ -188,7 +224,7 @@ const Update = () => {
                     />
                   )}
                 />
-                {errors.name && (
+                {errors.email && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.email.message}
                   </p>
@@ -230,12 +266,22 @@ const Update = () => {
                   name="mobile"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    // <Input
+                    //   {...field}
+                    //   id="mobile"
+                    //   className="mt-1"
+                    //   type="number"
+                    //   placeholder="Enter mobile"
+                    // />
+                    <PhoneInput
                       {...field}
+                      defaultCountry="IN" // Default country for the country code
+                      // value={mobile}
+                      // onChange={setMobile}
                       id="mobile"
-                      className="mt-1"
-                      type="number"
-                      placeholder="Enter mobile"
+                      name="mobile"
+                      placeholder="Enter mobile number"
+                      className="w-full mt-1"
                     />
                   )}
                 />

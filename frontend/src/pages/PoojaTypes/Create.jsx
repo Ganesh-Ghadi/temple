@@ -22,10 +22,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  pooja_type: z.string().min(2, "pooja type must be at least 2 characters"),
-  devta_id: z.coerce.number().min(1, "devta field is required"),
-  multiple: z.coerce.number().min(0, "multiple field is required"),
-  contribution: z.coerce.number().optional(),
+  pooja_type: z
+    .string()
+    .min(2, "pooja type must be at least 2 characters.")
+    .regex(
+      /^[A-Za-z\s\u0900-\u097F]+$/,
+      "Pooja type can only contain letters."
+    ), // Allow letters and spaces, including Marathi
+  devta_id: z.coerce.number().min(1, "devta field is required."),
+  multiple: z.coerce.number().min(0, "multiple field is required."),
+  // contribution: z.coerce.number().optional(),
+  contribution: z.coerce
+    .number()
+    .max(99999, "Contribution must be at most 5 digits.")
+    .optional(),
 });
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);

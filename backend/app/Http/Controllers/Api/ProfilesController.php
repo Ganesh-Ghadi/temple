@@ -53,6 +53,25 @@ class ProfilesController extends BaseController
      */
     public function store(StoreProfileRequest $request): JsonResponse
     {
+
+        $mobile = $request->input("mobile");
+
+        // Only query if the date is provided
+        if ($mobile) {
+            $mobile = Profile::where('mobile', $mobile)->first();
+            
+            // Check if the date exists in the database
+            if ($mobile) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'mobile' => ['mobile number has already been taken.']
+                    ],
+                ], 422);
+            }
+        }
+        
         $user = new User();
         $user->name = $request->input('name');
         $user->email = $request->input('email');
@@ -106,7 +125,27 @@ class ProfilesController extends BaseController
         if(!$profile){
             return $this->sendError("Profile not found", ['error'=>'Profile not found']);
         }
-        
+        $mobile = $request->input("mobile");
+
+    // Only query if the mobile number is provided
+    if ($mobile) {
+        // Exclude current profile ID from the query
+        $existingMobile = Profile::where('mobile', $mobile)
+                                 ->where('id', '!=', $profile->id) // Exclude current profile
+                                 ->first();
+
+        // Check if mobile number is already taken
+        if ($existingMobile) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation failed',
+                'errors' => [
+                    'mobile' => ['Mobile number has already been taken.']
+                ],
+            ], 422);
+        }
+    }
+      
 
         $user = User::find($profile->user_id);
         $user->name = $request->input('name');

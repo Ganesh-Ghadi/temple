@@ -5,7 +5,8 @@ import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css"; // Import styles for the phone input
 import {
   Select,
   SelectContent,
@@ -27,8 +28,23 @@ const formSchema = z.object({
     .email("Invalid email address")
     .nonempty("Email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  mobile: z.string().optional(),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .regex(/^[A-Za-z\s\u0900-\u097F]+$/, "Name can only contain letters."), // Allow letters and spaces, including Marathi
+
+  // mobile: z.string().optional(),
+  // mobile: z
+  //   .string()
+  //   .regex(
+  //     /^\+(\d{1,3})\d{10}$/,
+  //     "Mobile number must include a valid country code and be followed by 10 digits."
+  //   )
+  //   .optional(),
+  mobile: z
+    .string()
+    .regex(/^\+(\d{1,2})(\d{10})?$/, "Mobile number must include 10 digits.")
+    .optional(),
   role: z.string().min(1, "Role field is required"),
   active: z.coerce.number().optional(),
 });
@@ -42,7 +58,7 @@ const Create = () => {
     email: "",
     password: "",
     name: "",
-    mobile: "",
+    mobile: "+91",
     role: "",
     active: "1",
   };
@@ -51,6 +67,8 @@ const Create = () => {
     control,
     handleSubmit,
     formState: { errors },
+    setError,
+    setValue,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
   const storeMutation = useMutation({
@@ -71,9 +89,38 @@ const Create = () => {
     },
     onError: (error) => {
       setIsLoading(false);
+      if (error.response && error.response.data.errors) {
+        const serverStatus = error.response.data.status;
+        const serverErrors = error.response.data.errors;
+        if (serverStatus === false) {
+          if (serverErrors.email) {
+            setError("email", {
+              type: "manual",
+              message: serverErrors.email[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+          if (serverErrors.mobile) {
+            setError("mobile", {
+              type: "manual",
+              message: serverErrors.mobile[0], // The error message from the server
+            });
+            // toast.error("The poo has already been taken.");
+          }
+        } else {
+          toast.error("Failed to User details.");
+        }
+      } else {
+        toast.error("Failed to add User details.");
+      }
     },
   });
   const onSubmit = (data) => {
+    if (data.mobile && data.mobile.length <= 3) {
+      // Checking if it's only the country code
+      data.mobile = ""; // Set the mobile to an empty string if only country code is entered
+    }
+
     setIsLoading(true);
     storeMutation.mutate(data);
   };
@@ -149,7 +196,7 @@ const Create = () => {
                     />
                   )}
                 />
-                {errors.name && (
+                {errors.email && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
                     {errors.email.message}
                   </p>
@@ -191,12 +238,22 @@ const Create = () => {
                   name="mobile"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    // <Input
+                    //   {...field}
+                    //   id="mobile"
+                    //   className="mt-1"
+                    //   type="number"
+                    //   placeholder="Enter mobile"
+                    // />
+                    <PhoneInput
                       {...field}
+                      defaultCountry="IN" // Default country for the country code
+                      // value={mobile}
+                      // onChange={setMobile}
                       id="mobile"
-                      className="mt-1"
-                      type="number"
-                      placeholder="Enter mobile"
+                      name="mobile"
+                      placeholder="Enter mobile number"
+                      className="w-full mt-1"
                     />
                   )}
                 />
