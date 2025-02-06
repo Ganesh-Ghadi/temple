@@ -26,6 +26,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css"; // Import styles for the phone input
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -51,7 +53,11 @@ const formSchema = z.object({
   special_date: z.string().optional(),
   payment_mode: z.string().optional(),
   upi_number: z.string().optional(),
-  mobile: z.coerce.string().optional(),
+  // mobile: z.coerce.string().optional(),
+  mobile: z
+    .string()
+    .regex(/^\+(\d{1,2})(\d{10})?$/, "Mobile number must include 10 digits.")
+    .optional(),
   pincode: z.coerce.string().optional(),
   address: z.string().optional(),
   narration: z.string().optional(),
@@ -143,7 +149,7 @@ const Update = () => {
     quantity: "",
     rate: "",
     email: "",
-    mobile: "",
+    mobile: "+91",
     address: "",
     narration: "",
     pincode: "",
@@ -395,7 +401,7 @@ const Update = () => {
       setValue("receipt_date", editReceipt.Receipt?.receipt_date);
       setValue("name", editReceipt.Receipt?.name);
       setValue("gotra", editReceipt.Receipt?.gotra);
-      setValue("mobile", editReceipt.Receipt?.mobile);
+      setValue("mobile", editReceipt.Receipt?.mobile || "+91");
       setValue("email", editReceipt.Receipt?.email);
       setValue("address", editReceipt.Receipt?.address);
       setValue("narration", editReceipt.Receipt?.narration);
@@ -939,12 +945,23 @@ const Update = () => {
                   name="mobile"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    // <Input
+                    //   {...field}
+                    //   id="mobile"
+                    //   className="mt-1"
+                    //   type="number"
+                    //   placeholder="Enter mobile"
+                    // />
+                    <PhoneInput
                       {...field}
+                      defaultCountry="IN" // Default country for the country code
+                      // value={mobile}
+                      // onChange={setMobile}
+                      inputStyle={{ minWidth: "17rem" }}
                       id="mobile"
-                      className="mt-1"
-                      type="number"
-                      placeholder="Enter mobile"
+                      name="mobile"
+                      placeholder="Enter mobile number"
+                      className=" mt-1"
                     />
                   )}
                 />

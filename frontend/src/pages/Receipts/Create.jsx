@@ -18,6 +18,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css"; // Import styles for the phone input
 import {
   Popover,
   PopoverContent,
@@ -42,7 +44,13 @@ import Autocompeleteadd from "@/customComponents/Autocompleteadd/Autocompleteadd
 const formSchema = z.object({
   receipt_type_id: z.coerce.number().min(1, "Receipt Type field is required"),
   receipt_date: z.string().min(1, "Receipt date field is required"),
-  name: z.string().optional(),
+  name: z
+    .string()
+    .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
+      message: "Name can only contain letters.",
+    })
+    .optional(),
+
   receipt_head: z.string().min(2, "Receipt head field is required"),
   gotra: z.string().optional(),
   amount: z.coerce.number().optional(),
@@ -51,7 +59,11 @@ const formSchema = z.object({
   email: z.string().optional(),
   special_date: z.string().optional(),
   payment_mode: z.string().min(1, "Payment Mode field is required"),
-  mobile: z.coerce.string().optional(),
+  // mobile: z.coerce.string().optional(),
+  mobile: z
+    .string()
+    .regex(/^\+(\d{1,2})(\d{10})?$/, "Mobile number must include 10 digits.")
+    .optional(),
   pincode: z.coerce.string().optional(),
   address: z.string().optional(),
   narration: z.string().optional(),
@@ -197,7 +209,7 @@ const Create = () => {
     quantity: "",
     rate: "",
     email: "",
-    mobile: "",
+    mobile: "+91",
     address: "",
     narration: "",
     pincode: "",
@@ -599,6 +611,11 @@ const Create = () => {
 
   const onSubmit = (data) => {
     setIsLoading(true);
+
+    if (data.mobile && data.mobile.length <= 3) {
+      // Checking if it's only the country code
+      data.mobile = ""; // Set the mobile to an empty string if only country code is entered
+    }
 
     if (!data.ac_charges) {
       data.ac_amount = "";
@@ -1011,12 +1028,23 @@ const Create = () => {
                   name="mobile"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    // <Input
+                    //   {...field}
+                    //   id="mobile"
+                    //   className="mt-1"
+                    //   type="number"
+                    //   placeholder="Enter mobile"
+                    // />
+                    <PhoneInput
                       {...field}
+                      defaultCountry="IN" // Default country for the country code
+                      // value={mobile}
+                      // onChange={setMobile}
                       id="mobile"
+                      name="mobile"
+                      placeholder="Enter mobile number"
+                      inputStyle={{ minWidth: "17rem" }}
                       className="mt-1"
-                      type="number"
-                      placeholder="Enter mobile"
                     />
                   )}
                 />

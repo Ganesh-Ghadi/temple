@@ -250,10 +250,11 @@ const Create = () => {
                       defaultCountry="IN" // Default country for the country code
                       // value={mobile}
                       // onChange={setMobile}
+                      inputStyle={{ minWidth: "18rem" }}
                       id="mobile"
                       name="mobile"
                       placeholder="Enter mobile number"
-                      className="w-full mt-1"
+                      className=" mt-1"
                     />
                   )}
                 />
