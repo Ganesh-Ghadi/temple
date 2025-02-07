@@ -49,14 +49,21 @@ const formSchema = z.object({
     .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
       message: "Name can only contain letters.",
     })
+    // .max(10, "Name cannot exceed 10 characters.")
     .optional(),
 
   receipt_head: z.string().min(2, "Receipt head field is required"),
-  gotra: z.string().optional(),
+  gotra: z
+    .string()
+    .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
+      message: "Gotra can only contain letters.",
+    })
+    .optional(),
   amount: z.coerce.number().optional(),
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
-  email: z.string().optional(),
+  // email: z.string().optional(),
+  email: z.string().email("Invalid email address.").optional().nullable(),
   special_date: z.string().optional(),
   payment_mode: z.string().min(1, "Payment Mode field is required"),
   // mobile: z.coerce.string().optional(),
@@ -64,7 +71,13 @@ const formSchema = z.object({
     .string()
     .regex(/^\+(\d{1,2})(\d{10})?$/, "Mobile number must include 10 digits.")
     .optional(),
-  pincode: z.coerce.string().optional(),
+  // pincode: z.coerce.string().optional(),
+  pincode: z
+    .string()
+    .refine((val) => val === "" || /^\d{6}$/.test(val), {
+      message: "Pincode must be of 6 digits.",
+    })
+    .optional(),
   address: z.string().optional(),
   narration: z.string().optional(),
   cheque_date: z.string().optional(),
@@ -208,7 +221,7 @@ const Create = () => {
     receipt_head: "",
     quantity: "",
     rate: "",
-    email: "",
+    email: null,
     mobile: "+91",
     address: "",
     narration: "",
@@ -700,7 +713,7 @@ const Create = () => {
             <div className="w-full py-3 flex justify-start items-center">
               <h2 className="text-lg  font-normal">Receipts Details</h2>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_no">
                   Receipt Number: <span className="text-red-500">*</span>
@@ -862,7 +875,7 @@ const Create = () => {
                 )}
               </div>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_type_id">
                   Receipt Type: <span className="text-red-500">*</span>
@@ -973,7 +986,7 @@ const Create = () => {
               </div>
             </div>
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative ">
                 <Label className="font-normal" htmlFor="gotra">
                   Gotra:
@@ -1055,7 +1068,7 @@ const Create = () => {
                 )}
               </div>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
               <div className="relative ">
                 <Label className="font-normal" htmlFor="address">
                   Address:
@@ -1064,10 +1077,17 @@ const Create = () => {
                   name="address"
                   control={control}
                   render={({ field }) => (
-                    <Textarea
-                      placeholder="Enter the address..."
-                      className="resize-none mt-1 "
+                    // <Textarea
+                    //   placeholder="Enter the address..."
+                    //   className="resize-none mt-1 "
+                    //   {...field}
+                    // />
+                    <Input
                       {...field}
+                      id="address"
+                      className="mt-1"
+                      type="text"
+                      placeholder="Enter the address..."
                     />
                   )}
                 />
@@ -1078,7 +1098,7 @@ const Create = () => {
                 )}
               </div>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="narration">
                   Narration:
@@ -1127,7 +1147,7 @@ const Create = () => {
               </div>
             </div>
 
-            <div className="w-full mb-8  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="remembrance">
                   Remembrance:
@@ -1178,7 +1198,7 @@ const Create = () => {
 
             {(selectedReceiptTypeId === bhangarReceiptId ||
               selectedReceiptTypeId === vasturupeeReceiptId) && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="description">
                     description:
@@ -1241,7 +1261,7 @@ const Create = () => {
 
             {paymentMode === "Bank" && (
               <>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="bank_details">
                       Bank Details:
@@ -1250,10 +1270,17 @@ const Create = () => {
                       name="bank_details"
                       control={control}
                       render={({ field }) => (
-                        <Textarea
-                          placeholder="Enter bank details..."
-                          className="resize-none mt-1 "
+                        // <Textarea
+                        //   placeholder="Enter bank details..."
+                        //   className="resize-none mt-1 "
+                        //   {...field}
+                        // />
+                        <Input
                           {...field}
+                          id="bank_details"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter bank details..."
                         />
                       )}
                     />
@@ -1319,7 +1346,7 @@ const Create = () => {
             {/* {selectedReceiptTypeId === khatReceiptId && ( */}
             {(selectedReceiptTypeId === khatReceiptId ||
               selectedReceiptTypeId === naralReceiptId) && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="quantity">
                     Quantity: <span className="text-red-500">*</span>
@@ -1370,7 +1397,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === sareeReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label
                     className="font-normal"
@@ -1449,7 +1476,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === uparaneReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="uparane_draping_date">
                     Uparane Draping date:
@@ -1573,7 +1600,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === campReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                 <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                   <Controller
                     name="Mallakhamb"
@@ -1667,7 +1694,7 @@ const Create = () => {
 
             {selectedReceiptTypeId === hallReceiptId && (
               <div>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative">
                     <Label className="font-normal" htmlFor="hall">
                       Hall:
@@ -1676,50 +1703,50 @@ const Create = () => {
                       name="hall"
                       control={control}
                       render={({ field }) => (
-                        // <Select
-                        //   value={field.value}
-                        //   onValueChange={(value) => {
-                        //     field.onChange(value);
-                        //   }}
-                        // >
-                        //   <SelectTrigger className="mt-1">
-                        //     <SelectValue placeholder="Select hall" />
-                        //   </SelectTrigger>
-                        //   <SelectContent>
-                        //     <SelectGroup>
-                        //       <SelectLabel>Select hall</SelectLabel>
-                        //       <SelectItem value="लंबोदर १०२">
-                        //         लंबोदर १०२
-                        //       </SelectItem>
-                        //       <SelectItem value="ओंकार १०४">
-                        //         ओंकार १०४
-                        //       </SelectItem>
-                        //       <SelectItem value="विनायक २०१">
-                        //         विनायक २०१
-                        //       </SelectItem>
-                        //       <SelectItem value="वरद २०२">वरद २०२</SelectItem>
-                        //       <SelectItem value="वक्रतुंड ३०१">
-                        //         वक्रतुंड ३०१
-                        //       </SelectItem>
-                        //       <SelectItem value="विघ्नहर्ता ४०१">
-                        //         विघ्नहर्ता ४०१
-                        //       </SelectItem>
-                        //     </SelectGroup>
-                        //   </SelectContent>
-                        // </Select>
-                        <Autocompeleteadd
-                          options={frameworks.hallName}
-                          placeholder="Select Hall Name..."
-                          emptyMessage="No Hall Name Found."
-                          value={values}
-                          array={inputvaluearray}
-                          setarray={setInputvaluearray}
-                          variable="hall"
+                        <Select
+                          value={field.value}
                           onValueChange={(value) => {
-                            setValues(value);
-                            setValue("hall", value?.value);
+                            field.onChange(value);
                           }}
-                        />
+                        >
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select hall" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Select hall</SelectLabel>
+                              <SelectItem value="लंबोदर १०२">
+                                लंबोदर १०२
+                              </SelectItem>
+                              <SelectItem value="ओंकार १०४">
+                                ओंकार १०४
+                              </SelectItem>
+                              <SelectItem value="विनायक २०१">
+                                विनायक २०१
+                              </SelectItem>
+                              <SelectItem value="वरद २०२">वरद २०२</SelectItem>
+                              <SelectItem value="वक्रतुंड ३०१">
+                                वक्रतुंड ३०१
+                              </SelectItem>
+                              <SelectItem value="विघ्नहर्ता ४०१">
+                                विघ्नहर्ता ४०१
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        //     <Autocompeleteadd
+                        //       options={frameworks.hallName}
+                        //       placeholder="Select Hall Name..."
+                        //       emptyMessage="No Hall Name Found."
+                        //       value={values}
+                        //       array={inputvaluearray}
+                        //       setarray={setInputvaluearray}
+                        //       variable="hall"
+                        //       onValueChange={(value) => {
+                        //         setValues(value);
+                        //         setValue("hall", value?.value);
+                        //       }}
+                        //     />
                       )}
                     />
                     {errors.hall && (
@@ -1788,7 +1815,7 @@ const Create = () => {
                   </div>
                 </div>
 
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
                       name="ac_charges"
@@ -1814,7 +1841,7 @@ const Create = () => {
                   {acChargesChecked && (
                     <div className="relative">
                       <Label className="font-normal" htmlFor="ac_amount">
-                        Ac Amount: <span className="text-red-500">*</span>
+                        Ac Amount:
                       </Label>
                       <Controller
                         name="ac_amount"
@@ -1843,7 +1870,7 @@ const Create = () => {
 
             {(selectedReceiptTypeId === libraryReceiptId ||
               selectedReceiptTypeId === studyRoomReceiptId) && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="membership_no">
                     Membership Number:
@@ -1917,7 +1944,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === studyRoomReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="timing">
                     Timing:
@@ -1945,7 +1972,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === bharani_shradhhId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="guruji">
                     Guruji Name: <span className="text-red-500">*</span>
@@ -1986,7 +2013,7 @@ const Create = () => {
 
             {selectedReceiptTypeId === anteshteeReceiptId && (
               <div>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative">
                     <Label className="font-normal" htmlFor="guruji">
                       Guruji Name: <span className="text-red-500">*</span>
@@ -2072,7 +2099,7 @@ const Create = () => {
                   </div>
                 </div>
 
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2">
                     <Controller
                       name="day_9"
@@ -2184,7 +2211,7 @@ const Create = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full mb-8 md:mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-4 md:mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   {day9Checked && (
                     <div className="relative">
                       <Label className="font-normal" htmlFor="day_9_date">
@@ -2317,7 +2344,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === poojaReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="pooja_type_id">
                     Pooja Type:
@@ -2447,7 +2474,7 @@ const Create = () => {
 
             {selectedReceiptTypeId === poojaPavtiAnekReceiptId && (
               <>
-                <div className="w-full mb-8 md:mb-2 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 md:mb-2 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative">
                     <Label className="font-normal" htmlFor="pooja_type_id">
                       Pooja Type:
@@ -2606,7 +2633,7 @@ const Create = () => {
                 ))}
             </div>
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="payment_mode">
                   Payment Mode:<span className="text-red-500">*</span>
@@ -2674,7 +2701,7 @@ const Create = () => {
 
               <div className="relative md:col-start-3">
                 <Label className="font-normal" htmlFor="amount">
-                  Amount: <span className="text-red-500">*</span>
+                  Amount:
                 </Label>
                 <Controller
                   name="amount"

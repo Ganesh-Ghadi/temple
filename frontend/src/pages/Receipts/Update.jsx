@@ -702,7 +702,7 @@ const Update = () => {
                   )}
                 /> */}
                 {/* <div className="w-full pt-1"> */}
-                <Controller
+                {/* <Controller
                   name="receipt_head"
                   control={control}
                   render={({ field }) => (
@@ -770,6 +770,19 @@ const Update = () => {
                         </Command>
                       </PopoverContent>
                     </Popover>
+                  )}
+                /> */}
+                <Controller
+                  name="receipt_head"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="receipt_head"
+                      className="mt-1"
+                      type="text"
+                      placeholder="Enter name"
+                    />
                   )}
                 />
                 {/* </div> */}
