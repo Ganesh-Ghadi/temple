@@ -166,6 +166,47 @@ const Homepage = () => {
           </TabsContent>
         </Tabs>
 
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
+              <Card className="w-full">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Today's Saree
+                  </CardTitle>
+                  <IndianRupee size={16} color="#716f6f" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{ReceiptAmount}</div>
+                </CardContent>
+              </Card>
+              <Card className="w-full">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Today's Uparane
+                  </CardTitle>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="h-4 w-4 text-muted-foreground"
+                  >
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <path d="M2 10h20" />
+                  </svg>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{ReceiptCount}</div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+
         {/* pooja */}
         <div className="w-full flex items-center gap-4">
           <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
