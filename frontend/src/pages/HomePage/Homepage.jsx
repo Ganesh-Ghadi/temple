@@ -164,12 +164,12 @@ const Homepage = () => {
         </Tabs>
 
         {/* pooja */}
-        <ScrollArea className=" md:w-[50%] h-[370px] my-5 px-6 py-5 border rounded-xl bg-white">
+        <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
           <h3 className="text-xl mb-5 font-bold">Today's Pooja</h3>
           <div className="space-y-6">
             {PoojaDetails?.map((pooja) => (
               <div className="flex items-center">
-                <User size={16} />
+                <User size={24} />
                 <div className="ml-4 space-y-1">
                   <p className="text-sm font-medium leading-none">
                     {pooja.name}

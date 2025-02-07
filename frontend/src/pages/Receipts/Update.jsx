@@ -117,6 +117,9 @@ const Update = () => {
   const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
   const [selectedShradhhId, setSelectedShradhhId] = useState(false);
   const [paymentMode, setPaymentMode] = useState("");
+  const [showRemembrance, setShowRemembrance] = useState("");
+  const [showSpecialDate, setShowSpecialDate] = useState("");
+  const [showPooja, setShowPooja] = useState("");
   const khatReceiptId = 1;
   const naralReceiptId = 2;
   const bhangarReceiptId = 3;
@@ -585,6 +588,49 @@ const Update = () => {
       toast.error("Failed to update Receipt");
     },
   });
+
+  const {
+    data: ReceiptTypeData,
+    isLoading: isReceiptTypeataLoading,
+    isError: isReceiptTypeDataError,
+  } = useQuery({
+    queryKey: ["showReceiptType"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedReceiptTypeId) {
+          return [];
+        }
+        const response = await axios.get(
+          `/api/receipt_types/${selectedReceiptTypeId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: !!selectedReceiptTypeId, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
+  useEffect(() => {
+    if (ReceiptTypeData) {
+      console.log("working// ", ReceiptTypeData);
+      setShowRemembrance(ReceiptTypeData?.ReceiptType?.show_remembarance);
+      setShowSpecialDate(ReceiptTypeData?.ReceiptType?.show_special_date);
+      setShowPooja(ReceiptTypeData?.ReceiptType?.is_pooja);
+
+      // if (showPooja) {
+      setValue("pooja_type_id", editReceipt.Receipt?.Pooja?.pooja_type_id);
+      setValue("date", editReceipt.Receipt?.Pooja?.date);
+      // }
+    }
+  }, [ReceiptTypeData, showPooja]);
+
   const onSubmit = (data) => {
     setIsLoading(true);
     updateMutation.mutate(data);
@@ -617,7 +663,7 @@ const Update = () => {
             <div className="w-full py-3 flex justify-start items-center">
               <h2 className="text-lg  font-normal">Receipts Details</h2>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_no">
                   Receipt Number: <span className="text-red-500">*</span>
@@ -793,7 +839,7 @@ const Update = () => {
                 )}
               </div>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_type_id">
                   Receipt Type: <span className="text-red-500">*</span>
@@ -903,7 +949,7 @@ const Update = () => {
               </div>
             </div>
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative ">
                 <Label className="font-normal" htmlFor="gotra">
                   Gotra:
@@ -985,7 +1031,7 @@ const Update = () => {
                 )}
               </div>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
               <div className="relative ">
                 <Label className="font-normal" htmlFor="address">
                   Address:
@@ -1008,7 +1054,7 @@ const Update = () => {
                 )}
               </div>
             </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="narration">
                   Narration:
@@ -1057,7 +1103,7 @@ const Update = () => {
               </div>
             </div>
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            {/* <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="remembrance">
                   Remembrance:
@@ -1104,11 +1150,72 @@ const Update = () => {
                   </p>
                 )}
               </div>
-            </div>
+            </div> */}
+            {showRemembrance || showSpecialDate ? (
+              <div className="w-full mb-4  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                {showRemembrance ? (
+                  <div className="relative md:col-span-2">
+                    <Label className="font-normal" htmlFor="remembrance">
+                      Remembrance:
+                    </Label>
+                    <Controller
+                      name="remembrance"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="remembrance"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter remembrance"
+                        />
+                      )}
+                    />
+                    {errors.remembrance && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.remembrance.message}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                {showSpecialDate ? (
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="special_date">
+                      Special date:
+                    </Label>
+                    <Controller
+                      name="special_date"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="special_date"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          type="date"
+                          placeholder="Enter special date"
+                        />
+                      )}
+                    />
+                    {errors.special_date && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.special_date.message}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            ) : (
+              ""
+            )}
 
             {(selectedReceiptTypeId === bhangarReceiptId ||
               selectedReceiptTypeId === vasturupeeReceiptId) && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="description">
                     description:
@@ -1171,7 +1278,7 @@ const Update = () => {
 
             {paymentMode === "Bank" && (
               <>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="bank_details">
                       Bank Details:
@@ -1249,7 +1356,7 @@ const Update = () => {
             {/* {selectedReceiptTypeId === khatReceiptId && ( */}
             {(selectedReceiptTypeId === khatReceiptId ||
               selectedReceiptTypeId === naralReceiptId) && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="quantity">
                     Quantity: <span className="text-red-500">*</span>
@@ -1300,7 +1407,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === sareeReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label
                     className="font-normal"
@@ -1383,7 +1490,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === uparaneReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="uparane_draping_date">
                     Uparane Draping date:
@@ -1507,7 +1614,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === campReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                 <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                   <Controller
                     name="Mallakhamb"
@@ -1617,7 +1724,7 @@ const Update = () => {
 
             {selectedReceiptTypeId === hallReceiptId && (
               <div>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="hall">
                       Hall:
@@ -1688,7 +1795,7 @@ const Update = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
                       name="ac_charges"
@@ -1746,7 +1853,7 @@ const Update = () => {
 
             {(selectedReceiptTypeId === libraryReceiptId ||
               selectedReceiptTypeId === studyRoomReceiptId) && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="membership_no">
                     Membership Number:
@@ -1820,7 +1927,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === studyRoomReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="timing">
                     Timing:
@@ -1848,7 +1955,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === bharani_shradhhId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="guruji">
                     Guruji Name:
@@ -1877,7 +1984,7 @@ const Update = () => {
 
             {selectedReceiptTypeId === anteshteeReceiptId && (
               <div>
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="guruji">
                       Guruji Name:
@@ -1949,7 +2056,7 @@ const Update = () => {
                   </div>
                 </div>
 
-                <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-5 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2">
                     <Controller
                       name="day_9"
@@ -2078,7 +2185,7 @@ const Update = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full mb-8 md:mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-4 md:mb-8 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                   {day9Checked ? (
                     <div className="relative">
                       <Label className="font-normal" htmlFor="day_9_date">
@@ -2220,8 +2327,8 @@ const Update = () => {
               </div>
             )}
 
-            {selectedReceiptTypeId === poojaReceiptId && (
-              <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            {selectedReceiptTypeId === poojaReceiptId || showPooja ? (
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="pooja_type_id">
                     Pooja Type:
@@ -2325,11 +2432,13 @@ const Update = () => {
                   )}
                 </div>
               </div>
+            ) : (
+              ""
             )}
 
             {selectedReceiptTypeId === poojaPavtiAnekReceiptId && (
               <>
-                <div className="w-full mb-8 md:mb-2 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="w-full mb-4 md:mb-2 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative">
                     <Label className="font-normal" htmlFor="pooja_type_id">
                       Pooja Type:
@@ -2417,7 +2526,7 @@ const Update = () => {
               </>
             )}
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-4 items-center gap-7 md:gap-1">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 items-center gap-7 md:gap-1">
               {selectedReceiptTypeId === poojaPavtiAnekReceiptId &&
                 selectedPoojaTypeId &&
                 poojaDatesData?.PoojaDates?.map((poojaDate) => {
@@ -2451,7 +2560,7 @@ const Update = () => {
                 })}
             </div>
 
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="payment_mode">
                   Payment Mode:

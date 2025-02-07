@@ -137,7 +137,9 @@ class ReceiptTypesController extends BaseController
     {
         $receipt_head = $request->query("receipt_head");
         // if($receipt_head){
-            $receiptTypes = ReceiptType::where('receipt_head', $receipt_head)->get();
+            $receiptTypes = ReceiptType::where('receipt_head', $receipt_head)
+            ->orderBy('list_order')
+            ->get();
         // }else{
         //    $receiptTypes = ReceiptType::all();
         // }

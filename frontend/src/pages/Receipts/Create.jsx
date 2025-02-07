@@ -662,6 +662,7 @@ const Create = () => {
     setSelectedReceiptTypeId(value?.id);
     // setValue("amount", value?.minimum_amount);
     setValue("amount", value?.minimum_amount || null);
+    setValue("special_date", value?.special_date || null);
     if (value?.id === 11) {
       setSelectedAnteshtiId(true);
     }
