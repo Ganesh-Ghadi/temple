@@ -181,7 +181,7 @@ const Index = () => {
                         >
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <b className="border border-gray-100 w-full"></b>
-                          <Button
+                          {/* <Button
                             variant="ghost"
                             size="sm"
                             className="w-full text-sm"
@@ -190,7 +190,7 @@ const Index = () => {
                             }
                           >
                             <Pencil /> Edit
-                          </Button>
+                          </Button> */}
                           <div className="w-full">
                             <Delete id={poojaDate.id} />
                           </div>

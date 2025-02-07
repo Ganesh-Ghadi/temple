@@ -50,6 +50,9 @@ const Homepage = () => {
     ReceiptAmount,
     CancelledReceiptCount,
     PoojaDetails,
+    HallBookingDetails,
+    PoojaCount,
+    HallBookingCount,
   } = DashboardData || {};
 
   if (isDashboardDataError) {
@@ -164,23 +167,58 @@ const Homepage = () => {
         </Tabs>
 
         {/* pooja */}
-        <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
-          <h3 className="text-xl mb-5 font-bold">Today's Pooja</h3>
-          <div className="space-y-6">
-            {PoojaDetails?.map((pooja) => (
-              <div className="flex items-center">
-                <User size={24} />
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {pooja.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{pooja.gotra}</p>
+        <div className="w-full flex items-center gap-4">
+          <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
+            <div className="flex justify-between">
+              <h3 className="text-xl mb-5 font-bold">Today's Pooja </h3>
+              <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
+                {PoojaCount}
+              </p>
+            </div>
+            <div className="space-y-6">
+              {PoojaDetails?.map((pooja) => (
+                <div className="flex items-center">
+                  <User size={24} />
+                  <div className="ml-4 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {pooja.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {pooja.gotra}
+                    </p>
+                  </div>
+                  <div className="ml-auto font-medium">{pooja.pooja_type}</div>
                 </div>
-                <div className="ml-auto font-medium">{pooja.pooja_type}</div>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea>
+          <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
+            <div className="flex justify-between">
+              <h3 className="text-xl mb-5 font-bold">Today's Hall Bookings</h3>
+              <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
+                {HallBookingCount}
+              </p>
+            </div>
+            <div className="space-y-6">
+              {HallBookingDetails?.map((hall) => (
+                <div className="flex items-center">
+                  <User size={24} />
+                  <div className="ml-4 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {hall.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {hall.amount}
+                    </p>
+                  </div>
+                  <div className="ml-auto font-medium">
+                    {hall.from_time} - {hall.to_time}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
       </div>
     </>
   );

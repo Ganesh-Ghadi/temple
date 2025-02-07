@@ -625,8 +625,11 @@ const Update = () => {
       setShowPooja(ReceiptTypeData?.ReceiptType?.is_pooja);
 
       // if (showPooja) {
-      setValue("pooja_type_id", editReceipt.Receipt?.Pooja?.pooja_type_id);
-      setValue("date", editReceipt.Receipt?.Pooja?.date);
+      setValue(
+        "pooja_type_id",
+        editReceipt?.Receipt?.Pooja?.pooja_type_id || ""
+      );
+      setValue("date", editReceipt?.Receipt?.Pooja?.date || "");
       // }
     }
   }, [ReceiptTypeData, showPooja]);

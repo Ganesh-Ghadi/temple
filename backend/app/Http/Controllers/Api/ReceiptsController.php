@@ -121,7 +121,6 @@ class ReceiptsController extends BaseController
 
         $multiple_dates = $request->input("multiple_dates");
 
-        // खत विक्री पावती
    
         if ($request->has("quantity") && $request->has("rate") && $request->input("receipt_type_id") == $khatReceiptId) {
             $khat_receipt = new KhatReceipt();
@@ -284,6 +283,29 @@ class ReceiptsController extends BaseController
         }
 
         if (($request->input("receipt_type_id") == $poojaReceiptId) || ($request->input('pooja_type_id') && $request->input('date'))) {
+            $poojaTypeId = $request->input("pooja_type_id");
+            $date = $request->input("date");
+
+            if (!$poojaTypeId) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'pooja_type_id' => ['Pooja type field is required.']
+                    ],
+                ], 422);   
+            }
+
+            if (!$date) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'date' => ['Date field is required.']
+                    ],
+                ], 422);   
+            }
+            
             $pooja_receipt = new Pooja();
             $pooja_receipt->receipt_id = $receipt->id;
             $pooja_receipt->pooja_type_id = $request->input("pooja_type_id"); 

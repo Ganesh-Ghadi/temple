@@ -132,17 +132,17 @@ const Update = () => {
   useEffect(() => {
     const totalAmount = // (denominations[0] || 0) * 2000 + // n_2000
       (
-        (denominations[1] || 0) * 500 + // n_500
-        (denominations[2] || 0) * 200 + // n_200
-        (denominations[3] || 0) * 100 + // n_100
-        (denominations[4] || 0) * 50 + // n_50
-        (denominations[5] || 0) * 20 + // n_20
-        (denominations[6] || 0) * 10 + // n_10
-        (denominations[7] || 0) * 20 + // c_20
-        (denominations[8] || 0) * 10 + // c_10
-        (denominations[9] || 0) * 5 + // c_5
-        (denominations[10] || 0) * 2 + // c_2
-        (denominations[11] || 0) * 1
+        (denominations[0] || 0) * 500 + // n_500
+        (denominations[1] || 0) * 200 + // n_200
+        (denominations[2] || 0) * 100 + // n_100
+        (denominations[3] || 0) * 50 + // n_50
+        (denominations[4] || 0) * 20 + // n_20
+        (denominations[5] || 0) * 10 + // n_10
+        (denominations[6] || 0) * 20 + // c_20
+        (denominations[7] || 0) * 10 + // c_10
+        (denominations[8] || 0) * 5 + // c_5
+        (denominations[9] || 0) * 2 + // c_2
+        (denominations[10] || 0) * 1
       ) // c_1
         .toFixed(2);
 

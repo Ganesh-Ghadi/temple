@@ -616,6 +616,18 @@ const Create = () => {
             });
             // toast.error("The poo has already been taken.");
           }
+          if (serverErrors.pooja_type_id) {
+            setError("pooja_type_id", {
+              type: "manual",
+              message: serverErrors.pooja_type_id[0],
+            });
+          }
+          if (serverErrors.date) {
+            setError("date", {
+              type: "manual",
+              message: serverErrors.date[0],
+            });
+          }
         } else {
           toast.error("Failed to add Receipt.");
         }
@@ -662,7 +674,7 @@ const Create = () => {
     setSelectedReceiptTypeId(value?.id);
     // setValue("amount", value?.minimum_amount);
     setValue("amount", value?.minimum_amount || null);
-    setValue("special_date", value?.special_date || null);
+    setValue("special_date", value?.special_date || "");
     if (value?.id === 11) {
       setSelectedAnteshtiId(true);
     }

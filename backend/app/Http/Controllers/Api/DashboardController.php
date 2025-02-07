@@ -52,11 +52,35 @@ class DashboardController extends BaseController
         });
     });
 
+    $hallReceipts = Receipt::with('hallReceipt')
+                            ->where('special_date',$today)
+                            ->where("cancelled", false)
+                            ->get();
+    
+    
+    $hallBookingDetails = $hallReceipts->map(function ($receipt) {
+        $hallBooking = $receipt->hallReceipt; // Assuming it's a single model
+        return [
+            'receipt_id' => $receipt->id,
+            'hall_name' => $hallBooking->hall, 
+            'from_time' => \Carbon\Carbon::parse($hallBooking->from_time)->format('h:i A'),  // 12-hour format with AM/PM
+            'to_time' => \Carbon\Carbon::parse($hallBooking->to_time)->format('h:i A'),      // 12-hour format with AM/PM
+            'amount' => $receipt->amount,  
+            'name' => $receipt->name,
+        ];
+    });
+
+    $totalPoojas = $poojaDetails->count();
+    $totalHallBookings = $hallBookingDetails->count();
+
         return $this->sendResponse(["ProfileCount"=>$profileCount,
                                 'ReceiptCount'=>$receiptCountToday,
                                 'ReceiptAmount'=>$totalAmountToday,
                                 'CancelledReceiptCount'=>$cancelledReceipts,
-                                'PoojaDetails'=>$poojaDetails
+                                'PoojaDetails'=>$poojaDetails,
+                                'HallBookingDetails'=>$hallBookingDetails,
+                                'PoojaCount'=>$totalPoojas,
+                                'HallBookingCount'=>$totalHallBookings
                                 ], "Dashboard data retrieved successfully");
     }
 
