@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { User } from "lucide-react";
 import ColorDisplay from "./ColorDisplay";
 import { IndianRupee } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -154,6 +155,69 @@ const Homepage = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* pooja */}
+        <div className=" md:w-[50%] my-5 p-5 border rounded bg-white">
+          <h3 className="text-xl mb-5 font-bold">Today's Pooja</h3>
+          <div className="space-y-8">
+            <div className="flex items-center">
+              <User size={16} />
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  Olivia Martin
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  olivia.martin@email.com
+                </p>
+              </div>
+              <div className="ml-auto font-medium">+$1,999.00</div>
+            </div>
+            <div className="flex items-center">
+              <User size={16} />
+
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">Jackson Lee</p>
+                <p className="text-sm text-muted-foreground">
+                  jackson.lee@email.com
+                </p>
+              </div>
+              <div className="ml-auto font-medium">+$39.00</div>
+            </div>
+            <div className="flex items-center">
+              <User size={16} />
+
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  Isabella Nguyen
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  isabella.nguyen@email.com
+                </p>
+              </div>
+              <div className="ml-auto font-medium">+$299.00</div>
+            </div>
+            <div className="flex items-center">
+              <User size={16} />
+
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">William Kim</p>
+                <p className="text-sm text-muted-foreground">will@email.com</p>
+              </div>
+              <div className="ml-auto font-medium">+$99.00</div>
+            </div>
+            <div className="flex items-center">
+              <User size={16} />
+
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">Sofia Davis</p>
+                <p className="text-sm text-muted-foreground">
+                  sofia.davis@email.com
+                </p>
+              </div>
+              <div className="ml-auto font-medium">+$39.00</div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
