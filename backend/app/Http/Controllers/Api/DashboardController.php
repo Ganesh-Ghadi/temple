@@ -45,8 +45,8 @@ class DashboardController extends BaseController
                 'gotra' => $receipt->gotra,  // User's name from receipt
                 'email' => $receipt->email, // Email from receipt
                 'mobile' => $receipt->mobile, // Mobile from receipt
-                'poojaType' => $pooja->poojaType->pooja_type,  // Name of the pooja type
-                'devtaName' => $pooja->poojaType->devta->devta_name, // Devta name from the related devta model
+                'pooja_type' => $pooja->poojaType->pooja_type,  // Name of the pooja type
+                'devta_name' => $pooja->poojaType->devta->devta_name, // Devta name from the related devta model
                 'date' => $pooja->date,  // Date of the pooja (today's date)
             ];
         });

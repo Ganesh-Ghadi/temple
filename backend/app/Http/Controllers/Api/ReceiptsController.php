@@ -283,7 +283,7 @@ class ReceiptsController extends BaseController
             $anteshtee_receipt->save();
         }
 
-        if ($request->input("receipt_type_id") == $poojaReceiptId) {
+        if (($request->input("receipt_type_id") == $poojaReceiptId) || ($request->input('pooja_type_id') && $request->input('date'))) {
             $pooja_receipt = new Pooja();
             $pooja_receipt->receipt_id = $receipt->id;
             $pooja_receipt->pooja_type_id = $request->input("pooja_type_id"); 

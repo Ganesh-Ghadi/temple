@@ -172,6 +172,9 @@ const Create = () => {
   const [values, setValues] = useState([]);
   const [takeinput, setTakeinput] = useState();
   const [inputvaluearray, setInputvaluearray] = useState({});
+  const [showRemembrance, setShowRemembrance] = useState("");
+  const [showSpecialDate, setShowSpecialDate] = useState("");
+  const [showPooja, setShowPooja] = useState("");
 
   const khatReceiptId = 1;
   const naralReceiptId = 2;
@@ -657,7 +660,6 @@ const Create = () => {
 
   const handleReceiptTypeChange = (value) => {
     setSelectedReceiptTypeId(value?.id);
-
     // setValue("amount", value?.minimum_amount);
     setValue("amount", value?.minimum_amount || null);
     if (value?.id === 11) {
@@ -685,7 +687,7 @@ const Create = () => {
     const currentAmount = parseFloat(watch("amount")) || 0;
     setValue("amount", currentAmount + acAmount);
   };
-
+  console.log(showRemembrance);
   return (
     <>
       <div className="p-5">
@@ -930,7 +932,13 @@ const Create = () => {
                                         //     ? ""
                                         //     : currentValue
                                         // );
-
+                                        setShowRemembrance(
+                                          receiptType.show_remembarance
+                                        );
+                                        setShowSpecialDate(
+                                          receiptType.show_special_date
+                                        );
+                                        setShowPooja(receiptType.is_pooja);
                                         handleReceiptTypeChange(receiptType);
                                         setOpenReceiptType(false);
                                         // Close popover after selection
@@ -1147,54 +1155,67 @@ const Create = () => {
               </div>
             </div>
 
-            <div className="w-full mb-4  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-              <div className="relative md:col-span-2">
-                <Label className="font-normal" htmlFor="remembrance">
-                  Remembrance:
-                </Label>
-                <Controller
-                  name="remembrance"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="remembrance"
-                      className="mt-1"
-                      type="text"
-                      placeholder="Enter remembrance"
+            {showRemembrance || showSpecialDate ? (
+              <div className="w-full mb-4  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                {showRemembrance ? (
+                  <div className="relative md:col-span-2">
+                    <Label className="font-normal" htmlFor="remembrance">
+                      Remembrance:
+                    </Label>
+                    <Controller
+                      name="remembrance"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="remembrance"
+                          className="mt-1"
+                          type="text"
+                          placeholder="Enter remembrance"
+                        />
+                      )}
                     />
-                  )}
-                />
-                {errors.remembrance && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.remembrance.message}
-                  </p>
+                    {errors.remembrance && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.remembrance.message}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                {showSpecialDate ? (
+                  <div className="relative">
+                    <Label className="font-normal" htmlFor="special_date">
+                      Special date:
+                    </Label>
+                    <Controller
+                      name="special_date"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="special_date"
+                          className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                          type="date"
+                          placeholder="Enter special date"
+                        />
+                      )}
+                    />
+                    {errors.special_date && (
+                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                        {errors.special_date.message}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  ""
                 )}
               </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="special_date">
-                  Special date:
-                </Label>
-                <Controller
-                  name="special_date"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      id="special_date"
-                      className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                      type="date"
-                      placeholder="Enter special date"
-                    />
-                  )}
-                />
-                {errors.special_date && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.special_date.message}
-                  </p>
-                )}
-              </div>
-            </div>
+            ) : (
+              ""
+            )}
 
             {(selectedReceiptTypeId === bhangarReceiptId ||
               selectedReceiptTypeId === vasturupeeReceiptId) && (
@@ -2343,7 +2364,7 @@ const Create = () => {
               </div>
             )}
 
-            {selectedReceiptTypeId === poojaReceiptId && (
+            {selectedReceiptTypeId === poojaReceiptId || showPooja ? (
               <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="pooja_type_id">
@@ -2448,6 +2469,8 @@ const Create = () => {
                   )}
                 </div>
               </div>
+            ) : (
+              ""
             )}
 
             {/* <div className="w-full grid grid-cols-1 md:grid-cols-6 items-center gap-7 md:gap-1">
