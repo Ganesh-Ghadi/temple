@@ -73,6 +73,23 @@ class DashboardController extends BaseController
     $totalPoojas = $poojaDetails->count();
     $totalHallBookings = $hallBookingDetails->count();
 
+    $sareeReceipt = Receipt::with('sareeReceipt')
+                            ->where('saree_draping_date',$today)
+                            ->where("cancelled", false)
+                            ->get();
+      // solve it tomarrow
+    $sareeDetails = $sareeReceipt->map(function ($receipt) {
+        $hallBooking = $receipt->hallReceipt; // Assuming it's a single model
+            return [
+                'receipt_id' => $receipt->id,
+                'hall_name' => $hallBooking->hall, 
+                'from_time' => \Carbon\Carbon::parse($hallBooking->from_time)->format('h:i A'),  // 12-hour format with AM/PM
+                'to_time' => \Carbon\Carbon::parse($hallBooking->to_time)->format('h:i A'),      // 12-hour format with AM/PM
+                'amount' => $receipt->amount,  
+                'name' => $receipt->name,
+            ];
+        });
+
         return $this->sendResponse(["ProfileCount"=>$profileCount,
                                 'ReceiptCount'=>$receiptCountToday,
                                 'ReceiptAmount'=>$totalAmountToday,
