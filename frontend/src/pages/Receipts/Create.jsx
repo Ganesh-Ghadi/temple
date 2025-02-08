@@ -89,7 +89,8 @@ const formSchema = z.object({
   saree_draping_date_morning: z.string().optional(),
   saree_draping_date_evening: z.string().optional(),
   return_saree: z.coerce.number().min(0, "return saree field is required"),
-  uparane_draping_date: z.string().optional(),
+  uparane_draping_date_morning: z.string().optional(),
+  uparane_draping_date_evening: z.string().optional(),
   return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
   member_name: z.string().optional(),
   from_date: z.string().optional(),
@@ -239,7 +240,8 @@ const Create = () => {
     saree_draping_date_morning: "",
     saree_draping_date_evening: "",
     return_saree: "",
-    uparane_draping_date: "",
+    uparane_draping_date_morning: "",
+    uparane_draping_date_evening: "",
     return_uparane: "",
     member_name: "",
     from_date: "",
@@ -529,6 +531,32 @@ const Create = () => {
     enabled: selectedReceiptTypeId === 4, // Enable the query only if selectedReceiptTypeId is 4
   });
 
+  // UparaneEveningDate
+  const {
+    data: uparaneEveningDateData,
+    isLoading: isUparaneEveningDateDataLoading,
+    isError: isUparaneEveningDateDataError,
+  } = useQuery({
+    queryKey: ["uparaneEveningDate"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedReceiptTypeId === 5) {
+          return [];
+        }
+        const response = await axios.get(`/api/uparane_date_evening`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: selectedReceiptTypeId === 5, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
   useEffect(() => {
     if (sareeDateData) {
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
@@ -554,9 +582,21 @@ const Create = () => {
       const dateFormatted = new Date(uparaneDateData?.UparaneDrapingDate)
         .toISOString()
         .split("T")[0];
-      setValue("uparane_draping_date", uparaneDateData?.UparaneDrapingDate);
+      setValue(
+        "uparane_draping_date_morning",
+        uparaneDateData?.UparaneDrapingDate
+      );
     }
   }, [uparaneDateData, selectedReceiptTypeId]);
+
+  useEffect(() => {
+    if (uparaneEveningDateData) {
+      setValue(
+        "uparane_draping_date_evening",
+        uparaneEveningDateData?.UparaneDrapingDateEvening
+      );
+    }
+  }, [uparaneEveningDateData, selectedReceiptTypeId]);
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
@@ -615,6 +655,24 @@ const Create = () => {
               message: serverErrors.saree_draping_date_evening[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
+          }
+          if (serverErrors.uparane_draping_date_morning) {
+            setError("uparane_draping_date_morning", {
+              type: "manual",
+              message: serverErrors.uparane_draping_date_morning[0], // The error message from the server
+            });
+          }
+          if (serverErrors.uparane_draping_date_evening) {
+            setError("uparane_draping_date_evening", {
+              type: "manual",
+              message: serverErrors.uparane_draping_date_evening[0], // The error message from the server
+            });
+          }
+          if (serverErrors.saree_days) {
+            toast.error("Date field is required.");
+          }
+          if (serverErrors.uparane_days) {
+            toast.error("Date field is required.");
           }
           if (serverErrors.pooja_type_id) {
             setError("pooja_type_id", {
@@ -1561,25 +1619,54 @@ const Create = () => {
             {selectedReceiptTypeId === uparaneReceiptId && (
               <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
-                  <Label className="font-normal" htmlFor="uparane_draping_date">
-                    Uparane Draping date:
+                  <Label
+                    className="font-normal"
+                    htmlFor="uparane_draping_date_morning"
+                  >
+                    Uparane Draping date morning:
                   </Label>
                   <Controller
-                    name="uparane_draping_date"
+                    name="uparane_draping_date_morning"
                     control={control}
                     render={({ field }) => (
                       <input
                         {...field}
-                        id="uparane_draping_date"
+                        id="uparane_draping_date_morning"
                         className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
                         type="date"
                         placeholder="Enter date"
                       />
                     )}
                   />
-                  {errors.uparane_draping_date && (
+                  {errors.uparane_draping_date_morning && (
                     <p className="absolute text-red-500 text-sm mt-1 left-0">
-                      {errors.uparane_draping_date.message}
+                      {errors.uparane_draping_date_morning.message}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <Label
+                    className="font-normal"
+                    htmlFor="uparane_draping_date_evening"
+                  >
+                    Uparane Draping date evening:
+                  </Label>
+                  <Controller
+                    name="uparane_draping_date_evening"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="uparane_draping_date_evening"
+                        className="dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                        type="date"
+                        placeholder="Enter date"
+                      />
+                    )}
+                  />
+                  {errors.uparane_draping_date_evening && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.uparane_draping_date_evening.message}
                     </p>
                   )}
                 </div>

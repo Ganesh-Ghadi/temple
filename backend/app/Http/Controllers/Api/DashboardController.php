@@ -95,10 +95,9 @@ class DashboardController extends BaseController
     $uparaneReceipt = Receipt::with('uparaneReceipt')
                     ->where("cancelled", false)
                     ->whereHas('uparaneReceipt', function($query) use ($date) {
-                        $query->where('uparane_draping_date',$date);
+                        $query->where('uparane_draping_date_morning',$date);
                     })
                     ->first();
-
                     if ($uparaneReceipt) {
                        $uparaneDetails = [
                         'name' => $uparaneReceipt->name,

@@ -100,6 +100,16 @@ class ReceiptsController extends BaseController
             $sareeDrapingDateMorningInput = $request->input("saree_draping_date_morning");
             $sareeDrapingDateEveningInput = $request->input("saree_draping_date_evening");
 
+            if (!$sareeDrapingDateMorningInput && !$sareeDrapingDateEveningInput) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'saree_days' => ['date field is required.']
+                    ],
+                ], 422);
+            }
+
             // Only query if the date is provided
             if ($sareeDrapingDateMorningInput) {
                 $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $sareeDrapingDateMorningInput)->first();
@@ -139,6 +149,16 @@ class ReceiptsController extends BaseController
             $uparaneDrapingDateMorningInput = $request->input("uparane_draping_date_morning");
             $uparaneDrapingDateEveningInput = $request->input("uparane_draping_date_evening");
 
+            if (!$uparaneDrapingDateMorningInput && !$uparaneDrapingDateEveningInput) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'uparane_days' => ['date field is required.']
+                    ],
+                ], 422);
+            }
+            
             // Only query if the date is provided
             if ($uparaneDrapingDateMorningInput) {
                 $uparaneDrapingDateMorning = UparaneReceipt::where('uparane_draping_date_morning', $uparaneDrapingDateMorningInput)->first();
@@ -156,15 +176,14 @@ class ReceiptsController extends BaseController
             }
 
             if ($uparaneDrapingDateEveningInput) {
-                $uDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
+                $uparaneDrapingDateEvening = UparaneReceipt::where('uparane_draping_date_evening', $uparaneDrapingDateEveningInput)->first();
                 
-                // Check if the date exists in the database
-                if ($sareeDrapingDateEvening) {
+                if ($uparaneDrapingDateEvening) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Validation failed',
                         'errors' => [
-                            'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
+                            'uparane_draping_date_evening' => ['The selected evening uparane draping date is already taken.']
                         ],
                     ], 422);
                 }
@@ -774,7 +793,7 @@ class ReceiptsController extends BaseController
         $uparaneData = Receipt::with("uparaneReceipt")
         ->where('receipt_type_id', 5)
         ->whereHas('uparaneReceipt', function ($query) {
-            $query->whereNotNull('uparane_draping_date');  // Exclude records where saree_draping_date_morning is null
+            $query->whereNotNull('uparane_draping_date_morning');  // Exclude records where saree_draping_date_morning is null
         })
         ->latest() // Orders by 'created_at' descending by default
         ->first(); // Gets the latest (first) record
@@ -785,7 +804,7 @@ class ReceiptsController extends BaseController
         }
 
         // Assuming 'saree_draping_date' is a date field in the sareeReceipt
-        $oldDate = $uparaneData->uparaneReceipt->uparane_draping_date;
+        $oldDate = $uparaneData->uparaneReceipt->uparane_draping_date_morning;
 
         // Get the next date (for example, 1 day after the old date)
         $newDate = Carbon::parse($oldDate)->addDay(); // You can replace `addDay()` with `addDays($number)` for multiple days.
@@ -795,5 +814,30 @@ class ReceiptsController extends BaseController
         ], "Uparane Date retrieved successfully");
     }
 
+     /**
+     * Uparane Date evening.
+     */
+    public function UparaneDateEvening(): JsonResponse
+    {
+        $uparaneData = Receipt::with("uparaneReceipt")
+        ->where('receipt_type_id', 5)
+        ->whereHas('uparaneReceipt', function ($query) {
+            $query->whereNotNull('uparane_draping_date_evening');  // Exclude records where saree_draping_date_morning is null
+        })
+        ->latest()
+        ->first();
+    
+        if (!$uparaneData || !$uparaneData->uparaneReceipt) {
+        return $this->sendError("No uparane receipt found", ['error' => 'No uparane receipt found']);
+        }
+
+        $oldDate = $uparaneData->uparaneReceipt->uparane_draping_date_evening;
+
+        $newDate = Carbon::parse($oldDate)->addDay(); // You can replace `addDay()` with `addDays($number)` for multiple days.
+
+        return $this->sendResponse([
+        "UparaneDrapingDateEvening" => $newDate->format('Y-m-d'), // Format as per your requirement
+        ], "Uparane evening Date retrieved successfully");
+    }
    
 }

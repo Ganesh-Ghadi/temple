@@ -87,6 +87,8 @@ class StoreReceiptRequest extends FormRequest
         $validator->sometimes('karma_number', 'required', function ($input) {
             return $input->receipt_type_id == 11; // Only require `hall` if `receipt_type_id` is 9
         });
+
+      
     }
 
     // $khatReceiptId = 1;
