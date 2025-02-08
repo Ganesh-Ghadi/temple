@@ -25,6 +25,7 @@ const formSchema = z.object({
   pooja_type: z
     .string()
     .min(2, "pooja type must be at least 2 characters.")
+    .max(100, "pooja type must be at max 100 characters")
     .regex(
       /^[A-Za-z\s\u0900-\u097F]+$/,
       "Pooja Type can only contain letters."

@@ -27,9 +27,17 @@ const formSchema = z.object({
   email: z
     .string()
     .email("Invalid email address")
+    .max(100, "Email must be at max 100 characters")
     .nonempty("Email is required"),
-  password: z.string().optional(),
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  password: z
+    .string()
+    .max(100, "Password must be at max 100 characters")
+    .optional(),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be at max 100 characters"),
+
   // mobile: z.string().optional(), // Ensure the number is 10 digits or shorter
   role: z.string().min(1, "Role field is required"),
   active: z.coerce.number().optional(),

@@ -26,11 +26,16 @@ const formSchema = z.object({
   email: z
     .string()
     .email("Invalid email address")
+    .max(100, "Email must be at max 100 characters")
     .nonempty("Email is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .max(100, "Password must be at max 100 characters"),
   name: z
     .string()
     .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be at max 100 characters")
     .regex(/^[A-Za-z\s\u0900-\u097F]+$/, "Name can only contain letters."), // Allow letters and spaces, including Marathi
 
   // mobile: z.string().optional(),

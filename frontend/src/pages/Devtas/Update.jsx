@@ -26,6 +26,7 @@ const formSchema = z.object({
   devta_name: z
     .string()
     .min(2, "Name must be at least 2 characters.")
+    .max(100, "Name must be at max 100 characters")
     .regex(/^[A-Za-z\s\u0900-\u097F]+$/, "Name can only contain letters."), // Allow letters and spaces, including Marathi
 });
 
