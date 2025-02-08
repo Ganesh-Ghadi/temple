@@ -266,7 +266,7 @@ const Update = () => {
                   </p>
                 )}
               </div>
-              <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
+              {/* <div className="relative flex gap-2 md:pt-10 md:pl-2 ">
                 <Controller
                   name="multiple"
                   control={control}
@@ -291,7 +291,7 @@ const Update = () => {
                     {errors.multiple.message}
                   </p>
                 )}
-              </div>
+              </div> */}
             </div>
             {/* row ends */}
             <div className="w-full gap-4 mt-4 flex justify-end items-center">

@@ -93,6 +93,152 @@ class ReceiptsController extends BaseController
         $poojaPavtiAnekReceiptId = 13;
         $bharaniShradhhId = 14;
 
+        //validation start
+        //saree validation
+        if ($request->input("receipt_type_id") == $sareeReceiptId) {
+            // Get the date from the request
+            $sareeDrapingDateMorningInput = $request->input("saree_draping_date_morning");
+            $sareeDrapingDateEveningInput = $request->input("saree_draping_date_evening");
+
+            // Only query if the date is provided
+            if ($sareeDrapingDateMorningInput) {
+                $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $sareeDrapingDateMorningInput)->first();
+                
+                // Check if the date exists in the database
+                if ($sareeDrapingDateMorning) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
+                        ],
+                    ], 422);
+                }
+            }
+
+            if ($sareeDrapingDateEveningInput) {
+                $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
+                
+                // Check if the date exists in the database
+                if ($sareeDrapingDateEvening) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
+                        ],
+                    ], 422);
+                }
+            }
+
+        }
+
+        // pooja validation
+        if (($request->input("receipt_type_id") == $poojaReceiptId) || ($request->input('pooja_type_id') && $request->input('date'))) {
+            $poojaTypeId = $request->input("pooja_type_id");
+            $date = $request->input("date");
+
+            if (!$poojaTypeId) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'pooja_type_id' => ['Pooja type field is required.']
+                    ],
+                ], 422);   
+            }
+
+            if (!$date) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'date' => ['Date field is required.']
+                    ],
+                ], 422);   
+            }
+        }
+
+         // pooja anek validation
+         if (($request->input("receipt_type_id") == $poojaPavtiAnekReceiptId)) {
+            $poojaTypeId = $request->input("pooja_type_id");
+            $multiple_dates = $request->input("multiple_dates");
+
+            if (!$poojaTypeId) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'pooja_type_id' => ['Pooja type field is required.']
+                    ],
+                ], 422);   
+            }
+
+            if (!$multiple_dates) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'multiple_dates' => ['date field is required.']
+                    ],
+                ], 422);   
+            }
+        }
+
+           // bhangar validation
+           if (($request->input("receipt_type_id") == $bhangarReceiptId)) {
+            $description = $request->input("description");
+
+            if (!$description) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'description' => ['Description field is required.']
+                    ],
+                ], 422);   
+            }
+
+        }
+
+        // vasturupi dengi validation
+        if (($request->input("receipt_type_id") == $vasturupeeReceiptId)) {
+            $description = $request->input("description");
+
+            if (!$description) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'description' => ['Description field is required.']
+                    ],
+                ], 422);   
+            }
+
+        }
+
+        // anteshti validation
+        if (($request->input("receipt_type_id") == $anteshteeReceiptId)) {
+            $day_9_date = $request->input("day_9_date");
+            $day_10_date = $request->input("day_9_date");
+            $day_11_date = $request->input("day_9_date");
+            $day_12_date = $request->input("day_9_date");
+            $day_13_date = $request->input("day_9_date");
+
+
+            if (!$day_9_date && !$day_10_date && !$day_11_date && !$day_12_date && !$day_13_date) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'anteshti_dates' => ['anteshti date field is required']
+                    ],
+                ], 422);
+            }
+
+        }
+        // validation end
+
 
         $receipt = new Receipt();
         $receipt->receipt_type_id = $request->input("receipt_type_id");
@@ -147,41 +293,6 @@ class ReceiptsController extends BaseController
 
         if ($request->input("receipt_type_id") == $sareeReceiptId) {
              
-          // Get the date from the request
-                $sareeDrapingDateMorningInput = $request->input("saree_draping_date_morning");
-                $sareeDrapingDateEveningInput = $request->input("saree_draping_date_evening");
-
-                // Only query if the date is provided
-                if ($sareeDrapingDateMorningInput) {
-                    $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $sareeDrapingDateMorningInput)->first();
-                    
-                    // Check if the date exists in the database
-                    if ($sareeDrapingDateMorning) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'Validation failed',
-                            'errors' => [
-                                'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
-                            ],
-                        ], 422);
-                    }
-                }
-
-                if ($sareeDrapingDateEveningInput) {
-                    $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
-                    
-                    // Check if the date exists in the database
-                    if ($sareeDrapingDateEvening) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'Validation failed',
-                            'errors' => [
-                                'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
-                            ],
-                        ], 422);
-                    }
-                }
-            
             $saree_receipt = new SareeReceipt();
             $saree_receipt->receipt_id = $receipt->id;
             $saree_receipt->saree_draping_date_morning = $request->input("saree_draping_date_morning");
@@ -283,28 +394,6 @@ class ReceiptsController extends BaseController
         }
 
         if (($request->input("receipt_type_id") == $poojaReceiptId) || ($request->input('pooja_type_id') && $request->input('date'))) {
-            $poojaTypeId = $request->input("pooja_type_id");
-            $date = $request->input("date");
-
-            if (!$poojaTypeId) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation failed',
-                    'errors' => [
-                        'pooja_type_id' => ['Pooja type field is required.']
-                    ],
-                ], 422);   
-            }
-
-            if (!$date) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation failed',
-                    'errors' => [
-                        'date' => ['Date field is required.']
-                    ],
-                ], 422);   
-            }
             
             $pooja_receipt = new Pooja();
             $pooja_receipt->receipt_id = $receipt->id;

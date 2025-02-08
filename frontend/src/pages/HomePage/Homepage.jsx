@@ -53,6 +53,8 @@ const Homepage = () => {
     HallBookingDetails,
     PoojaCount,
     HallBookingCount,
+    SareeDetails,
+    UparaneDetails,
   } = DashboardData || {};
 
   if (isDashboardDataError) {
@@ -168,7 +170,7 @@ const Homepage = () => {
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
               <Card className="w-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
@@ -177,13 +179,29 @@ const Homepage = () => {
                   <IndianRupee size={16} color="#716f6f" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{ReceiptAmount}</div>
+                  <div className="text-2xl font-bold">
+                    {SareeDetails?.name || "N/A"}
+                  </div>
                 </CardContent>
               </Card>
               <Card className="w-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
                     Today's Uparane
+                  </CardTitle>
+                  <IndianRupee size={16} color="#716f6f" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {" "}
+                    {UparaneDetails?.name || "N/A"}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="w-full">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Today's Prasad
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

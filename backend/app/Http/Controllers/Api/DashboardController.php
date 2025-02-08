@@ -73,23 +73,42 @@ class DashboardController extends BaseController
     $totalPoojas = $poojaDetails->count();
     $totalHallBookings = $hallBookingDetails->count();
 
-    // $sareeReceipt = Receipt::with('sareeReceipt')
-    //                         ->where('saree_draping_date',$today)
-    //                         ->where("cancelled", false)
-    //                         ->get();
-    //   // solve it tomarrow
-    // $sareeDetails = $sareeReceipt->map(function ($receipt) {
-    //     $hallBooking = $receipt->hallReceipt; // Assuming it's a single model
-    //         return [
-    //             'receipt_id' => $receipt->id,
-    //             'hall_name' => $hallBooking->hall, 
-    //             'from_time' => \Carbon\Carbon::parse($hallBooking->from_time)->format('h:i A'),  // 12-hour format with AM/PM
-    //             'to_time' => \Carbon\Carbon::parse($hallBooking->to_time)->format('h:i A'),      // 12-hour format with AM/PM
-    //             'amount' => $receipt->amount,  
-    //             'name' => $receipt->name,
-    //         ];
-    //     });
+    $sareeReceipt = Receipt::with('sareeReceipt')
+                            ->where("cancelled", false)
+                            ->whereHas('sareeReceipt', function($query) use ($date) {
+                                $query->where('saree_draping_date_morning',$date);
+                            })
+                            ->first();
 
+                            if ($sareeReceipt) {
+                                $sareeDetails = [
+                                    'saree_draping_date_morning' => $sareeReceipt->sareeReceipt->saree_draping_date_morning,
+                                    'return_saree' => $sareeReceipt->sareeReceipt->return_saree,
+                                    'name' => $sareeReceipt->name,
+                                    'gotra' => $sareeReceipt->gotra,
+                                ];
+                            } else {
+                                // Handle the case where no matching receipt was found
+                                $sareeDetails = null;
+                            }
+
+    $uparaneReceipt = Receipt::with('uparaneReceipt')
+                    ->where("cancelled", false)
+                    ->whereHas('uparaneReceipt', function($query) use ($date) {
+                        $query->where('uparane_draping_date',$date);
+                    })
+                    ->first();
+
+                    if ($uparaneReceipt) {
+                       $uparaneDetails = [
+                        'name' => $uparaneReceipt->name,
+                        'gotra' => $uparaneReceipt->gotra,
+                    ];
+                } else {
+                    // Handle the case where no matching receipt was found
+                    $uparaneDetails = null;
+            }
+                            
         return $this->sendResponse(["ProfileCount"=>$profileCount,
                                 'ReceiptCount'=>$receiptCountToday,
                                 'ReceiptAmount'=>$totalAmountToday,
@@ -97,7 +116,9 @@ class DashboardController extends BaseController
                                 'PoojaDetails'=>$poojaDetails,
                                 'HallBookingDetails'=>$hallBookingDetails,
                                 'PoojaCount'=>$totalPoojas,
-                                'HallBookingCount'=>$totalHallBookings
+                                'HallBookingCount'=>$totalHallBookings,
+                                'SareeDetails'=>$sareeDetails,
+                                'UparaneDetails'=>$uparaneDetails,
                                 ], "Dashboard data retrieved successfully");
     }
 

@@ -76,7 +76,7 @@ const index = () => {
   return (
     <>
       <div className="w-full p-5">
-        <div className="w-full mb-7">
+        {/* <div className="w-full mb-7">
           <Button
             onClick={() => navigate("/")}
             variant=""
@@ -84,7 +84,7 @@ const index = () => {
           >
             Add Roles
           </Button>
-        </div>
+        </div> */}
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold leading-none tracking-tight">

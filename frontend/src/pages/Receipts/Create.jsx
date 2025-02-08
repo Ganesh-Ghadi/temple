@@ -628,6 +628,55 @@ const Create = () => {
               message: serverErrors.date[0],
             });
           }
+          if (serverErrors.multiple_dates) {
+            toast.error("Date field is required");
+          }
+          if (serverErrors.description) {
+            setError("description", {
+              type: "manual",
+              message: serverErrors.description[0],
+            });
+          }
+          if (serverErrors.special_date) {
+            setError("special_date", {
+              type: "manual",
+              message: serverErrors.special_date[0],
+            });
+            toast.error("Special Date field is required.");
+          }
+          if (serverErrors.from_time) {
+            setError("from_time", {
+              type: "manual",
+              message: serverErrors.from_time[0],
+            });
+          }
+          if (serverErrors.to_time) {
+            setError("to_time", {
+              type: "manual",
+              message: serverErrors.to_time[0],
+            });
+          }
+          if (serverErrors.guruji) {
+            setError("guruji", {
+              type: "manual",
+              message: serverErrors.guruji[0],
+            });
+          }
+          if (serverErrors.yajman) {
+            setError("yajman", {
+              type: "manual",
+              message: serverErrors.yajman[0],
+            });
+          }
+          if (serverErrors.karma_number) {
+            setError("karma_number", {
+              type: "manual",
+              message: serverErrors.karma_number[0],
+            });
+          }
+          if (serverErrors.anteshti_dates) {
+            toast.error("Date field is required.");
+          }
         } else {
           toast.error("Failed to add Receipt.");
         }
@@ -2120,7 +2169,7 @@ const Create = () => {
                           {...field}
                           id="karma_number"
                           className="mt-1"
-                          type="text"
+                          type="number"
                           placeholder="Enter karma no"
                         />
                       )}
