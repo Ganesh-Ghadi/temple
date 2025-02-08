@@ -133,6 +133,45 @@ class ReceiptsController extends BaseController
 
         }
 
+         //uparane validation
+         if ($request->input("receipt_type_id") == $uparaneReceiptId) {
+            // Get the date from the request
+            $uparaneDrapingDateMorningInput = $request->input("uparane_draping_date_morning");
+            $uparaneDrapingDateEveningInput = $request->input("uparane_draping_date_evening");
+
+            // Only query if the date is provided
+            if ($uparaneDrapingDateMorningInput) {
+                $uparaneDrapingDateMorning = UparaneReceipt::where('uparane_draping_date_morning', $uparaneDrapingDateMorningInput)->first();
+                
+                // Check if the date exists in the database
+                if ($uparaneDrapingDateMorning) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'uparane_draping_date_morning' => ['The selected morning uparane draping date is already taken.']
+                        ],
+                    ], 422);
+                }
+            }
+
+            if ($uparaneDrapingDateEveningInput) {
+                $uDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
+                
+                // Check if the date exists in the database
+                if ($sareeDrapingDateEvening) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
+                        ],
+                    ], 422);
+                }
+            }
+
+        }
+
         // pooja validation
         if (($request->input("receipt_type_id") == $poojaReceiptId) || ($request->input('pooja_type_id') && $request->input('date'))) {
             $poojaTypeId = $request->input("pooja_type_id");
@@ -304,7 +343,8 @@ class ReceiptsController extends BaseController
         if ($request->input("receipt_type_id") == $uparaneReceiptId) {
             $uparane_receipt = new UparaneReceipt();
             $uparane_receipt->receipt_id = $receipt->id;
-            $uparane_receipt->uparane_draping_date = $request->input("uparane_draping_date");
+            $uparane_receipt->uparane_draping_date_morning = $request->input("uparane_draping_date_morning");
+            $uparane_receipt->uparane_draping_date_evening = $request->input("uparane_draping_date_evening");
             $uparane_receipt->return_uparane = $request->input("return_uparane");
             $uparane_receipt->save();
         }
@@ -418,6 +458,7 @@ class ReceiptsController extends BaseController
             $bharani_shradhh_receipt->guruji = $request->input("guruji");                                                                                       
             $bharani_shradhh_receipt->save();
         }
+        
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');
     }
 
