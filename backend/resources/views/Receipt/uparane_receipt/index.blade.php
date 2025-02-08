@@ -55,15 +55,23 @@
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
-                @if(@$receipt->uparaneReceipt->uparane_draping_date)
-                <td style=" padding: 5px;">उपरणे नेसविन्याचा दिनांक: {{\Carbon\Carbon::parse(@$receipt->uparaneReceipt->uparane_draping_date)->format('d/m/Y')}}</td>
+                @if(@$receipt->uparaneReceipt->uparane_draping_date_morning)
+                <td style=" padding: 5px;">उपरणे नेसविन्याचा दिनांक सकाळी: {{\Carbon\Carbon::parse(@$receipt->uparaneReceipt->uparane_draping_date_morning)->format('d/m/Y')}}</td>
                 @else
                 <td></td>
                 @endif
                 <td style="text-align:right">{{$receipt->amount}}</td>
             </tr>
         </table>
-      
+        @if(@$receipt->uparaneReceipt->uparane_draping_date_evening)
+        <p style="margin:0;">उपरणे नेसविन्याचा दिनांक सांध्याकाळी: {{\Carbon\Carbon::parse(@$receipt->uparaneReceipt->uparane_draping_date_evening)->format('d/m/Y')}}</p>
+        @endif
+        @if(@$receipt->uparaneReceipt->return_uparane)
+        <p style="margin:0;">उपरणे परत हवे आहे</p>
+        @else
+        <p style="margin:0;">उपरणे परत नको</p>
+        @endif
+    
         <p style="margin:0;">{{@$receipt->narration}}</p>
 
 
@@ -100,7 +108,6 @@
         </div>
 
         <p class="bottom-text">: {{$receipt->profile->profile_name}}&nbsp;&nbsp;&nbsp;{{ \Carbon\Carbon::parse($receipt->created_at)->format('d/m/Y h:i A') }}</p>
-
 
 </body>
 </html>
