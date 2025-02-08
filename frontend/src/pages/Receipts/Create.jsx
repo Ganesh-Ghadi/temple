@@ -46,6 +46,7 @@ const formSchema = z.object({
   receipt_date: z.string().min(1, "Receipt date field is required"),
   name: z
     .string()
+    .max(100, "Name must not exceed 100 characters.")
     .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
       message: "Name can only contain letters.",
     })
@@ -55,6 +56,7 @@ const formSchema = z.object({
   receipt_head: z.string().min(2, "Receipt head field is required"),
   gotra: z
     .string()
+    .max(100, "Gotra must not exceed 100 characters.")
     .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
       message: "Gotra can only contain letters.",
     })
@@ -63,7 +65,12 @@ const formSchema = z.object({
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
   // email: z.string().optional(),
-  email: z.string().email("Invalid email address.").optional().nullable(),
+  email: z
+    .string()
+    .max(100, "Name must not exceed 100 characters.")
+    .email("Invalid email address.")
+    .optional()
+    .nullable(),
   special_date: z.string().optional(),
   payment_mode: z.string().min(1, "Payment Mode field is required"),
   // mobile: z.coerce.string().optional(),
@@ -78,13 +85,25 @@ const formSchema = z.object({
       message: "Pincode must be of 6 digits.",
     })
     .optional(),
-  address: z.string().optional(),
-  narration: z.string().optional(),
+  address: z
+    .string()
+    .max(250, "Address must not exceed 250 characters.")
+    .optional(),
+  narration: z
+    .string()
+    .max(250, "Narration must not exceed 250 characters.")
+    .optional(),
   cheque_date: z.string().optional(),
   cheque_number: z.coerce.string().optional(),
   upi_number: z.string().optional(),
-  bank_details: z.string().optional(),
-  remembrance: z.string().optional(),
+  bank_details: z
+    .string()
+    .max(250, "Bank detail must not exceed 250 characters.")
+    .optional(),
+  remembrance: z
+    .string()
+    .max(250, "Remembrance must not exceed 250 characters.")
+    .optional(),
   description: z.string().optional(),
   saree_draping_date_morning: z.string().optional(),
   saree_draping_date_evening: z.string().optional(),
@@ -92,7 +111,10 @@ const formSchema = z.object({
   uparane_draping_date_morning: z.string().optional(),
   uparane_draping_date_evening: z.string().optional(),
   return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
-  member_name: z.string().optional(),
+  member_name: z
+    .string()
+    .max(100, "Member Name must not exceed 100 characters.")
+    .optional(),
   from_date: z.string().optional(),
   to_date: z.string().optional(),
   // from_time: z
@@ -134,11 +156,24 @@ const formSchema = z.object({
   dhol: z.coerce.number().min(0, "dhol field is required"),
   lezim: z.coerce.number().min(0, "lezim field is required"),
   hall: z.string().optional(),
-  membership_no: z.string().optional(),
-  timing: z.string().optional(),
+  membership_no: z
+    .string()
+    .max(100, "Membership no. must not exceed 100 characters.")
+    .optional(),
+  timing: z
+    .string()
+    .max(100, "Timing field must not exceed 100 characters.")
+    .optional(),
   guruji: z.string().optional(),
-  yajman: z.string().optional(),
-  karma_number: z.string().optional(),
+  yajman: z
+    .string()
+    .max(100, "Yajman field must not exceed 100 characters.")
+    .optional(),
+  // karma_number: z.string().optional(),
+  karma_number: z.coerce
+    .number()
+    .max(99, "karma number must be at most 2 digits.")
+    .optional(),
   day_9: z.coerce.number().min(0, "day 9 field is required"),
   day_10: z.coerce.number().min(0, "day 10 field is required"),
   day_11: z.coerce.number().min(0, "day 11 field is required"),

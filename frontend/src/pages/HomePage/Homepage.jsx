@@ -13,7 +13,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { User } from "lucide-react";
 import ColorDisplay from "./ColorDisplay";
-import { IndianRupee } from "lucide-react";
+import {
+  IndianRupee,
+  AlignStartVertical,
+  AlignVerticalDistributeCenter,
+  Droplet,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -176,7 +181,7 @@ const Homepage = () => {
                   <CardTitle className="text-sm font-medium">
                     Today's Saree
                   </CardTitle>
-                  <IndianRupee size={16} color="#716f6f" />
+                  <AlignStartVertical size={16} color="#716f6f" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
@@ -189,7 +194,7 @@ const Homepage = () => {
                   <CardTitle className="text-sm font-medium">
                     Today's Uparane
                   </CardTitle>
-                  <IndianRupee size={16} color="#716f6f" />
+                  <AlignVerticalDistributeCenter size={16} color="#716f6f" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
@@ -203,19 +208,7 @@ const Homepage = () => {
                   <CardTitle className="text-sm font-medium">
                     Today's Prasad
                   </CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
-                  >
-                    <rect width="20" height="14" x="2" y="5" rx="2" />
-                    <path d="M2 10h20" />
-                  </svg>
+                  <Droplet size={16} color="#716f6f" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{ReceiptCount}</div>
@@ -267,7 +260,7 @@ const Homepage = () => {
                       {hall.name}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {hall.amount}
+                      {hall.hall_name}
                     </p>
                   </div>
                   <div className="ml-auto font-medium">
