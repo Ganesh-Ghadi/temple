@@ -1,29 +1,30 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import background from "../../images/doitBackground.avif";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { z } from "zod";
-import { toast } from "sonner";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import background from '../../images/doitBackground.avif';
+import templeImage from '../../images/temple-4.jpg';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { z } from 'zod';
+import { toast } from 'sonner';
+import axios from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const defaultValues = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
   const formSchema = z.object({
     email: z
       .string()
-      .email("Invalid email address")
-      .nonempty("Email is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+      .email('Invalid email address')
+      .nonempty('Email is required'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
   });
 
   const {
@@ -35,25 +36,25 @@ const Login = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post("/api/login", data, {
+      const response = await axios.post('/api/login', data, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
-      localStorage.setItem("user", JSON.stringify(response.data.data));
-      toast.success("Login successful! Welcome back.");
-      navigate("/");
+      localStorage.setItem('user', JSON.stringify(response.data.data));
+      toast.success('Login successful! Welcome back.');
+      navigate('/');
       setIsLoading(false);
     } catch (error) {
       if (error.response) {
-        toast.error("Login failed: " + error.response.data.message); // Customize error message
+        toast.error('Login failed: ' + error.response.data.message); // Customize error message
         setIsLoading(false);
       } else if (error.request) {
-        toast.error("No response from server. Please try again later.");
+        toast.error('No response from server. Please try again later.');
         setIsLoading(false);
       } else {
-        toast.error("An error occurred while making the request.");
+        toast.error('An error occurred while making the request.');
         setIsLoading(false);
       }
     }
@@ -64,10 +65,10 @@ const Login = () => {
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex  ">
         <div
           style={{
-            backgroundImage: `url(${background})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "bottom",
+            backgroundImage: `url(${templeImage})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center bottom',
           }}
           className="absolute inset-0 "
         />
@@ -156,7 +157,7 @@ const Login = () => {
               )}
             </div>
             <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? "Loading..." : "Login"}
+              {isLoading ? 'Loading...' : 'Login'}
             </Button>
             {/* end */}
             {/* <p className="px-8 text-center text-sm text-muted-foreground">
