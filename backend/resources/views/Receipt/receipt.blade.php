@@ -53,7 +53,7 @@
         </table>
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
-        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->address}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0; font-size:13px;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
@@ -64,6 +64,10 @@
             </tr>
         </table>
          
+        @if(@$receipt->narration)
+        <p style="padding-top: 0; margin-bottom:0; margin-top:0; ">{{@$receipt->narration}}</p>
+          @endif
+
         @if(@$receipt->gotra)
         <p style="padding: 0; margin:0;">गोत्र: {{@$receipt->gotra}}</p>
         @endif
@@ -75,12 +79,9 @@
           <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
             @endif
 
-            @if(@$receipt->narration)
-            <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->narration}}</p>
-              @endif
-
+          
         @if(@$receipt->payment_mode == "Bank")
-        <p style="margin-top:2px;">
+        <p style="margin-top:1px;">
           <p style="padding: 0; margin:0; font-size:10px;">बँकेचे नाव: {{@$receipt->bank_details}}</p>
           <p style="padding: 0; margin:0; font-size:10px;">धनादेश क्र: {{@$receipt->cheque_number}}</p>
           <p style="padding: 0; margin:0; font-size:10px;">धनादेश दिनांक:  @if($receipt->cheque_date)

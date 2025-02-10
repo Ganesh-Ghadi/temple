@@ -51,9 +51,10 @@
             </tr>
         </table>
 
+        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
         <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->address}}</p>
 
-        <table style="width: 100%; margin-top:40px; border-spacing: 0;">
+        <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
                 <td style="padding: 5px;">{{@$receipt->narration}}</td>
                 <td style="text-align:right">{{@$receipt->amount}}</td>
@@ -66,15 +67,30 @@
                 <td style="">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</td>
                   @endif
                   <td style="text-align:right">
-                    वेळ: {{ \Carbon\Carbon::parse(@$receipt->hallReceipt->from_time)->format('H:i') }} ते 
-                    {{ \Carbon\Carbon::parse(@$receipt->hallReceipt->to_time)->format('H:i') }}
+                    वेळ: {{ \Carbon\Carbon::parse(@$receipt->hallReceipt->from_time)->format('h:i A') }} ते 
+                    {{ \Carbon\Carbon::parse(@$receipt->hallReceipt->to_time)->format('h:i A') }}
                   </td>
                 </tr>
         </table>
 
-        @if(@$receipt->remembrance)
-        <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
-          @endif
+        <table style="width: 100%; border-spacing: 0;">
+            <tr>
+                @if(@$receipt->remembrance)
+                <td style="padding-top: 0; margin-bottom:0; margin-top:0;">{{@$receipt->remembrance}}</td>
+                  @endif
+                  <td style="text-align:right">
+                  {{@$receipt->hallReceipt->hall}}
+                  </td>
+                </tr>
+        </table>
+        
+        <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:13px;">
+            @if($receipt->hallReceipt->ac_charges)
+            एसी चार्जेस {{@$receipt->hallReceipt->ac_amount}}
+           @endif
+        </p>
+
+       
        
           @if(@$receipt->payment_mode == "Bank")
           <p style="margin-top:2px;">

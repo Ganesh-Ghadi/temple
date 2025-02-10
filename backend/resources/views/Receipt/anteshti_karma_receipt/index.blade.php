@@ -52,6 +52,7 @@
         </table>
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0; font-size:13px;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
@@ -87,10 +88,13 @@
                 दिवस १३वा: {{\Carbon\Carbon::parse(@$receipt->anteshteeReceipt->day_13_date)->format('d/m/Y')}}
             @endif
           </p>
-        
+          @if(@$receipt->narration)
+          <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->narration}}</p>
+            @endif
           @if(@$receipt->remembrance)
           <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
             @endif
+
 
           @if(@$receipt->payment_mode == "Bank")
           <p style="margin-top:2px;">

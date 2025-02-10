@@ -52,6 +52,7 @@
         </table>
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0; font-size:10px;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
@@ -68,10 +69,10 @@
         @endif
 
         @if(@$receipt->sareeReceipt->return_saree)
-        <p style="margin:0;">प्रसादाची साडी परत हवी आहे</p>
-        <p style="margin:0;">टिप: प्रसादाची साडी नेसविलेल्या दिवसापासून १५ दिवसांच्या आत संबंधितांनी घेतून जावी. नंतर मंदिर जबाबदार राहणार नाही.</p>
+        <p style="margin:0; font-size:12px;">प्रसादाची साडी परत हवी आहे</p>
+        <p style="margin:0; font-size:12px;">टिप: प्रसादाची साडी नेसविलेल्या दिवसापासून १५ दिवसांच्या आत संबंधितांनी घेतून जावी. नंतर मंदिर जबाबदार राहणार नाही.</p>
         @else
-        <p style="margin:0;">प्रसादाची साडी परत नको</p>
+        <p style="margin:0; font-size:12px;">प्रसादाची साडी परत नको</p>
         @endif
         <p style="margin:0;">{{@$receipt->narration}}</p>
 

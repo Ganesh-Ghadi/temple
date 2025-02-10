@@ -52,10 +52,11 @@
         </table>
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0; font-size:13px;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
-                <td style=" padding: 5px;">नग : {{@$receipt->khatReceipt->quantity}} X रु. {{@$receipt->khatReceipt->rate}}</td>
+                <td style="padding: 5px;">नग : {{@$receipt->khatReceipt->quantity}} X रु. {{@$receipt->khatReceipt->rate}}</td>
                 <td style="text-align:right">{{@$receipt->amount}}</td>
             </tr>
         </table>

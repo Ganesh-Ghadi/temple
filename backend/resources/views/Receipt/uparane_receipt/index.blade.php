@@ -52,6 +52,7 @@
         </table>
 
         <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0; font-size:10px;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
@@ -67,9 +68,9 @@
         <p style="margin:0;">उपरणे नेसविन्याचा दिनांक सांध्याकाळी: {{\Carbon\Carbon::parse(@$receipt->uparaneReceipt->uparane_draping_date_evening)->format('d/m/Y')}}</p>
         @endif
         @if(@$receipt->uparaneReceipt->return_uparane)
-        <p style="margin:0;">उपरणे परत हवे आहे</p>
+        <p style="margin:0; font-size:12px;">उपरणे परत हवे आहे</p>
         @else
-        <p style="margin:0;">उपरणे परत नको</p>
+        <p style="margin:0; font-size:12px;">उपरणे परत नको</p>
         @endif
     
         <p style="margin:0;">{{@$receipt->narration}}</p>
