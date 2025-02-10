@@ -1103,7 +1103,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - गोत्रावली सारांश ' . $date .'.</h4>
+                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - गोत्रावळी सारांश ' . $date .'.</h4>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1189,6 +1189,42 @@ class ReportsController extends BaseController
         // Calculate the total count (number of records)
         $totalCount = $poojaTypeAndGotraCounts->flatten()->count();
     
+        // uparane and saree start
+        $sareeReceipt = Receipt::with('sareeReceipt')
+        ->where("cancelled", false)
+        ->whereHas('sareeReceipt', function($query) use ($date) {
+            $query->where('saree_draping_date_morning',$date);
+        })
+        ->first();
+
+        if ($sareeReceipt) {
+            $sareeDetails = [
+                'saree_draping_date_morning' => $sareeReceipt->sareeReceipt->saree_draping_date_morning,
+                'return_saree' => $sareeReceipt->sareeReceipt->return_saree,
+                'name' => $sareeReceipt->name,
+                'gotra' => $sareeReceipt->gotra,
+            ];
+        } else {
+            // Handle the case where no matching receipt was found
+            $sareeDetails = null;
+        }
+
+        $uparaneReceipt = Receipt::with('uparaneReceipt')
+        ->where("cancelled", false)
+        ->whereHas('uparaneReceipt', function($query) use ($date) {
+            $query->where('uparane_draping_date_morning',$date);
+        })
+        ->first();
+        if ($uparaneReceipt) {
+        $uparaneDetails = [
+            'name' => $uparaneReceipt->name,
+            'gotra' => $uparaneReceipt->gotra,
+        ];
+        } else {
+        // Handle the case where no matching receipt was found
+        $uparaneDetails = null;
+        }
+        // uparane and saree end
     
         if(!$receipts){
             return $this->sendError("receipts not found", ['error'=>['receipts not found']]);
@@ -1197,7 +1233,9 @@ class ReportsController extends BaseController
         $data = [
             'date' => $date,
             'totalCount' => $totalCount,
-            'poojaTypeAndGotraCounts' =>$poojaTypeAndGotraCounts,
+            'poojaTypeAndGotraCounts'=>$poojaTypeAndGotraCounts,
+            'sareeReceipt'=> $sareeReceipt,
+            'uparaneReceipt'=> $uparaneReceipt,
         ];
 
         // Render the Blade view to HTML
@@ -1237,7 +1275,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - गोत्रावली ' . $date .' साठी.</h4>
+                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - गोत्रावळी ' . $date .' साठी.</h4>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             

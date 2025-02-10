@@ -99,7 +99,7 @@
           </p>
           @elseif(@$receipt->payment_mode == "UPI")
           <p style="margin-top:2px;">
-          <p style="padding: 0; margin:0; font-size:10px;">यू.पी.आय क्र: {{@$receipt->upi_number}}</p>
+          <p style="padding: 0; margin:0; font-size:10px;">यू.टी.आर क्र: {{@$receipt->upi_number}}</p>
           </p>
           @endif
 

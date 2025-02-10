@@ -217,6 +217,31 @@ class ReceiptsController extends BaseController
             }
         }
 
+          $isPooja = ReceiptType::where('id',$request->input('receipt_type_id'))->first()->is_pooja;
+          if($isPooja){
+            $poojaTypeId = $request->input("pooja_type_id");
+            $date = $request->input("date");
+
+            if (!$poojaTypeId) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'pooja_type_id' => ['Pooja type field is required.']
+                    ],
+                ], 422);   
+            }
+
+            if (!$date) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'date' => ['Date field is required.']
+                    ],
+                ], 422);   
+            }
+          }
          // pooja anek validation
          if (($request->input("receipt_type_id") == $poojaPavtiAnekReceiptId)) {
             $poojaTypeId = $request->input("pooja_type_id");
