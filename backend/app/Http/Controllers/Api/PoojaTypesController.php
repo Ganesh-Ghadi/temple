@@ -104,11 +104,23 @@ class PoojaTypesController extends BaseController
     }
 
      /**
+     * Fetch All Pooja Types Multiple.
+     */
+    public function allPoojaTypesMultiple(): JsonResponse
+    {
+        $poojaTypes = PoojaType::where('multiple', true)->get();
+
+        return $this->sendResponse(["PoojaTypes"=>PoojaTypeResource::collection($poojaTypes),
+        ], "All Pooja Types retrieved successfully");
+
+    }
+
+    /**
      * Fetch All Pooja Types.
      */
     public function allPoojaTypes(): JsonResponse
     {
-        $poojaTypes = PoojaType::all();
+        $poojaTypes = PoojaType::where('multiple', false)->get();
 
         return $this->sendResponse(["PoojaTypes"=>PoojaTypeResource::collection($poojaTypes),
         ], "All Pooja Types retrieved successfully");

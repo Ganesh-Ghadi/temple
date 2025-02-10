@@ -342,6 +342,9 @@ const Create = () => {
     queryKey: ["allPoojaTypes"], // This is the query key
     queryFn: async () => {
       try {
+        if (!selectedReceiptTypeId === 12) {
+          return [];
+        }
         const response = await axios.get(`/api/all_pooja_types`, {
           headers: {
             "Content-Type": "application/json",
@@ -353,7 +356,28 @@ const Create = () => {
         throw new Error(error.message);
       }
     },
-    keepPreviousData: true, // Keep previous data until the new data is available
+    enabled: selectedReceiptTypeId === 12, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
+  const {
+    data: allPoojaTypesMultipleData,
+    isLoading: isAllPoojaTypesDataMultipleLoading,
+    isError: isAllPoojaTypesDataMultipleError,
+  } = useQuery({
+    queryKey: ["allPoojaTypesMultiple"], // This is the query key
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`/api/all_pooja_types_multiple`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
   });
 
   const {
@@ -1262,9 +1286,9 @@ const Create = () => {
                     />
                   )}
                 />
-                {errors.mobile && (
+                {errors.address && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.mobile.message}
+                    {errors.address.message}
                   </p>
                 )}
               </div>
@@ -2711,8 +2735,8 @@ const Create = () => {
                               onClick={() => setOpenPoojaType((prev) => !prev)} // Toggle popover on button click
                             >
                               {field.value
-                                ? allPoojaTypesData?.PoojaTypes &&
-                                  allPoojaTypesData?.PoojaTypes.find(
+                                ? allPoojaTypesMultipleData?.PoojaTypes &&
+                                  allPoojaTypesMultipleData?.PoojaTypes.find(
                                     (poojaType) => poojaType.id === field.value
                                   )?.pooja_type
                                 : "Select Pooja Type..."}
@@ -2730,8 +2754,8 @@ const Create = () => {
                                   No pooja type found.
                                 </CommandEmpty>
                                 <CommandGroup>
-                                  {allPoojaTypesData?.PoojaTypes &&
-                                    allPoojaTypesData?.PoojaTypes.map(
+                                  {allPoojaTypesMultipleData?.PoojaTypes &&
+                                    allPoojaTypesMultipleData?.PoojaTypes.map(
                                       (poojaType) => (
                                         <CommandItem
                                           key={poojaType.id}

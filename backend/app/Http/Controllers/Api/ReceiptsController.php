@@ -303,10 +303,10 @@ class ReceiptsController extends BaseController
         // anteshti validation
         if (($request->input("receipt_type_id") == $anteshteeReceiptId)) {
             $day_9_date = $request->input("day_9_date");
-            $day_10_date = $request->input("day_9_date");
-            $day_11_date = $request->input("day_9_date");
-            $day_12_date = $request->input("day_9_date");
-            $day_13_date = $request->input("day_9_date");
+            $day_10_date = $request->input("day_10_date");
+            $day_11_date = $request->input("day_11_date");
+            $day_12_date = $request->input("day_12_date");
+            $day_13_date = $request->input("day_13_date");
 
 
             if (!$day_9_date && !$day_10_date && !$day_11_date && !$day_12_date && !$day_13_date) {
