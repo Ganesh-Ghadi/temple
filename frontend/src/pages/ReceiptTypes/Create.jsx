@@ -25,11 +25,11 @@ const formSchema = z.object({
   receipt_type: z
     .string()
     .min(2, "Receipt type must be at least 2 characters.")
-    .max(100, "Receipt type must not exceed 100 characters.")
-    .regex(
-      /^[A-Za-z0-9\s\u0900-\u097F]+$/,
-      "Receipt Type can only contain letters and numbers."
-    ),
+    .max(100, "Receipt type must not exceed 100 characters."),
+  // .regex(
+  //   /^[A-Za-z0-9\s\u0900-\u097F]+$/,
+  //   "Receipt Type can only contain letters and numbers."
+  // ),
   receipt_head: z.string().min(2, "Receipt head field is required."),
   special_date: z.string().optional(),
   // list_order: z.string().optional(),

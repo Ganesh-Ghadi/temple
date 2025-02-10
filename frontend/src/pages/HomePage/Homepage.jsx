@@ -175,7 +175,7 @@ const Homepage = () => {
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
               <Card className="w-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
@@ -185,7 +185,7 @@ const Homepage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {SareeDetails?.name || 'N/A'}
+                    {SareeDetails?.name || "N/A"}
                   </div>
                 </CardContent>
               </Card>
@@ -198,12 +198,12 @@ const Homepage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {' '}
-                    {UparaneDetails?.name || 'N/A'}
+                    {" "}
+                    {UparaneDetails?.name || "N/A"}
                   </div>
                 </CardContent>
               </Card>
-              <Card className="w-full">
+              {/* <Card className="w-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
                     Today's Prasad
@@ -213,7 +213,7 @@ const Homepage = () => {
                 <CardContent>
                   <div className="text-2xl font-bold">{ReceiptCount}</div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </TabsContent>
         </Tabs>

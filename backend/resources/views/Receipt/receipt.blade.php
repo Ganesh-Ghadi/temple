@@ -52,12 +52,14 @@
             </tr>
         </table>
 
-        <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->name}}</p>
-        <p style="padding: 1 0 0 0 ; margin:0;">{{$receipt->address}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
+        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">
             <tr>
-                <td style=" padding: 5px;">{{@$receipt->narration}}</td>
+                @if(@$receipt->pooja->poojaType->pooja_type)
+                <td style="padding: 5px;">{{@$receipt->pooja->poojaType->pooja_type}}&nbsp;&nbsp;&nbsp; {{\Carbon\Carbon::parse(@$receipt->pooja->date)->format('d/m/Y')}}</td>
+               @endif
                 <td style="text-align:right">{{@$receipt->amount}}</td>
             </tr>
         </table>
@@ -66,8 +68,16 @@
         <p style="padding: 0; margin:0;">गोत्र: {{@$receipt->gotra}}</p>
         @endif
         @if(@$receipt->special_date)
-        <p style="padding-top: 0; margin-top:0;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
+        <p style="padding-top: 0; margin-bottom:0; margin-top:0;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
           @endif
+
+          @if(@$receipt->remembrance)
+          <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
+            @endif
+
+            @if(@$receipt->narration)
+            <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->narration}}</p>
+              @endif
 
         @if(@$receipt->payment_mode == "Bank")
         <p style="margin-top:2px;">
@@ -90,8 +100,8 @@
         <div style="position: absolute; bottom:3.1cm;">
             <table style=" width: 90%; border-spacing: 0;">
                 <tr>
-                    <td style=" padding: 5px;">{{$receipt->amount_in_words}}</td>
-                    <td style="text-align:right">{{$receipt->amount}}</td>
+                    <td style=" padding: 5px;">{{@$receipt->amount_in_words}}</td>
+                    <td style="text-align:right">{{@$receipt->amount}}</td>
                 </tr>
             </table>
         </div>

@@ -65,6 +65,10 @@
         <p style="padding-top: 0; margin-top:0; margin-bottom:3px;">दिनांक: {{\Carbon\Carbon::parse(@$receipt->special_date)->format('d/m/Y')}}</p>
           @endif
 
+          @if(@$receipt->remembrance)
+          <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
+            @endif
+
           @if(@$receipt->payment_mode == "Bank")
           <p style="margin-top:2px;">
             <p style="padding: 0; margin:0; font-size:10px;">बँकेचे नाव: {{@$receipt->bank_details}}</p>

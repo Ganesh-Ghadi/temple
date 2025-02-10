@@ -71,6 +71,10 @@
                   </td>
                 </tr>
         </table>
+
+        @if(@$receipt->remembrance)
+        <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
+          @endif
        
           @if(@$receipt->payment_mode == "Bank")
           <p style="margin-top:2px;">
