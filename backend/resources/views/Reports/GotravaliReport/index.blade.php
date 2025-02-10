@@ -55,14 +55,14 @@
 <div style="margin:0px; padding:0px; border-bottom: 1px solid gray;">
     <h4>साडी</h4>
     <div style="margin:0px; padding:0px">
-            <p>{{$sareeReceipt->name}}</p> 
+            <p>{{@$sareeReceipt->name}}</p> 
     </div>  
 </div>
 
 <div style="margin:0px; padding:0px; border-bottom: 1px solid gray;">
     <h4>उपरणे</h4>
     <div style="margin:0px; padding:0px">
-            <p>{{$uparaneReceipt->name}}</p> 
+            <p>{{@$uparaneReceipt->name}}</p> 
     </div>  
 </div>
     </body>
