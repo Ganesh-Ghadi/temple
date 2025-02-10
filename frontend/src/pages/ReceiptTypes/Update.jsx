@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Loader2 } from 'lucide-react';
 
 import {
   Select,
@@ -14,60 +14,60 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+} from '@/components/ui/select';
+import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   receipt_type: z
     .string()
-    .min(2, "Receipt type must be at least 2 characters.")
-    .max(100, "Receipt type must not exceed 100 characters.")
+    .min(2, 'Receipt type must be at least 2 characters.')
+    .max(100, 'Receipt type must not exceed 100 characters.')
     .regex(
       /^[A-Za-z0-9\s\u0900-\u097F]+$/,
-      "Receipt Type can only contain letters and numbers"
+      'Receipt Type can only contain letters and numbers'
     ),
-  receipt_head: z.string().min(2, "Receipt head field is required."),
+  receipt_head: z.string().min(2, 'Receipt head field is required.'),
   special_date: z.string().optional(),
   // list_order: z.string().optional(),
   // minimum_amount: z.coerce.number().optional(),
   minimum_amount: z.coerce
     .number()
-    .max(99999, "Amount must be at most 5 digits")
+    .max(99999, 'Amount must be at most 5 digits')
     .optional(),
   list_order: z.coerce
     .number()
-    .max(999, "List Order must be at most 3 digits")
+    .max(999, 'List Order must be at most 3 digits')
     .optional(),
-  is_pooja: z.coerce.number().min(0, "is Pooja field is required"),
+  is_pooja: z.coerce.number().min(0, 'is Pooja field is required'),
   show_special_date: z.coerce
     .number()
-    .min(0, "Show Special date field is required"),
+    .min(0, 'Show Special date field is required'),
   show_remembarance: z.coerce
     .number()
-    .min(0, "show remembarance field is required"),
+    .min(0, 'show remembarance field is required'),
 });
 
 const Update = () => {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
   const { id } = useParams();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
   const token = user.token;
   const navigate = useNavigate();
 
   const defaultValues = {
-    receipt_type: "",
-    receipt_head: "",
-    special_date: "",
-    minimum_amount: "",
-    is_pooja: "",
-    show_special_date: "",
-    show_remembarance: "",
-    list_order: "",
+    receipt_type: '',
+    receipt_head: '',
+    special_date: '',
+    minimum_amount: '',
+    is_pooja: '',
+    show_special_date: '',
+    show_remembarance: '',
+    list_order: '',
   };
 
   const {
@@ -83,12 +83,12 @@ const Update = () => {
     isLoading: isAllReceiptHeadsDataLoading,
     isError: isAllReceiptHeadsDataError,
   } = useQuery({
-    queryKey: ["allReceiptHeads"], // This is the query key
+    queryKey: ['allReceiptHeads'], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/all_receipt_heads`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -105,12 +105,12 @@ const Update = () => {
     isLoading: isEditReceiptTypeDataLoading,
     isError: isEditReceiptTypeDataError,
   } = useQuery({
-    queryKey: ["editReceiptType", id], // This is the query key
+    queryKey: ['editReceiptType', id], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/receipt_types/${id}`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -124,18 +124,18 @@ const Update = () => {
 
   useEffect(() => {
     if (editReceiptType) {
-      setValue("receipt_type", editReceiptType.ReceiptType?.receipt_type);
-      setValue("receipt_head", editReceiptType.ReceiptType?.receipt_head);
-      setValue("special_date", editReceiptType.ReceiptType?.special_date || "");
-      setValue("minimum_amount", editReceiptType.ReceiptType?.minimum_amount);
-      setValue("is_pooja", editReceiptType.ReceiptType?.is_pooja);
+      setValue('receipt_type', editReceiptType.ReceiptType?.receipt_type);
+      setValue('receipt_head', editReceiptType.ReceiptType?.receipt_head);
+      setValue('special_date', editReceiptType.ReceiptType?.special_date || '');
+      setValue('minimum_amount', editReceiptType.ReceiptType?.minimum_amount);
+      setValue('is_pooja', editReceiptType.ReceiptType?.is_pooja);
       setValue(
-        "show_remembarance",
+        'show_remembarance',
         editReceiptType.ReceiptType?.show_remembarance
       );
-      setValue("list_order", editReceiptType.ReceiptType?.list_order || "");
+      setValue('list_order', editReceiptType.ReceiptType?.list_order || '');
       setValue(
-        "show_special_date",
+        'show_special_date',
         editReceiptType.ReceiptType?.show_special_date
       );
     }
@@ -145,18 +145,18 @@ const Update = () => {
     mutationFn: async (data) => {
       const response = await axios.put(`/api/receipt_types/${id}`, data, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries("receiptTypes");
+      queryClient.invalidateQueries('receiptTypes');
 
-      toast.success("Receipt Type Updated Successfully");
+      toast.success('Receipt Type Updated Successfully');
       setIsLoading(false);
-      navigate("/receipt_types");
+      navigate('/receipt_types');
     },
     onError: (error) => {
       setIsLoading(false);
@@ -171,12 +171,12 @@ const Update = () => {
           //   });
           //   // toast.error("The poo has already been taken.");
           // }
-          toast.error("Failed to add receipt type.");
+          toast.error('Failed to add receipt type.');
         } else {
-          toast.error("Failed to add receipt type.");
+          toast.error('Failed to add receipt type.');
         }
       } else {
-        toast.error("Failed to add receipt type.");
+        toast.error('Failed to add receipt type.');
       }
     },
   });
@@ -193,7 +193,7 @@ const Update = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/receipt_types")}
+                onClick={() => navigate('/receipt_types')}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -414,7 +414,7 @@ const Update = () => {
                   )}
                 />
                 <Label className="font-normal" htmlFor="show_remembarance">
-                  Show Remembarance
+                  Show Remembrance
                 </Label>
                 {errors.show_remembarance && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
@@ -428,7 +428,7 @@ const Update = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/receipt_types")}
+                onClick={() => navigate('/receipt_types')}
               >
                 Cancel
               </Button>
@@ -444,7 +444,7 @@ const Update = () => {
                     Submitting...
                   </>
                 ) : (
-                  "Submit"
+                  'Submit'
                 )}
               </Button>
             </div>

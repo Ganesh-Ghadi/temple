@@ -63,7 +63,7 @@ class DashboardController extends BaseController
         $hallBooking = $receipt->hallReceipt; // Assuming it's a single model
         return [
             'receipt_id' => $receipt->id,
-            'hall_name' => $hallBooking ? $hallBooking->hall : 'No Hall', // Fallback if hallReceipt is null
+            'hall_name' => $hallBooking ? $hallBooking->hall : 'N/A', // Fallback if hallReceipt is null
             'from_time' => $hallBooking && $hallBooking->from_time ? \Carbon\Carbon::parse($hallBooking->from_time)->format('h:i A') : 'N/A',  // Fallback if from_time is null
             'to_time' => $hallBooking && $hallBooking->to_time ? \Carbon\Carbon::parse($hallBooking->to_time)->format('h:i A') : 'N/A',      // Fallback if to_time is null
             'amount' => $receipt->amount,

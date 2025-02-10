@@ -185,7 +185,7 @@ const Homepage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {SareeDetails?.name || "N/A"}
+                    {SareeDetails?.name || 'N/A'}
                   </div>
                 </CardContent>
               </Card>
@@ -198,8 +198,8 @@ const Homepage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {" "}
-                    {UparaneDetails?.name || "N/A"}
+                    {' '}
+                    {UparaneDetails?.name || 'N/A'}
                   </div>
                 </CardContent>
               </Card>
@@ -220,7 +220,7 @@ const Homepage = () => {
 
         {/* pooja */}
         <div className="w-full flex items-center gap-4">
-          <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
+          <ScrollArea className="dark:bg-background md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
             <div className="flex justify-between">
               <h3 className="text-xl mb-5 font-bold">Today's Pooja </h3>
               <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
@@ -244,7 +244,7 @@ const Homepage = () => {
               ))}
             </div>
           </ScrollArea>
-          <ScrollArea className=" md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
+          <ScrollArea className="dark:bg-background md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
             <div className="flex justify-between">
               <h3 className="text-xl mb-5 font-bold">Today's Hall Bookings</h3>
               <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">

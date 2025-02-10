@@ -70,9 +70,42 @@ class PoojaDatesController extends BaseController
             'pooja_dates' => 'required|array|min:1',  // Validate pooja_dates as an array and at least one date
             'pooja_dates.*' => 'required|date', // Ensure each item in the pooja_dates array is a valid date
         ]);
+
+         foreach ($request->input('pooja_dates') as $date) {
+        // Check if the date already exists for the same pooja_type_id
+        $existingPoojaDate = PoojaDate::where('pooja_type_id', $request->input('pooja_type_id'))
+                                     ->where('pooja_date', $date)
+                                     ->first();
+
+        // If the date already exists, return an error response
+        if ($existingPoojaDate) {
+          return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'date' => ['Date already exists.'],
+                        'Date'=> $date,
+                    ],
+                ], 422);           }
+    }
     
         // Loop through the pooja_dates array and save each date as a new record
         foreach ($request->input('pooja_dates') as $date) {
+             $existingPoojaDate = PoojaDate::where('pooja_type_id', $request->input('pooja_type_id'))
+                                     ->where('pooja_date', $date)
+                                     ->first();
+
+        // If the date already exists, return an error response
+        if ($existingPoojaDate) {
+          return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'date' => ['Date already exists.'],
+                        'Date'=> $date,
+                    ],
+                ], 422);           }
+                
             $poojaDate = new PoojaDate();
             $poojaDate->pooja_type_id = $request->input('pooja_type_id');
             $poojaDate->pooja_date = $date;

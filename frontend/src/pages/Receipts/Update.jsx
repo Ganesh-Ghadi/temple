@@ -2642,7 +2642,7 @@ const Update = () => {
                 <>
                   <div className="relative">
                     <Label className="font-normal" htmlFor="upi_number">
-                      UPI Number:
+                      UTR Number:
                     </Label>
                     <Controller
                       name="upi_number"

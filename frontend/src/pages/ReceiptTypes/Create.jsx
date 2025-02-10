@@ -356,7 +356,7 @@ const Create = () => {
                   )}
                 />
                 <Label className="font-normal" htmlFor="show_remembarance">
-                  Show Remembarance
+                  Show Remembrance
                 </Label>
                 {errors.show_remembarance && (
                   <p className="absolute text-red-500 text-sm mt-1 left-0">
