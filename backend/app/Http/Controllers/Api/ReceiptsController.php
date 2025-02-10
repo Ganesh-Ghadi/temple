@@ -714,6 +714,9 @@ class ReceiptsController extends BaseController
         else if($receipt->receipt_type_id == 13){
             $html = view('Receipt.pooja_receipt_anek.index', $data)->render();
         }
+        else if($receipt->receipt_type_id == 14){
+            $html = view('Receipt.bharani_shradhh_receipt.index', $data)->render();
+        }
         else{
             $html = view('Receipt.receipt', $data)->render();
         }

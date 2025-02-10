@@ -69,7 +69,7 @@
                 $dates[] = \Carbon\Carbon::parse($pooja->date)->format('d/m/Y');
             @endphp
         @endforeach
-        <p style="margin:2; font-size:12px;">{{ implode(', ', $dates) }}</p>
+        <p style="margin:2; font-size:10px;">{{ implode(', ', $dates) }}</p>
       
         @if(@$receipt->remembrance)
         <p style="padding-top: 0; margin-bottom:0; margin-top:0; font-size:12px;">{{@$receipt->remembrance}}</p>
