@@ -98,7 +98,12 @@ const formSchema = z.object({
   upi_number: z
     .string()
     .max(50, 'UTR number must not exceed 50 characters.')
+    .regex(
+      /^[a-zA-Z0-9]*$/,
+      'UPI number must only contain alphanumeric characters.'
+    ) // Regex for alphanumeric validation
     .optional(),
+
   bank_details: z
     .string()
     .max(250, 'Bank detail must not exceed 250 characters.')
