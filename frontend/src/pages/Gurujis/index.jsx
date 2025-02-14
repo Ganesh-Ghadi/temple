@@ -177,7 +177,7 @@ const Index = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="w-full text-sm"
+                            className="w-full text-sm justify-start"
                             onClick={() =>
                               navigate(`/gurujis/${guruji.id}/edit`)
                             }

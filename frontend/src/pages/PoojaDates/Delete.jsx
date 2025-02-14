@@ -63,7 +63,11 @@ const Delete = ({ id }) => {
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="ghost" size="sm" className="w-full text-sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full text-sm justify-start"
+          >
             <Trash /> Delete
           </Button>
         </AlertDialogTrigger>

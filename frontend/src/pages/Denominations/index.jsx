@@ -237,7 +237,7 @@ const Index = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="w-full text-sm"
+                            className="w-full text-sm justify-start"
                             onClick={() =>
                               navigate(`/denominations/${denomination.id}/edit`)
                             }
@@ -258,7 +258,7 @@ const Index = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="w-full text-sm"
+                                className="w-full text-sm justify-start"
                               >
                                 <PrinterCheck size={16} /> Print
                               </Button>
