@@ -61,7 +61,7 @@ const Create = () => {
     queryKey: ['allPoojaType'], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get(`/api/all_pooja_types`, {
+        const response = await axios.get(`/api/all_pooja_types_multiple`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
