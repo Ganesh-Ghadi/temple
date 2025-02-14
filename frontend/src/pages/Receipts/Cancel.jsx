@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 import {
   File,
   PlusCircle,
@@ -18,17 +18,17 @@ import {
   Trash,
   MoreHorizontal,
   ListFilter,
-} from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+} from "lucide-react";
+import { Loader2 } from "lucide-react";
 
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const Delete = ({ id }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,22 +37,21 @@ const Delete = ({ id }) => {
     mutationFn: async () => {
       const response = await axios.get(`/api/cancel_receipt/${id}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries('receipts');
+      queryClient.invalidateQueries("receipts");
       queryClient.invalidateQueries("dashboards");
-      toast.success('Receipt Cancelled Successfully');
+      toast.success("Receipt Cancelled Successfully");
       setIsLoading(false);
-      navigate('/receipts');
+      navigate("/receipts");
     },
     onError: (error) => {
       setIsLoading(false);
-
     },
   });
   const onCancel = () => {
@@ -64,7 +63,11 @@ const Delete = ({ id }) => {
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="ghost" size="sm" className="w-full text-sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full text-sm justify-start"
+          >
             <Trash size={16} /> Cancel
           </Button>
         </AlertDialogTrigger>
@@ -84,7 +87,7 @@ const Delete = ({ id }) => {
                   loading...
                 </>
               ) : (
-                'Continue'
+                "Continue"
               )}
             </AlertDialogAction>
           </AlertDialogFooter>

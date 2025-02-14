@@ -168,7 +168,7 @@ const index = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="w-full text-sm"
+                            className="w-full text-sm justify-start"
                             onClick={() => navigate(`/roles/${Role.id}/edit`)}
                           >
                             <Pencil size={16} /> Edit

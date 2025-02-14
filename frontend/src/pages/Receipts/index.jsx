@@ -299,7 +299,7 @@ const Index = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="w-full text-sm"
+                            className="w-full text-sm justify-start"
                             onClick={() =>
                               navigate(`/receipts/${receipt.id}/edit`)
                             }
@@ -313,7 +313,7 @@ const Index = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="w-full text-sm"
+                                className="w-full text-sm justify-start"
                               >
                                 <PrinterCheck size={16} /> Print
                               </Button>
