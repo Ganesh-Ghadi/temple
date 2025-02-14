@@ -150,7 +150,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - सर्व पावत्या '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - सर्व पावत्या '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -264,7 +264,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - खत विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - खत विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -397,7 +397,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - पावती सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - पावती सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -511,7 +511,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - चेक जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - चेक जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -625,7 +625,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - यू पी आय जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - यू. पी. आय. जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -739,7 +739,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - नारळ विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - नारळ विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -846,7 +846,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - रद्द पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - रद्द पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -979,7 +979,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - पावती तख्ता ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - पावती तक्ता ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1103,7 +1103,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - गोत्रावळी सारांश ' . $date .'.</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - गोत्रावळी सारांश ' . $date .'.</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1275,7 +1275,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <h4 style="margin: 0; padding: 0;">श्री गणेश मंदिर संस्थान - गोत्रावळी ' . $date .' साठी.</h4>
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - गोत्रावळी ' . $date .' साठी.</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
