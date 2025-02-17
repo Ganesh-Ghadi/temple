@@ -60,7 +60,7 @@ const Index = () => {
           },
           params: {
             page: currentPage,
-            search: search, 
+            search: search,
           },
         });
         return response.data?.data; // Return the fetched data
@@ -72,10 +72,8 @@ const Index = () => {
   });
 
   // pagination start
-  const { ReceiptTypes, pagination } = ReceiptTypesData || {}; 
+  const { ReceiptTypes, pagination } = ReceiptTypesData || {};
   const { current_page, last_page, total, per_page } = pagination || {}; // Destructure pagination data
-
- 
 
   // pagination end
 
@@ -86,7 +84,7 @@ const Index = () => {
   return (
     <>
       <div className="w-full p-5">
-        <div className="w-full mb-7">
+        <div className="w-full mb-7 text-right md:pr-6">
           <Button
             onClick={() => navigate("/receipt_types/create")}
             variant=""

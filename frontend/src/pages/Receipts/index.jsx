@@ -181,7 +181,7 @@ const Index = () => {
   return (
     <>
       <div className="w-full p-5">
-        <div className="w-full mb-7">
+        <div className="w-full mb-7 text-right md:pr-6">
           <Button
             onClick={() => navigate("/receipts/create")}
             variant=""
@@ -368,3 +368,58 @@ const Index = () => {
 };
 
 export default Index;
+
+// import { PhoneInput } from "react-international-phone";
+// import "react-international-phone/style.css"; // Import styles for the phone input
+// import { useRef, useEffect } from "react";
+
+// <div className="relative">
+//   <Label className="font-normal" htmlFor="mobile">
+//     Mobile:
+//   </Label>
+//   <Controller
+//     name="mobile"
+//     control={control}
+//     render={({ field }) => {
+//       const phoneInputRef = useRef(null);
+
+//       useEffect(() => {
+//         if (phoneInputRef.current) {
+//           const dropdownElement =
+//             phoneInputRef.current.querySelector(".react-phone-input-2__select");
+
+//           // Disable tabbing to the country dropdown
+//           if (dropdownElement) {
+//             dropdownElement.setAttribute("tabIndex", "-1");
+//           }
+//         }
+//       }, []);
+
+//       return (
+//         <PhoneInput
+//           {...field}
+//           ref={phoneInputRef}
+//           defaultCountry="IN"
+//           id="mobile"
+//           name="mobile"
+//           placeholder="Enter mobile number"
+//           inputStyle={{ minWidth: "17rem" }}
+//           className="mt-1"
+//           // Ensure the phone number field (input) is tabbable and gets focused
+//           tabIndex={0}
+//           inputProps={{
+//             tabIndex: 0, // Ensure the phone number input field is tabbable
+//           }}
+//           dropdownProps={{
+//             tabIndex: -1, // Skip the country code dropdown from tabbing
+//           }}
+//         />
+//       );
+//     }}
+//   />
+//   {errors.mobile && (
+//     <p className="absolute text-red-500 text-sm mt-1 left-0">
+//       {errors.mobile.message}
+//     </p>
+//   )}
+// </div>
