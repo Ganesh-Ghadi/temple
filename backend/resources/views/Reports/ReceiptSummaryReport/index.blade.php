@@ -76,6 +76,41 @@
                 </tr>
 
             @endforeach
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;" colspan="2">Cash Total:</td>
+                <td style="font-weight: bold;  text-align: right;" >{{$cashTotal}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;" colspan="2">UPI Total:</td>
+                <td style="font-weight: bold;  text-align: right;" >{{$upiTotal}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;" colspan="2">Cheque Total:</td>
+                <td style="font-weight: bold; text-align: right;" >{{$chequeTotal}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;" colspan="2">Card Total:</td>
+                <td style="font-weight: bold; text-align: right;" >{{$cardTotal}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;" colspan="2">TOTAL:</td>
+                <td style="font-weight: bold; text-align: right;" >{{$Total}}</td>
+            </tr>
         </tbody>
     </table>
 
