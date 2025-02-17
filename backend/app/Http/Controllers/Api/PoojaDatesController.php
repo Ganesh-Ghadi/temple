@@ -20,33 +20,84 @@ class PoojaDatesController extends BaseController
     /**
      * All Pooja Dates.
      */
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $query = PoojaDate::with("poojaType");
+
+    //     if ($request->query('search')) {
+    //         $searchTerm = $request->query('search');
+    
+    //         $query->where(function ($query) use ($searchTerm) {
+    //             $query->whereRaw('CAST(pooja_date AS CHAR) LIKE ?', ['%' . $searchTerm . '%'])
+    //                   ->orWhereHas('poojaType', function ($query) use ($searchTerm) {
+    //                       $query->where('pooja_type', 'like', '%' . $searchTerm . '%');
+    //                   });
+    //         });
+            
+
+            
+    //     }
+    //     $poojaDates = $query->Orderby("id","desc")->paginate(20);
+
+    //     return $this->sendResponse(["PoojaDates"=>PoojaDateResource::collection($poojaDates),
+    //     'pagination' => [
+    //         'current_page' => $poojaDates->currentPage(),
+    //         'last_page' => $poojaDates->lastPage(),
+    //         'per_page' => $poojaDates->perPage(),
+    //         'total' => $poojaDates->total(),
+    //     ]], "Pooja Dates retrieved successfully");
+        
+    // }
+
     public function index(Request $request): JsonResponse
     {
         $query = PoojaDate::with("poojaType");
-
+    
         if ($request->query('search')) {
             $searchTerm = $request->query('search');
     
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('pooja_date', 'like', '%' . $searchTerm . '%')
-                ->orWhereHas('poojaType', function ($query) use ($searchTerm) {
-                    $query->where('pooja_type', 'like', '%' . $searchTerm . '%');
+            // Check if the search term is a valid date in dd/mm/yyyy format
+            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $searchTerm)) {
+                // Convert dd/mm/yyyy to yyyy-mm-dd
+                $date = \DateTime::createFromFormat('d/m/Y', $searchTerm);
+                $formattedDate = $date->format('Y-m-d');
+    
+                // Modify query to search using the formatted date
+                $query->where(function ($query) use ($formattedDate) {
+                    // Apply raw query for pooja_date with casting and collation
+                    $query->whereRaw('CAST(pooja_date AS CHAR) COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%'])
+                          ->orWhereHas('poojaType', function ($query) use ($formattedDate) {
+                              // Apply raw query for pooja_type with collation
+                              $query->whereRaw('pooja_type COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%']);
+                          });
                 });
-            });
-
-            
+            } else {
+                // If it's not a date, continue searching normally as a string
+                $query->where(function ($query) use ($searchTerm) {
+                    // Apply raw query for pooja_date with casting and collation
+                    $query->whereRaw('CAST(pooja_date AS CHAR) COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $searchTerm . '%'])
+                          ->orWhereHas('poojaType', function ($query) use ($searchTerm) {
+                              // Apply raw query for pooja_type with collation
+                              $query->whereRaw('pooja_type COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $searchTerm . '%']);
+                          });
+                });
+            }
         }
-        $poojaDates = $query->Orderby("id","desc")->paginate(20);
-
-        return $this->sendResponse(["PoojaDates"=>PoojaDateResource::collection($poojaDates),
-        'pagination' => [
-            'current_page' => $poojaDates->currentPage(),
-            'last_page' => $poojaDates->lastPage(),
-            'per_page' => $poojaDates->perPage(),
-            'total' => $poojaDates->total(),
-        ]], "Pooja Dates retrieved successfully");
-        
+    
+        $poojaDates = $query->Orderby("id", "desc")->paginate(20);
+    
+        return $this->sendResponse([
+            "PoojaDates" => PoojaDateResource::collection($poojaDates),
+            'pagination' => [
+                'current_page' => $poojaDates->currentPage(),
+                'last_page' => $poojaDates->lastPage(),
+                'per_page' => $poojaDates->perPage(),
+                'total' => $poojaDates->total(),
+            ]
+        ], "Pooja Dates retrieved successfully");
     }
+    
+
 
     /**
      * Store Pooja Date.
