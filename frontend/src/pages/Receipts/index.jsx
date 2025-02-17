@@ -282,7 +282,15 @@ const Index = () => {
                       ₹{receipt.amount}
                     </TableCell>
 
-                    <TableCell className="text-right p-2 pr-5">
+                    <TableCell className="text-right gap-1 flex items-center justify-end p-2 ">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white hover:text-white text-sm justify-start"
+                        onClick={() => handlePrint(receipt.id)}
+                      >
+                        <PrinterCheck size={16} /> Print
+                      </Button>{" "}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -308,7 +316,7 @@ const Index = () => {
                           </Button>
                           {/* print button start */}
 
-                          <AlertDialog>
+                          {/* <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button
                                 variant="ghost"
@@ -337,7 +345,7 @@ const Index = () => {
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
-                          </AlertDialog>
+                          </AlertDialog> */}
                           {!receipt.cancelled && (
                             <div className="w-full">
                               <Cancel id={receipt.id} />
