@@ -52,7 +52,7 @@ class StoreReceiptRequest extends FormRequest
 
     protected function withValidator(Validator $validator)
     {
-        $validator->sometimes('quantity', 'required|numeric|min:1', function ($input) {
+        $validator->sometimes('quantity', 'required|integer|min:1', function ($input) {
             return $input->receipt_type_id == 1 || $input->receipt_type_id == 2; // Only require `quantity` if `receipt_type_id` is 1|2
         });
 
