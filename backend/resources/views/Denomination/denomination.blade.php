@@ -374,6 +374,7 @@
                                     padding: 10px 4px 10px 4px;
                                     font-size: 20px;
                                     text-align: right;
+                                    font-weight: bold;
                                 "
                             >
                                 Total:
@@ -384,6 +385,7 @@
                                     padding: 10px 4px 10px 4px;
                                     font-size: 20px;
                                     text-align: right;
+                                    font-weight: bold;
                                 "
                             >
                                 {{$denomination->amount}}

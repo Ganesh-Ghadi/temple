@@ -342,9 +342,9 @@ const Create = () => {
     queryKey: ["allPoojaTypes"], // This is the query key
     queryFn: async () => {
       try {
-        if (!selectedReceiptTypeId === 12) {
-          return [];
-        }
+        // if (!selectedReceiptTypeId === 12) {
+        //   return [];
+        // }
         const response = await axios.get(`/api/all_pooja_types`, {
           headers: {
             "Content-Type": "application/json",
@@ -356,7 +356,7 @@ const Create = () => {
         throw new Error(error.message);
       }
     },
-    enabled: selectedReceiptTypeId === 12, // Enable the query only if selectedReceiptTypeId is 4
+    // enabled: selectedReceiptTypeId === 12, // Enable the query only if selectedReceiptTypeId is 4
   });
 
   const {
