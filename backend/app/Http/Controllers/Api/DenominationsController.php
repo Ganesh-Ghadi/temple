@@ -27,28 +27,70 @@ class DenominationsController extends BaseController
     /**
      * All Denominations.
      */
-    public function index(Request $request): JsonResponse
-    {
-        $query = Denomination::query();
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $query = Denomination::query();
 
-        if ($request->query('search')) {
-            $searchTerm = $request->query('search');
+    //     if ($request->query('search')) {
+    //         $searchTerm = $request->query('search');
     
+    //         $query->where(function ($query) use ($searchTerm) {
+    //             $query->where('amount', 'like', '%' . $searchTerm . '%')
+    //             ->orWhere('deposit_date', 'like', '%'. $searchTerm . '%');
+    //         });
+    //     }
+    //     $denominations = $query->orderBy("id", "DESC")->paginate(20);
+
+    //     return $this->sendResponse(["Denominations"=>DenominationResource::collection($denominations),
+    //     'Pagination' => [
+    //         'current_page' => $denominations->currentPage(),
+    //         'last_page' => $denominations->lastPage(),
+    //         'per_page' => $denominations->perPage(),
+    //         'total' => $denominations->total(),
+    //     ]], "Denominations retrieved successfully");
+    // }
+
+    public function index(Request $request): JsonResponse
+{
+    $query = Denomination::query();
+
+    if ($request->query('search')) {
+        $searchTerm = $request->query('search');
+
+        // Check if the search term looks like a date in dd/mm/yyyy format
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $searchTerm)) {
+            // Convert dd/mm/yyyy to yyyy-mm-dd
+            $date = \DateTime::createFromFormat('d/m/Y', $searchTerm);
+            $formattedDate = $date->format('Y-m-d');
+
+            // Apply the search with the formatted date
+            $query->where(function ($query) use ($formattedDate) {
+                $query->where('amount', 'like', '%' . $formattedDate . '%')
+                      ->orWhere('deposit_date', '=', $formattedDate);
+            });
+        } else {
+            // If it's not a date, continue searching normally as a string
             $query->where(function ($query) use ($searchTerm) {
                 $query->where('amount', 'like', '%' . $searchTerm . '%')
-                ->orWhere('deposit_date', 'like', '%'. $searchTerm . '%');
+                      ->orWhere('deposit_date', 'like', '%' . $searchTerm . '%');
             });
         }
-        $denominations = $query->orderBy("id", "DESC")->paginate(20);
+    }
 
-        return $this->sendResponse(["Denominations"=>DenominationResource::collection($denominations),
+    // Paginate the results
+    $denominations = $query->orderBy("id", "DESC")->paginate(20);
+
+    return $this->sendResponse([
+        "Denominations" => DenominationResource::collection($denominations),
         'Pagination' => [
             'current_page' => $denominations->currentPage(),
             'last_page' => $denominations->lastPage(),
             'per_page' => $denominations->perPage(),
             'total' => $denominations->total(),
-        ]], "Denominations retrieved successfully");
-    }
+        ]
+    ], "Denominations retrieved successfully");
+}
+
 
     /**
      * Store Denomination.

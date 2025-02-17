@@ -53,6 +53,8 @@ class ReceiptsController extends BaseController
     
             $query->where(function ($query) use ($searchTerm) {
                 $query->where('name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('amount', 'like', '%' . $searchTerm . '%')
+                // ->orWhere('receipt_date', 'like', '%' . $searchTerm . '%')
                 ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
                 ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
                     $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
