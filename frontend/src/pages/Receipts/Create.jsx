@@ -702,6 +702,9 @@ const Create = () => {
             });
             // toast.error("The poo has already been taken.");
           }
+          if (serverErrors.hall_booked) {
+            toast.error(serverErrors.hall_booked[0]);
+          }
           if (serverErrors.hall) {
             setError("hall", {
               type: "manual",

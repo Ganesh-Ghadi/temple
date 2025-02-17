@@ -320,6 +320,47 @@ class ReceiptsController extends BaseController
             }
 
         }
+
+           // hall receipt validation
+           if (($request->input("receipt_type_id") == $hallReceiptId)) {
+            $hall = $request->input("hall");
+            $from_time = $request->input("from_time");
+            $to_time = $request->input("to_time");
+            $special_date = $request->input("special_date");
+            
+            if ($from_time && isset($from_time['hour']) && isset($from_time['minute'])) {
+                $fromTime = sprintf('%02d:%02d:00', $from_time['hour'], $from_time['minute']);                
+            }       
+            if ($to_time && isset($to_time['hour']) && isset($to_time['minute'])) {
+                $toTime = sprintf('%02d:%02d:00', $to_time['hour'], $to_time['minute']);
+            }       
+            
+            $bookingExists = HallReceipt::whereHas('receipt',function ($query) use ($special_date){
+                 $query->where('special_date', $special_date);
+            })
+            ->where('hall', $hall)
+            ->where(function ($query) use ($fromTime, $toTime) {
+                $query->whereBetween('from_time', [$fromTime, $toTime])
+                      ->orWhereBetween('to_time', [$fromTime, $toTime])
+                      ->orWhere(function ($query) use ($fromTime, $toTime) {
+                          $query->where('from_time', '<', $toTime)
+                                ->where('to_time', '>', $fromTime);
+                      });
+            })
+            ->exists();
+            
+            if ($bookingExists) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'hall_booked' => ['This hall is already booked for the selected time range.']
+                    ],
+                ], 422);
+            }
+
+        }
+        
         // validation end
 
 
