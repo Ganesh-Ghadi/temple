@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -78,7 +78,7 @@ const formSchema = z.object({
     .string()
     .regex(
       /^\+91(\d{10})?$/,
-      "Mobile number must start with +91, followed by exactly 10 digits or no digits at all."
+      "Mobile number must start with +91, followed by exactly 10 digits."
     )
     .optional(),
   // pincode: z.coerce.string().optional(),
@@ -222,6 +222,7 @@ const Create = () => {
   const [showRemembrance, setShowRemembrance] = useState("");
   const [showSpecialDate, setShowSpecialDate] = useState("");
   const [showPooja, setShowPooja] = useState("");
+  const mobileInputRef = useRef(null);
 
   const khatReceiptId = 1;
   const naralReceiptId = 2;
@@ -817,6 +818,14 @@ const Create = () => {
     },
   });
 
+  // Function to set the cursor position
+  const setCursorToEnd = () => {
+    const input = mobileInputRef.current;
+    if (input) {
+      // Set the cursor position to start right after the `+91`
+      input.setSelectionRange(3, 3); // 3 is the length of +91
+    }
+  };
   const onSubmit = (data) => {
     setIsLoading(true);
 
@@ -1244,10 +1253,15 @@ const Create = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
+                      ref={(e) => {
+                        mobileInputRef.current = e;
+                        field.ref(e); // Ensure the ref is forwarded to react-hook-form
+                      }}
                       id="mobile"
                       className="mt-1"
                       type="text"
                       placeholder="Enter mobile"
+                      onFocus={setCursorToEnd} // Set cursor position when focusing
                     />
                     // <PhoneInput
                     //   {...field}
