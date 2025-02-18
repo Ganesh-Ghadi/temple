@@ -22,6 +22,9 @@ class ProfileResource extends JsonResource
             'mobile' => $this->mobile,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'user' => $this->user ? $this->user : null, // If there's a relationship with Devta model
+            'role' => $this->user ? $this->user->getRoleNames()->first() : null,
+
         ];
     }
 }

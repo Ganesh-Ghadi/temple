@@ -146,7 +146,11 @@ const Index = () => {
             </TableCaption>
             <TableHeader className="dark:bg-background bg-gray-100  rounded-md">
               <TableRow>
-                <TableHead className="">Users</TableHead>{" "}
+                <TableHead className="">Name</TableHead>{" "}
+                <TableHead className="">email</TableHead>{" "}
+                <TableHead className="">mobile</TableHead>{" "}
+                <TableHead className="">Role</TableHead>{" "}
+                <TableHead className="">Status</TableHead>{" "}
                 {/*removed w-[100px] from here */}
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
@@ -159,9 +163,20 @@ const Index = () => {
                     className=" dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
-                      {user.profile_name}
+                      {user?.profile_name}
                     </TableCell>
-
+                    <TableCell className="font-medium p-2">
+                      {user?.email}
+                    </TableCell>{" "}
+                    <TableCell className="font-medium p-2">
+                      {user?.mobile || "N/A"}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
+                      {user?.role}
+                    </TableCell>
+                    <TableCell className="font-medium p-2">
+                      {user?.user?.active ? "Active" : "Inactive"}
+                    </TableCell>
                     <TableCell className="text-right p-2 pr-5">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

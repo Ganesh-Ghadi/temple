@@ -20,27 +20,96 @@ class ProfilesController extends BaseController
     /**
      * Display All Profiles.
      */
-    public function index(Request $request): JsonResponse
-    {
-        $query = Profile::query();
-
-        if ($request->query('search')) {
-            $searchTerm = $request->query('search');
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $query = Profile::query();
+    //      $status = null;
+    //     if ($request->query('search')) {
+    //         $searchTerm = $request->query('search');
     
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('profile_name', 'like', '%' . $searchTerm . '%');
-            });
-        }
-        $profiles = $query->Orderby("id","desc")->paginate(20);
+    //         $query->where(function ($query) use ($searchTerm, $status) {
+    //             $query->where('profile_name', 'like', '%' . $searchTerm . '%')
+    //             ->orWhere('email', 'like', '%' . $searchTerm . '%')
+    //             ->orWhere('mobile', 'like', '%' . $searchTerm . '%')
+    //             ->orWhereHas('user', function ($query) use ($searchTerm, $status) {
+    //                 if($searchTerm == 'active' || $searchTerm == 'Active'){
+    //                     $status = 1;
+    //                 }
+    //                 else if($searchTerm == 'Inactive' || $searchTerm == 'inactive'){
+    //                     $status = 0;
+    //                 }
+    //                 if($status == 1){
+    //                     $query->where('active', 'like', '%' . $status . '%');
 
-        return $this->sendResponse(["Profiles"=>ProfileResource::collection($profiles),
+    //                 }else if($status == 0){
+    //                     $query->where('active', 'like', '%' . $status . '%');
+    //                 }
+    //             });
+    //         });
+    //     }
+    //     $profiles = $query->Orderby("id","desc")->paginate(20);
+
+    //     return $this->sendResponse(["Profiles"=>ProfileResource::collection($profiles),
+    //     'pagination' => [
+    //         'current_page' => $profiles->currentPage(),
+    //         'last_page' => $profiles->lastPage(),
+    //         'per_page' => $profiles->perPage(),
+    //         'total' => $profiles->total(),
+    //     ]], "Profiles retrieved successfully");
+    // }
+    public function index(Request $request): JsonResponse
+{
+    $query = Profile::query();
+    $status = null;
+
+    // Check if there's a search term
+    if ($request->query('search')) {
+        $searchTerm = $request->query('search');
+
+        // Determine if the search term matches 'active' or 'inactive'
+        if ($searchTerm == 'active' || $searchTerm == 'Active') {
+            $status = 1; // Active status
+        } elseif ($searchTerm == 'inactive' || $searchTerm == 'Inactive') {
+            $status = 0; // Inactive status
+        }
+
+        // Apply filters to the query
+        $query->where(function ($query) use ($searchTerm, $status) {
+            $query->where('profile_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                ->orWhere('mobile', 'like', '%' . $searchTerm . '%');
+
+            // Apply 'active' filter only if the status is set
+            if ($status !== null) {
+                $query->orWhereHas('user', function ($query) use ($status) {
+                    $query->where('active', '=', $status);
+                });
+            }
+
+            $query->orWhereHas('user', function ($query) use ($searchTerm) {
+                $query->whereHas('roles', function ($query) use ($searchTerm) {
+                    $query->where('name', '=', $searchTerm); // Filter by the role name (e.g., 'admin' or 'member')
+                });
+            });
+            
+        });
+    }
+
+    // Apply pagination and ordering by profile ID
+    $profiles = $query->orderBy("id", "desc")->paginate(20);
+
+    return $this->sendResponse([
+        "Profiles" => ProfileResource::collection($profiles),
         'pagination' => [
             'current_page' => $profiles->currentPage(),
             'last_page' => $profiles->lastPage(),
             'per_page' => $profiles->perPage(),
             'total' => $profiles->total(),
-        ]], "Profiles retrieved successfully");
-    }
+        ]
+    ], "Profiles retrieved successfully");
+}
+
+
 
     /**
      * Store Profile.
