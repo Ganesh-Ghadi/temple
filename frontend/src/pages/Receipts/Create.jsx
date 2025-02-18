@@ -76,7 +76,10 @@ const formSchema = z.object({
   // mobile: z.coerce.string().optional(),
   mobile: z
     .string()
-    .regex(/^\+(\d{1,2})(\d{10})?$/, "Mobile number must include 10 digits.")
+    .regex(
+      /^\+91(\d{10})?$/,
+      "Mobile number must start with +91, followed by exactly 10 digits or no digits at all."
+    )
     .optional(),
   // pincode: z.coerce.string().optional(),
   pincode: z
@@ -1239,24 +1242,24 @@ const Create = () => {
                   name="mobile"
                   control={control}
                   render={({ field }) => (
-                    // <Input
-                    //   {...field}
-                    //   id="mobile"
-                    //   className="mt-1"
-                    //   type="number"
-                    //   placeholder="Enter mobile"
-                    // />
-                    <PhoneInput
+                    <Input
                       {...field}
-                      defaultCountry="IN" // Default country for the country code
-                      // value={mobile}
-                      // onChange={setMobile}
                       id="mobile"
-                      name="mobile"
-                      placeholder="Enter mobile number"
-                      inputStyle={{ minWidth: "17rem" }}
                       className="mt-1"
+                      type="text"
+                      placeholder="Enter mobile"
                     />
+                    // <PhoneInput
+                    //   {...field}
+                    //   defaultCountry="IN" // Default country for the country code
+                    //   // value={mobile}
+                    //   // onChange={setMobile}
+                    //   id="mobile"
+                    //   name="mobile"
+                    //   placeholder="Enter mobile number"
+                    //   inputStyle={{ minWidth: "17rem" }}
+                    //   className="mt-1"
+                    // />
                   )}
                 />
                 {errors.mobile && (
@@ -2023,7 +2026,7 @@ const Create = () => {
                       )}
                     />
                     {errors.from_time && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      <p className="absolute text-red-500 text-sm mt-1 left-0 top-15">
                         {errors.from_time.message}
                       </p>
                     )}
@@ -2053,7 +2056,7 @@ const Create = () => {
                       )}
                     />
                     {errors.to_time && (
-                      <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      <p className="absolute text-red-500 text-sm mt-1 left-0 top-15">
                         {errors.to_time.message}
                       </p>
                     )}

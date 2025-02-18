@@ -54,6 +54,11 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      spacing: {
+        15: "3.75rem", // Adds top-15 as 3.75rem (60px)
+        16: "4rem", // Adds top-16 as 4rem (64px)
+        17: "4.25rem", // Adds top-17 as 4.25rem (68px)
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
