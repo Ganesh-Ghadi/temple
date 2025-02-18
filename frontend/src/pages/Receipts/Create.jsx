@@ -1996,8 +1996,11 @@ const Create = () => {
                     )}
                   </div>
 
-                  <div className="relative">
-                    <Label className="font-normal" htmlFor="from_time">
+                  <div className="relative flex flex-col">
+                    <Label
+                      className="font-normal mt-2 mb-1"
+                      htmlFor="from_time"
+                    >
                       From Time: <span className="text-red-500">*</span>
                     </Label>
                     <Controller
@@ -2015,6 +2018,7 @@ const Create = () => {
                           className="mt-1"
                           type="text"
                           placeholder="Enter time"
+                          style={{ width: "280px", height: "35px" }} // Inline style for width and height
                         />
                       )}
                     />
@@ -2025,9 +2029,9 @@ const Create = () => {
                     )}
                   </div>
 
-                  <div className="relative">
-                    <Label className="font-normal" htmlFor="to_time">
-                      From Time: <span className="text-red-500">*</span>
+                  <div className="relative flex flex-col">
+                    <Label className="font-normal mt-2 mb-1" htmlFor="to_time">
+                      To Time: <span className="text-red-500">*</span>
                     </Label>
                     <Controller
                       name="to_time"
@@ -2044,6 +2048,7 @@ const Create = () => {
                           className="mt-1"
                           type="text"
                           placeholder="Enter time"
+                          style={{ width: "280px", height: "35px" }} // Inline style for width and height
                         />
                       )}
                     />
@@ -2055,7 +2060,7 @@ const Create = () => {
                   </div>
                 </div>
 
-                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+                <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                     <Controller
                       name="ac_charges"

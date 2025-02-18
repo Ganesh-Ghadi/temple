@@ -44,33 +44,82 @@ class ReceiptsController extends BaseController
     /**
      * All Receipt.
      */
-    public function index(Request $request): JsonResponse
-    {
-        $query = Receipt::with("receiptType");
+    // public function index(Request $request): JsonResponse
+    // {
+    //     $query = Receipt::with("receiptType");
 
-        if ($request->query('search')) {
-            $searchTerm = $request->query('search');
+    //     if ($request->query('search')) {
+    //         $searchTerm = $request->query('search');
     
+    //         $query->where(function ($query) use ($searchTerm) {
+    //             $query->where('name', 'like', '%' . $searchTerm . '%')
+    //             ->orWhere('amount', 'like', '%' . $searchTerm . '%')
+    //             // ->orWhere('receipt_date', 'like', '%' . $searchTerm . '%')
+    //             ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
+    //             ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
+    //                 $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
+    //             });
+    //         });
+    //     }
+    //     $receipts = $query->Orderby("id","desc")->paginate(20);
+
+    //     return $this->sendResponse(["Receipts"=>ReceiptResource::collection($receipts),
+    //     'pagination' => [
+    //         'current_page' => $receipts->currentPage(),
+    //         'last_page' => $receipts->lastPage(),
+    //         'per_page' => $receipts->perPage(),
+    //         'total' => $receipts->total(),
+    //     ]], "Receipts retrieved successfully");
+    // }
+
+    public function index(Request $request): JsonResponse
+{
+    $query = Receipt::with("receiptType");
+
+    if ($request->query('search')) {
+        $searchTerm = $request->query('search');
+    
+        // Check if the search term is a valid date in dd/mm/yyyy format
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $searchTerm)) {
+            // Convert dd/mm/yyyy to yyyy-mm-dd
+            $date = \DateTime::createFromFormat('d/m/Y', $searchTerm);
+            $formattedDate = $date->format('Y-m-d');
+    
+            // Modify query to search using the formatted date
+            $query->where(function ($query) use ($formattedDate) {
+                // Apply raw query for receipt_date with casting and collation
+                $query->whereRaw('CAST(receipt_date AS CHAR) COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%'])
+                      ->orWhereHas('receiptType', function ($query) use ($formattedDate) {
+                          // Apply raw query for receipt_type with collation
+                          $query->whereRaw('receipt_type COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%']);
+                      });
+            });
+        } else {
+            // If it's not a date, continue searching normally as a string
             $query->where(function ($query) use ($searchTerm) {
                 $query->where('name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('amount', 'like', '%' . $searchTerm . '%')
-                // ->orWhere('receipt_date', 'like', '%' . $searchTerm . '%')
-                ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
-                ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
-                    $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
-                });
+                      ->orWhere('amount', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
+                      ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
+                          $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
+                      });
             });
         }
-        $receipts = $query->Orderby("id","desc")->paginate(20);
+    }
 
-        return $this->sendResponse(["Receipts"=>ReceiptResource::collection($receipts),
+    $receipts = $query->orderby("id", "desc")->paginate(20);
+
+    return $this->sendResponse([
+        "Receipts" => ReceiptResource::collection($receipts),
         'pagination' => [
             'current_page' => $receipts->currentPage(),
             'last_page' => $receipts->lastPage(),
             'per_page' => $receipts->perPage(),
             'total' => $receipts->total(),
-        ]], "Receipts retrieved successfully");
-    }
+        ]
+    ], "Receipts retrieved successfully");
+}
+
 
     /**
      * Store Receipt.
