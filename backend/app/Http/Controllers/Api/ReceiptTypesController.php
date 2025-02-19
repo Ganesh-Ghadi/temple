@@ -148,4 +148,20 @@ class ReceiptTypesController extends BaseController
         ], "All Receipt Types retrieved successfully");
 
     }
+
+      /**
+     * Fetch All select Receipt Types.
+     */
+    public function allSelectReceiptTypes(Request $request): JsonResponse
+    {
+        // if($receipt_head){
+            $receiptTypes = ReceiptType::all();
+        // }else{
+        //    $receiptTypes = ReceiptType::all();
+        // }
+
+        return $this->sendResponse(["ReceiptTypes"=>ReceiptTypeResource::collection($receiptTypes),
+        ], "All Receipt Types retrieved successfully");
+
+    }
 }

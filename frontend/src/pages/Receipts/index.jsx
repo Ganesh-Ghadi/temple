@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -8,7 +8,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,15 +29,28 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { Pencil, MoreHorizontal, PrinterCheck } from "lucide-react";
+} from '@/components/ui/alert-dialog';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Pencil, MoreHorizontal, PrinterCheck } from 'lucide-react';
 
-import Pagination from "@/customComponents/Pagination/Pagination";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
+import Pagination from '@/customComponents/Pagination/Pagination';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,36 +58,85 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import Cancel from "./Cancel";
+} from '@/components/ui/dropdown-menu';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import Cancel from './Cancel';
 
 const Index = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
   const token = user.token;
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+  const [openReceiptType, setOpenReceiptType] = useState(false);
+  const [receiptType, setReceiptType] = useState('');
+  const [receiptName, setReceiptName] = useState('');
+  const [receiptNumber, setReceiptNumber] = useState('');
+  const [receiptAmount, setReceiptAmount] = useState('');
+
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
+  const toggleSearchSection = () => {
+    setIsSearchVisible((prev) => !prev); // Toggle between true and false
+  };
+
+  const {
+    data: allReceiptTypesData,
+    isLoading: isAllReceiptTypesDataLoading,
+    isError: isAllReceiptTypesDataError,
+  } = useQuery({
+    queryKey: ['allReceiptTypes'], // This is the query key
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`/api/all_select_receipt_types`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+  });
 
   const {
     data: ReceiptsData,
     isLoading: isReceiptsDataLoading,
     isError: isReceiptsDataError,
   } = useQuery({
-    queryKey: ["receipts", currentPage, search], // This is the query key
+    queryKey: [
+      'receipts',
+      currentPage,
+      search,
+      fromDate,
+      toDate,
+      receiptType,
+      receiptNumber,
+      receiptName,
+      receiptAmount,
+    ], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get("/api/receipts", {
+        const response = await axios.get('/api/receipts', {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           params: {
             page: currentPage,
             search: search,
+            fromDate: fromDate,
+            toDate: toDate,
+            receiptType: receiptType,
+            receiptName: receiptName,
+            receiptNumber: receiptNumber,
+            receiptAmount: receiptAmount,
           },
         });
         return response.data?.data; // Return the fetched data
@@ -85,77 +157,30 @@ const Index = () => {
     return <p>Error fetching data</p>;
   }
 
-  // const handlePrint = async (receiptId) => {
-  //   try {
-  //     const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       responseType: "blob", // To ensure the response is a blob (PDF file)
-  //     });
-
-  //     const blob = response.data;
-  //     const url = window.URL.createObjectURL(blob);
-  //     const link = document.createElement("a");
-
-  //     link.href = url;
-  //     link.download = `receipt-${receiptId}.pdf`;
-
-  //     document.body.appendChild(link);
-
-  //     link.click();
-
-  //     document.body.removeChild(link);
-
-  //     // Invalidate the queries related to the "lead" data
-  //     queryClient.invalidateQueries("receipts");
-  //     toast.success("Receipt Printed Successfully");
-  //   } catch (error) {
-  //     // Handle errors (both response errors and network errors)
-  //     if (axios.isAxiosError(error)) {
-  //       if (error.response) {
-  //         const errorData = error.response.data;
-  //         if (error.response.status === 401 && errorData.status === false) {
-  //           toast.error(errorData.errors.error);
-  //         } else {
-  //           toast.error("Failed to generate Receipt");
-  //         }
-  //       } else {
-  //         // Network or other errors
-  //         console.error("Error:", error);
-  //         toast.error("An error occurred while printing the Receipt");
-  //       }
-  //     } else {
-  //       console.error("Unexpected error:", error);
-  //       toast.error("An unexpected error occurred");
-  //     }
-  //   }
-  // };
   const handlePrint = async (receiptId) => {
     try {
       const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        responseType: "blob", // Ensure the response is a blob (PDF file)
+        responseType: 'blob', // Ensure the response is a blob (PDF file)
       });
 
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
 
       // Open a new window or tab with the PDF
-      const newWindow = window.open(url, "_blank");
+      const newWindow = window.open(url, '_blank');
 
       // Optionally, check if the window was successfully opened
       if (!newWindow) {
-        toast.error("Unable to open the PDF in a new window.");
+        toast.error('Unable to open the PDF in a new window.');
       }
 
       // Invalidate the queries related to the "lead" data
-      queryClient.invalidateQueries("receipts");
-      toast.success("Receipt Printed Successfully");
+      queryClient.invalidateQueries('receipts');
+      toast.success('Receipt Printed Successfully');
     } catch (error) {
       // Handle errors (both response errors and network errors)
       if (axios.isAxiosError(error)) {
@@ -164,16 +189,16 @@ const Index = () => {
           if (error.response.status === 401 && errorData.status === false) {
             toast.error(errorData.errors.error);
           } else {
-            toast.error("Failed to generate Receipt");
+            toast.error('Failed to generate Receipt');
           }
         } else {
           // Network or other errors
-          console.error("Error:", error);
-          toast.error("An error occurred while printing the Receipt");
+          console.error('Error:', error);
+          toast.error('An error occurred while printing the Receipt');
         }
       } else {
-        console.error("Unexpected error:", error);
-        toast.error("An unexpected error occurred");
+        console.error('Unexpected error:', error);
+        toast.error('An unexpected error occurred');
       }
     }
   };
@@ -181,22 +206,136 @@ const Index = () => {
   return (
     <>
       <div className="w-full p-5">
-        <div className="w-full mb-7 text-right md:pr-6">
+        <div className="w-full mb-7 flex justify-end text-right md:pr-6">
           <Button
-            onClick={() => navigate("/receipts/create")}
+            onClick={toggleSearchSection}
+            variant=""
+            className="text-sm mr-4 dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
+          >
+            Search Receipts
+          </Button>
+          <Button
+            onClick={() => navigate('/receipts/create')}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
             Add Receipt
           </Button>
         </div>
+        {isSearchVisible && (
+          <div className="px-5 my-3 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
+            <h2 className="text-2xl p-3 font-semibold leading-none tracking-tight">
+              Search
+            </h2>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_id">
+                  Receipt Type: <span className="text-red-500">*</span>
+                </Label>
+                <Select value={receiptType} onValueChange={setReceiptType}>
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Select receipt type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select receipt type</SelectLabel>
+                      {allReceiptTypesData?.ReceiptTypes &&
+                        allReceiptTypesData?.ReceiptTypes.map((receiptType) => (
+                          <SelectItem value={String(receiptType.receipt_type)}>
+                            {receiptType.receipt_type}
+                          </SelectItem>
+                        ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_name">
+                  From Date: <span className="text-red-500">*</span>
+                </Label>
+                <input
+                  value={fromDate}
+                  onChange={(e) => {
+                    setFromDate(e.target.value);
+                  }}
+                  id="from_date"
+                  className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                  type="date"
+                  placeholder="Enter To date"
+                />
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_name">
+                  To Date: <span className="text-red-500">*</span>
+                </Label>
+                <input
+                  value={toDate}
+                  onChange={(e) => {
+                    setToDate(e.target.value);
+                  }}
+                  id="to_date"
+                  className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                  type="date"
+                  placeholder="Enter To date"
+                />
+              </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_name">
+                  Name: <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  value={receiptName}
+                  onChange={(e) => {
+                    setReceiptName(e.target.value);
+                  }}
+                  id="to_date"
+                  className=" mt-1"
+                  type="text"
+                  placeholder="Enter name."
+                />
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_name">
+                  Receipt No: <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  value={receiptNumber}
+                  onChange={(e) => {
+                    setReceiptNumber(e.target.value);
+                  }}
+                  id="to_date"
+                  className=" mt-1"
+                  type="text"
+                  placeholder="Enter receipt no."
+                />
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="amount">
+                  Amount: <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  value={receiptAmount}
+                  onChange={(e) => {
+                    setReceiptAmount(e.target.value);
+                  }}
+                  id="to_date"
+                  className=" mt-1"
+                  type="text"
+                  placeholder="Enter Amount"
+                />
+              </div>
+            </div>
+          </div>
+        )}
         <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold leading-none tracking-tight">
               Receipts
             </h2>
             {/* search field here */}
-            <div className="relative p-0.5 ">
+            {/* <div className="relative p-0.5 ">
               <div className="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
                 <svg
                   className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -222,8 +361,16 @@ const Index = () => {
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search for Receipts"
               />
-            </div>
+            </div> */}
             {/* end */}
+
+            {/* <Button
+              onClick={toggleSearchSection}
+              variant=""
+              className="text-sm mr-4 dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
+            >
+              Search Receipts
+            </Button> */}
           </div>
           <Table className="mb-2">
             <TableCaption className="mb-2">
@@ -258,8 +405,8 @@ const Index = () => {
                     // } dark:border-b dark:border-gray-600`}
                     className={`${
                       receipt.cancelled
-                        ? "relative" // Add a bottom border for strike-through effect
-                        : ""
+                        ? 'relative' // Add a bottom border for strike-through effect
+                        : ''
                     } dark:border-b dark:border-gray-600`}
                   >
                     <TableCell className="font-medium p-2">
@@ -272,7 +419,7 @@ const Index = () => {
                     <TableCell className="font-medium p-2">
                       {/* {poojaDate.pooja_date} */}
                       {new Date(receipt.receipt_date).toLocaleDateString(
-                        "en-GB"
+                        'en-GB'
                       )}
                     </TableCell>
                     <TableCell className="font-medium p-2">
@@ -290,7 +437,7 @@ const Index = () => {
                         onClick={() => handlePrint(receipt.id)}
                       >
                         <PrinterCheck size={16} /> Print
-                      </Button>{" "}
+                      </Button>{' '}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -359,11 +506,11 @@ const Index = () => {
                       <div
                         className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-500"
                         style={{
-                          transform: "translateY(-50%)", // Vertically center the line in the row
+                          transform: 'translateY(-50%)', // Vertically center the line in the row
                         }}
                       ></div>
                     ) : (
-                      ""
+                      ''
                     )}
                   </TableRow>
                 ))}

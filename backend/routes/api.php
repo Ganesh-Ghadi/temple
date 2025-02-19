@@ -67,5 +67,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/anteshtee_dates', [AnteshteeAmountsController::class, 'index'])->name("anteshtee_amounts.index");
    Route::get('/anteshtee_dates/{id}', [AnteshteeAmountsController::class, 'show'])->name("anteshtee_amounts.show");
    Route::put('/anteshtee_dates/{id}', [AnteshteeAmountsController::class, 'update'])->name("anteshtee_amounts.update");
+   Route::get('/all_select_receipt_types', [ReceiptTypesController::class, 'allSelectReceiptTypes'])->name("receipt_types.allSelect");
 
 });

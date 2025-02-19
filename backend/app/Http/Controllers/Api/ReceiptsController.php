@@ -72,41 +72,64 @@ class ReceiptsController extends BaseController
     //     ]], "Receipts retrieved successfully");
     // }
 
-    public function index(Request $request): JsonResponse
+public function index(Request $request): JsonResponse
 {
     $query = Receipt::with("receiptType");
+     $receiptDate = $request->query('receiptDate');
+     $receiptType = $request->query('receiptType');
+     $receiptNumber = $request->query('receiptNumber');
+     $receiptName = $request->query('receiptName');
+     $receiptAmount = $request->query('receiptAmount');
 
-    if ($request->query('search')) {
-        $searchTerm = $request->query('search');
-    
-        // Check if the search term is a valid date in dd/mm/yyyy format
-        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $searchTerm)) {
-            // Convert dd/mm/yyyy to yyyy-mm-dd
-            $date = \DateTime::createFromFormat('d/m/Y', $searchTerm);
-            $formattedDate = $date->format('Y-m-d');
-    
-            // Modify query to search using the formatted date
-            $query->where(function ($query) use ($formattedDate) {
-                // Apply raw query for receipt_date with casting and collation
-                $query->whereRaw('CAST(receipt_date AS CHAR) COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%'])
-                      ->orWhereHas('receiptType', function ($query) use ($formattedDate) {
-                          // Apply raw query for receipt_type with collation
-                          $query->whereRaw('receipt_type COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%']);
-                      });
-            });
-        } else {
-            // If it's not a date, continue searching normally as a string
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%')
-                      ->orWhere('amount', 'like', '%' . $searchTerm . '%')
-                      ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
-                      ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
-                          $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
-                      });
-            });
-        }
-    }
+     if($receiptDate){
+         $query->where('receipt_date',$receiptDate);
+     }
 
+      if($receiptType){
+         $query->whereHas('receiptType', function ($query) use ($receiptType) {
+             $query->where('receipt_type',$receiptType );
+         });
+     }
+     if($receiptNumber){
+         $query->where('receipt_no',$receiptNumber);
+     }
+     if($receiptName){
+         $query->where('name',$receiptName);
+     }
+      if($receiptAmount){
+         $query->where('amount',$receiptAmount);
+     }
+    // if ($request->query('search')) {
+    //     $searchTerm = $request->query('search');
+    
+    //     // Check if the search term is a valid date in dd/mm/yyyy format
+    //     if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $searchTerm)) {
+    //         // Convert dd/mm/yyyy to yyyy-mm-dd
+    //         $date = \DateTime::createFromFormat('d/m/Y', $searchTerm);
+    //         $formattedDate = $date->format('Y-m-d');
+    
+    //         // Modify query to search using the formatted date
+    //         $query->where(function ($query) use ($formattedDate) {
+    //             // Apply raw query for receipt_date with casting and collation
+    //             $query->whereRaw('CAST(receipt_date AS CHAR) COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%'])
+    //                   ->orWhereHas('receiptType', function ($query) use ($formattedDate) {
+    //                       // Apply raw query for receipt_type with collation
+    //                       $query->whereRaw('receipt_type COLLATE utf8mb4_unicode_ci LIKE ?', ['%' . $formattedDate . '%']);
+    //                   });
+    //         });
+    //     } else {
+    //         // If it's not a date, continue searching normally as a string
+    //         $query->where(function ($query) use ($searchTerm) {
+    //             $query->where('name', 'like', '%' . $searchTerm . '%')
+    //                   ->orWhere('amount', 'like', '%' . $searchTerm . '%')
+    //                   ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
+    //                   ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
+    //                       $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
+    //                   });
+    //         });
+    //     }
+    // }
+   
     $receipts = $query->orderby("id", "desc")->paginate(20);
 
     return $this->sendResponse([
