@@ -232,6 +232,14 @@ const Create = () => {
   const [showRemembrance, setShowRemembrance] = useState("");
   const [showSpecialDate, setShowSpecialDate] = useState("");
   const [showPooja, setShowPooja] = useState("");
+  const [anteshteeAmounts, setAnteshteeAmounts] = useState({
+    day_9_amount: 0,
+    day_10_amount: 0,
+    day_11_amount: 0,
+    day_12_amount: 0,
+    day_13_amount: 0,
+  });
+
   // const mobileInputRef = useRef(null);
 
   const khatReceiptId = 1;
@@ -638,6 +646,46 @@ const Create = () => {
     enabled: selectedReceiptTypeId === 5, // Enable the query only if selectedReceiptTypeId is 4
   });
 
+  // anteshtee date amounts
+  const {
+    data: anteshteeAmountDateData,
+    isLoading: isAnteshteeAmountDateDataLoading,
+    isError: isAnteshteeAmountDateDataError,
+  } = useQuery({
+    queryKey: ["showAnteshtiAmountDate"], // This is the query key
+    queryFn: async () => {
+      try {
+        if (!selectedReceiptTypeId === anteshteeReceiptId) {
+          return [];
+        }
+        const response = await axios.get(`/api/anteshtee_dates/1`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data?.data; // Return the fetched data
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    enabled: selectedReceiptTypeId === anteshteeReceiptId,
+    keepPreviousData: true, // Enable the query only if selectedReceiptTypeId is 4
+  });
+
+  useEffect(() => {
+    if (anteshteeAmountDateData?.AnteshteeDate) {
+      const { AnteshteeDate } = anteshteeAmountDateData;
+      setAnteshteeAmounts({
+        day_9_amount: parseFloat(AnteshteeDate.day_9_amount),
+        day_10_amount: parseFloat(AnteshteeDate.day_10_amount),
+        day_11_amount: parseFloat(AnteshteeDate.day_11_amount),
+        day_12_amount: parseFloat(AnteshteeDate.day_12_amount),
+        day_13_amount: parseFloat(AnteshteeDate.day_13_amount),
+      });
+    }
+  }, [anteshteeAmountDateData]);
+
   useEffect(() => {
     if (sareeDateData) {
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
@@ -906,6 +954,33 @@ const Create = () => {
     const newAmount = (currentAmount + acAmount).toFixed(2); // Adjust decimal precision
     setValue("amount", newAmount); // Update the form value
   };
+
+  // const handleAnteshteeCheckboxChange = (e, amountToAdd) => {
+  //   const { checked } = e.target; // Get the state of the checkbox (checked or unchecked)
+  //   const currentAmount = parseFloat(watch("amount")) || 0; // Get the current amount
+
+  //   // Add or subtract 500 based on whether the checkbox is checked or unchecked
+  //   const newAmount = checked
+  //     ? currentAmount + amountToAdd
+  //     : currentAmount - amountToAdd;
+
+  //   // Update the "amount" field in the form
+  //   setValue("amount", newAmount);
+  // };
+  const handleAnteshteeCheckboxChange = (e, dayAmountKey) => {
+    const { checked } = e.target;  // Get the state of the checkbox (checked or unchecked)
+    const currentAmount = parseFloat(watch("amount")) || 0;  // Get the current amount
+  
+    // Get the amount for the selected day (e.g., day_9_amount, day_10_amount, etc.)
+    const amountToAdd = anteshteeAmounts[dayAmountKey];
+  
+    // Add or subtract the fetched amount based on whether the checkbox is checked or unchecked
+    const newAmount = checked ? currentAmount + amountToAdd : currentAmount - amountToAdd;
+  
+    // Update the "amount" field in the form
+    setValue("amount", newAmount);
+  };
+
   console.log(showRemembrance);
   return (
     <>
@@ -2384,6 +2459,10 @@ const Create = () => {
                         <input
                           id="day_9"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleAnteshteeCheckboxChange(e, 'day_9_amount'); // Add 500 for Day 9
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -2406,6 +2485,10 @@ const Create = () => {
                         <input
                           id="day_10"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleAnteshteeCheckboxChange(e, 'day_10_amount'); // Add 500 for Day 9
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -2428,6 +2511,10 @@ const Create = () => {
                         <input
                           id="day_11"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleAnteshteeCheckboxChange(e, 'day_11_amount'); // Add 500 for Day 9
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -2450,6 +2537,10 @@ const Create = () => {
                         <input
                           id="day_12"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleAnteshteeCheckboxChange(e, 'day_12_amount'); // Add 500 for Day 9
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
@@ -2472,6 +2563,10 @@ const Create = () => {
                         <input
                           id="day_13"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleAnteshteeCheckboxChange(e, 'day_13_amount'); // Add 500 for Day 9
+                          }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
