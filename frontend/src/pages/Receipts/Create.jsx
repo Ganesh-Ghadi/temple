@@ -44,14 +44,21 @@ import Autocompeleteadd from "@/customComponents/Autocompleteadd/Autocompleteadd
 const formSchema = z.object({
   receipt_type_id: z.coerce.number().min(1, "Receipt Type field is required"),
   receipt_date: z.string().min(1, "Receipt date field is required"),
+  // name: z
+  //   .string()
+  //   .max(100, "Name must not exceed 100 characters.")
+  //   .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
+  //     message: "Name can only contain letters.",
+  //   })
+  //   // .max(10, "Name cannot exceed 10 characters.")
+  //   .optional(),
   name: z
     .string()
+    .min(2, "Name must be at least 2 characters.") // Ensuring minimum length of 2
     .max(100, "Name must not exceed 100 characters.")
-    .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
-      message: "Name can only contain letters.",
-    })
-    // .max(10, "Name cannot exceed 10 characters.")
-    .optional(),
+    .refine((val) => /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
+      message: "Name can only contain letters and spaces.",
+    }),
 
   receipt_head: z.string().min(2, "Receipt head field is required"),
   gotra: z
@@ -61,6 +68,7 @@ const formSchema = z.object({
       message: "Gotra can only contain letters.",
     })
     .optional(),
+
   amount: z.coerce.number().optional(),
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
@@ -73,14 +81,16 @@ const formSchema = z.object({
     .nullable(),
   special_date: z.string().optional(),
   payment_mode: z.string().min(1, "Payment Mode field is required"),
-  // mobile: z.coerce.string().optional(),
-  mobile: z
-    .string()
-    .regex(
-      /^\+91(\d{10})?$/,
-      "Mobile number must start with +91, followed by exactly 10 digits."
-    )
-    .optional(),
+  // mobile: z
+  //   .string()
+  //   .refine((val) => val === "" || /^[0-9]{10}$/.test(val), {
+  //     message: "Mobile number must contain exactly 10 digits.",
+  //   })
+  //   .optional(),
+  mobile: z.string().refine((val) => /^[0-9]{10}$/.test(val), {
+    message: "Mobile number must contain exactly 10 digits.",
+  }),
+
   // pincode: z.coerce.string().optional(),
   pincode: z
     .string()
@@ -222,7 +232,7 @@ const Create = () => {
   const [showRemembrance, setShowRemembrance] = useState("");
   const [showSpecialDate, setShowSpecialDate] = useState("");
   const [showPooja, setShowPooja] = useState("");
-  const mobileInputRef = useRef(null);
+  // const mobileInputRef = useRef(null);
 
   const khatReceiptId = 1;
   const naralReceiptId = 2;
@@ -273,7 +283,7 @@ const Create = () => {
     quantity: "",
     rate: "",
     email: null,
-    mobile: "+91",
+    mobile: "",
     address: "",
     narration: "",
     pincode: "",
@@ -809,6 +819,12 @@ const Create = () => {
           if (serverErrors.anteshti_dates) {
             toast.error("Date field is required.");
           }
+          if (serverErrors.amount) {
+            setError("amount", {
+              type: "manual",
+              message: serverErrors.amount[0],
+            });
+          }
         } else {
           toast.error("Failed to add Receipt.");
         }
@@ -819,20 +835,20 @@ const Create = () => {
   });
 
   // Function to set the cursor position
-  const setCursorToEnd = () => {
-    const input = mobileInputRef.current;
-    if (input) {
-      // Set the cursor position to start right after the `+91`
-      input.setSelectionRange(3, 3); // 3 is the length of +91
-    }
-  };
+  // const setCursorToEnd = () => {
+  //   const input = mobileInputRef.current;
+  //   if (input) {
+  //     // Set the cursor position to start right after the `+91`
+  //     input.setSelectionRange(3, 3); // 3 is the length of +91
+  //   }
+  // };
   const onSubmit = (data) => {
     setIsLoading(true);
 
-    if (data.mobile && data.mobile.length <= 3) {
-      // Checking if it's only the country code
-      data.mobile = ""; // Set the mobile to an empty string if only country code is entered
-    }
+    // if (data.mobile && data.mobile.length <= 3) {
+    //   // Checking if it's only the country code
+    //   data.mobile = ""; // Set the mobile to an empty string if only country code is entered
+    // }
 
     if (!data.ac_charges) {
       data.ac_amount = "";
@@ -945,7 +961,7 @@ const Create = () => {
               </div>
               <div className="relative">
                 <Label className="font-normal" htmlFor="receipt_date">
-                  Receipt date:
+                  Receipt date:<span className="text-red-500">*</span>
                 </Label>
                 <Controller
                   name="receipt_date"
@@ -1173,7 +1189,7 @@ const Create = () => {
               </div>
               <div className="relative md:col-span-2">
                 <Label className="font-normal" htmlFor="name">
-                  Name:
+                  Name:<span className="text-red-500">*</span>
                 </Label>
                 <Controller
                   name="name"
@@ -1245,7 +1261,7 @@ const Create = () => {
               </div>
               <div className="relative ">
                 <Label className="font-normal" htmlFor="mobile">
-                  Mobile:
+                  Mobile:<span className="text-red-500">*</span>
                 </Label>
                 <Controller
                   name="mobile"
@@ -1253,15 +1269,12 @@ const Create = () => {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      ref={(e) => {
-                        mobileInputRef.current = e;
-                        field.ref(e); // Ensure the ref is forwarded to react-hook-form
-                      }}
                       id="mobile"
                       className="mt-1"
                       type="text"
                       placeholder="Enter mobile"
-                      onFocus={setCursorToEnd} // Set cursor position when focusing
+                      // maxLength={10} // Restrict input to 10 characters
+                      // pattern="^[0-9]{10}$" // Only allow exactly 10 digits
                     />
                     // <PhoneInput
                     //   {...field}
@@ -2315,7 +2328,7 @@ const Create = () => {
                   </div>
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="yajman">
-                      Yajman Name:
+                      Yajman Name:<span className="text-red-500">*</span>
                     </Label>
                     <Controller
                       name="yajman"
@@ -2338,7 +2351,7 @@ const Create = () => {
                   </div>
                   <div className="relative ">
                     <Label className="font-normal" htmlFor="karma_number">
-                      Karma No:
+                      Karma No:<span className="text-red-500">*</span>
                     </Label>
                     <Controller
                       name="karma_number"
@@ -2988,7 +3001,7 @@ const Create = () => {
             </div>
 
             {/* row ends */}
-            <div className="w-full gap-4 mt-4 flex justify-end items-center">
+            <div className="w-full gap-4 mt-6 flex justify-end items-center">
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"

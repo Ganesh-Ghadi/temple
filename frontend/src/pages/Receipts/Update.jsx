@@ -153,7 +153,7 @@ const Update = () => {
     quantity: "",
     rate: "",
     email: "",
-    mobile: "+91",
+    mobile: "",
     address: "",
     narration: "",
     pincode: "",
@@ -407,7 +407,7 @@ const Update = () => {
       setValue("receipt_date", editReceipt.Receipt?.receipt_date);
       setValue("name", editReceipt.Receipt?.name);
       setValue("gotra", editReceipt.Receipt?.gotra);
-      setValue("mobile", editReceipt.Receipt?.mobile || "+91");
+      setValue("mobile", editReceipt.Receipt?.mobile || "");
       setValue("email", editReceipt.Receipt?.email);
       setValue("address", editReceipt.Receipt?.address);
       setValue("narration", editReceipt.Receipt?.narration);
@@ -1014,24 +1014,24 @@ const Update = () => {
                   name="mobile"
                   control={control}
                   render={({ field }) => (
-                    // <Input
-                    //   {...field}
-                    //   id="mobile"
-                    //   className="mt-1"
-                    //   type="number"
-                    //   placeholder="Enter mobile"
-                    // />
-                    <PhoneInput
+                    <Input
                       {...field}
-                      defaultCountry="IN" // Default country for the country code
-                      // value={mobile}
-                      // onChange={setMobile}
-                      inputStyle={{ minWidth: "17rem" }}
                       id="mobile"
-                      name="mobile"
-                      placeholder="Enter mobile number"
-                      className=" mt-1"
+                      className="mt-1"
+                      type="number"
+                      placeholder="Enter mobile"
                     />
+                    // <PhoneInput
+                    //   {...field}
+                    //   defaultCountry="IN" // Default country for the country code
+                    //   // value={mobile}
+                    //   // onChange={setMobile}
+                    //   inputStyle={{ minWidth: "17rem" }}
+                    //   id="mobile"
+                    //   name="mobile"
+                    //   placeholder="Enter mobile number"
+                    //   className=" mt-1"
+                    // />
                   )}
                 />
                 {errors.mobile && (

@@ -34,6 +34,7 @@ class StoreReceiptRequest extends FormRequest
             'guruji' => 'nullable',
             'yajman' => 'nullable',
             'karma_number' => 'nullable',
+            'amount' => 'nullable',
         ];
     }
 
@@ -88,6 +89,14 @@ class StoreReceiptRequest extends FormRequest
             return $input->receipt_type_id == 11; // Only require `hall` if `receipt_type_id` is 9
         });
 
+        // Make amount required and minimum 1 by default, but optional for 4, 5, or 6
+        $validator->sometimes('amount', 'nullable', function ($input) {
+            return in_array($input->receipt_type_id, [4, 5, 6]); // Make `amount` optional for receipt_type_id 4, 5, or 6
+        });
+
+        $validator->sometimes('amount', 'required|numeric|min:1', function ($input) {
+            return !in_array($input->receipt_type_id, [4, 5, 6]); // Make `amount` required with min:1 for other `receipt_type_id`
+        });
       
     }
 

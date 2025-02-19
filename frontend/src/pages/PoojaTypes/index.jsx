@@ -147,7 +147,6 @@ const Index = () => {
                 <TableHead className="p-2">Devta Name</TableHead>
                 <TableHead className="p-2">Contribution</TableHead>
                 <TableHead className="p-2">Multiple</TableHead>
-
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>

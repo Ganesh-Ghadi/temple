@@ -71,11 +71,11 @@ const Homepage = () => {
         {/* <h1 className="text-2xl">Dashboard</h1> */}
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Today's Total Amount
+                    Today's Collection
                   </CardTitle>
 
                   <IndianRupee size={16} color="#716f6f" />
@@ -142,7 +142,7 @@ const Homepage = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card>
+              {/* <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
                     Total Users
@@ -165,10 +165,9 @@ const Homepage = () => {
                 <CardContent>
                   <div className="text-2xl font-bold">{ProfileCount}</div>
                   <p className="text-xs text-muted-foreground">
-                    {/* +19% from last month */}
                   </p>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </TabsContent>
         </Tabs>
