@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\ReceiptHeadsController;
 use App\Http\Controllers\Api\ReceiptTypesController;
 use App\Http\Controllers\Api\DenominationsController;
+use App\Http\Controllers\Api\AnteshteeAmountsController;
 
 
 
@@ -63,5 +64,8 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/saree_date_evening', [ReceiptsController::class, 'SareeDateEvening'])->name("receipts.saree_date_evening");
    Route::get('/uparane_date_evening', [ReceiptsController::class, 'UparaneDateEvening'])->name("receipts.uparane_date_evening");
    Route::get('/dashboards', [DashboardController::class, 'index'])->name("dashboards.index");
+   Route::get('/anteshtee_dates', [AnteshteeAmountsController::class, 'index'])->name("anteshtee_amounts.index");
+   Route::get('/anteshtee_dates/{id}', [AnteshteeAmountsController::class, 'show'])->name("anteshtee_amounts.show");
+   Route::put('/anteshtee_dates/{id}', [AnteshteeAmountsController::class, 'update'])->name("anteshtee_amounts.update");
 
 });

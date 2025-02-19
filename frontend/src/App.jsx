@@ -19,6 +19,9 @@ import UpdateUsers from "./pages/Users/Update";
 import Devtas from "./pages/Devtas/index";
 import CreateDevtas from "./pages/Devtas/Create";
 import UpdateDevtas from "./pages/Devtas/Update";
+import AnteshteeAmounts from "./pages/AnteshteeAmounts/index";
+import CreateAnteshtee from "./pages/AnteshteeAmounts/Create";
+import UpdateAnteshtee from "./pages/AnteshteeAmounts/Update";
 import Gurujis from "./pages/Gurujis/index";
 import CreateGurujis from "./pages/Gurujis/Create";
 import UpdateGurujis from "./pages/Gurujis/Update";
@@ -77,6 +80,9 @@ const App = () => {
           <Route path="/devtas" element={<Devtas />} />
           <Route path="/devtas/create" element={<CreateDevtas />} />
           <Route path="/devtas/:id/edit" element={<UpdateDevtas />} />
+          <Route path="/anteshtees" element={<AnteshteeAmounts />} />
+          <Route path="/anteshtees/create" element={<CreateAnteshtee />} />
+          <Route path="/anteshtees/:id/edit" element={<UpdateAnteshtee />} />
           <Route path="/gurujis" element={<Gurujis />} />
           <Route path="/gurujis/create" element={<CreateGurujis />} />
           <Route path="/gurujis/:id/edit" element={<UpdateGurujis />} />
@@ -156,10 +162,7 @@ const App = () => {
 
   return (
     <>
-      <Toaster
-        closeButton
-        position="top-right"
-      />
+      <Toaster closeButton position="top-right" />
       <RouterProvider router={router} />
     </>
   );

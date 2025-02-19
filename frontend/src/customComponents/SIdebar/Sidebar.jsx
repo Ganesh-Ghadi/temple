@@ -25,6 +25,7 @@ import {
   Paperclip,
   ClipboardPlus,
   ClipboardMinus,
+  Calendar,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -45,6 +46,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       path: "#",
       logo: <Settings size={16} />,
       children: [
+        {
+          name: "Anteshtee Amounts",
+          path: "/anteshtees",
+          logo: <Calendar size={16} />,
+        },
         {
           name: "Devtas",
           path: "/devtas",
