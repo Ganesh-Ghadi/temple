@@ -330,7 +330,7 @@ const Create = () => {
     day_12_date: "",
     day_13_date: "",
     ac_charges: "",
-    ac_amount: "0",
+    ac_amount: "0.00",
   };
 
   const {
@@ -901,9 +901,10 @@ const Create = () => {
 
   // ac amount change function
   const handleAcAmountChange = (e) => {
-    const acAmount = parseInt(e.target.value) || 0;
-    const currentAmount = parseFloat(watch("amount")) || 0;
-    setValue("amount", currentAmount + acAmount);
+    const acAmount = parseFloat(e.target.value) || 0.0;
+    const currentAmount = parseFloat(watch("amount")) || 0.0;
+    const newAmount = (currentAmount + acAmount).toFixed(2); // Adjust decimal precision
+    setValue("amount", newAmount); // Update the form value
   };
   console.log(showRemembrance);
   return (
