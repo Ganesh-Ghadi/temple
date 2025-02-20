@@ -503,8 +503,9 @@ const Create = () => {
 
   // Update amount for date checkboxes
   const updateAmount = (numOfDates) => {
-    const newAmount = numOfDates * 51;
-    setValue("amount", newAmount);
+    numOfDates = parseFloat(numOfDates);
+    const newAmount = parseFloat(numOfDates * parseFloat(51)).toFixed(2);
+    setValue("amount", parseFloat(newAmount).toFixed(2));
   };
 
   // guruji data

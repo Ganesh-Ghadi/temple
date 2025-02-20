@@ -51,6 +51,7 @@
             </tr>
         </table>
 
+        <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->name}}</p>
         <p style="padding: 1 0 0 0 ; margin:0;">{{@$receipt->address}}</p>
 
         <table style="width: 100%; margin-top:30px; border-spacing: 0;">

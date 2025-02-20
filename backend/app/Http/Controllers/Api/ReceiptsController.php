@@ -356,6 +356,70 @@ public function index(Request $request): JsonResponse
           }
         }
 
+        // abhishek receipt head validation
+        if($request->input('receipt_head') == config('data.receipt_heads.अभिषेक')){
+            $receipt_heads = config("data.receipt_heads");
+            $receiptHead = null;
+            foreach($receipt_heads as $receipt_head){
+              $receiptHead = $receipt_head;
+              if($receiptHead == "अभिषेक"){
+                  $gotra = $request->input('gotra');
+                  if (!$gotra) {
+                      return response()->json([
+                          'status' => false,
+                          'message' => 'Validation failed',
+                          'errors' => [
+                              'gotra' => ['Gotra field is required.']
+                          ],
+                      ], 422);   
+                  }
+              }
+            }
+          }
+          
+          
+            // abhishek receipt head validation
+            if($request->input('receipt_head') == config('data.receipt_heads.वार्षिक अभिषेक')){
+                $receipt_heads = config("data.receipt_heads");
+                $receiptHead = null;
+                foreach($receipt_heads as $receipt_head){
+                $receiptHead = $receipt_head;
+                if($receiptHead == "वार्षिक अभिषेक"){
+                    $gotra = $request->input('gotra');
+                    if (!$gotra) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Validation failed',
+                            'errors' => [
+                                'gotra' => ['Gotra field is required.']
+                            ],
+                        ], 422);   
+                    }
+                }
+                }
+            }
+    
+             // विशेष अभिषेक receipt head validation
+             if($request->input('receipt_head') == config('data.receipt_heads.विशेष अभिषेक')){
+                $receipt_heads = config("data.receipt_heads");
+                $receiptHead = null;
+                foreach($receipt_heads as $receipt_head){
+                $receiptHead = $receipt_head;
+                if($receiptHead == "विशेष अभिषेक"){
+                    $gotra = $request->input('gotra');
+                    if (!$gotra) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Validation failed',
+                            'errors' => [
+                                'gotra' => ['Gotra field is required.']
+                            ],
+                        ], 422);   
+                    }
+                }
+                }
+            }
+
                   
          // pooja anek validation
          if (($request->input("receipt_type_id") == $poojaPavtiAnekReceiptId)) {
