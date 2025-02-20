@@ -1580,7 +1580,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === campReceiptId && (
-              <div className="w-full  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full hidden grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="member_name">
                     Member Name:
@@ -1654,7 +1654,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === campReceiptId && (
-              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+              <div className="w-full hidden mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                 <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                   <Controller
                     name="Mallakhamb"
@@ -1893,7 +1893,7 @@ const Update = () => {
 
             {(selectedReceiptTypeId === libraryReceiptId ||
               selectedReceiptTypeId === studyRoomReceiptId) && (
-              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full hidden mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="membership_no">
                     Membership Number:
@@ -1967,7 +1967,7 @@ const Update = () => {
             )}
 
             {selectedReceiptTypeId === studyRoomReceiptId && (
-              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full hidden mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="timing">
                     Timing:

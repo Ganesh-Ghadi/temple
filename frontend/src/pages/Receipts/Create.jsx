@@ -10,6 +10,18 @@ import { Textarea } from "@/components/ui/textarea";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { cn } from "@/lib/utils";
+import ErrorPopup from "./ErrorPopup.jsx";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Command,
   CommandEmpty,
@@ -239,6 +251,7 @@ const Create = () => {
     day_12_amount: 0,
     day_13_amount: 0,
   });
+  const [hallErrorMessage, setHallErrorMessage] = useState(""); // state to handle the error message
 
   // const mobileInputRef = useRef(null);
 
@@ -765,7 +778,8 @@ const Create = () => {
             // toast.error("The poo has already been taken.");
           }
           if (serverErrors.hall_booked) {
-            toast.error(serverErrors.hall_booked[0]);
+            // toast.error(serverErrors.hall_booked[0]);
+            setHallErrorMessage(serverErrors.hall_booked[0]);
           }
           if (serverErrors.hall) {
             setError("hall", {
@@ -816,6 +830,12 @@ const Create = () => {
             setError("date", {
               type: "manual",
               message: serverErrors.date[0],
+            });
+          }
+          if (serverErrors.gotra) {
+            setError("gotra", {
+              type: "manual",
+              message: serverErrors.gotra[0],
             });
           }
           if (serverErrors.multiple_dates) {
@@ -881,7 +901,9 @@ const Create = () => {
       }
     },
   });
-
+  const handleClosePopup = () => {
+    setHallErrorMessage(""); // Close the popup by clearing the error message
+  };
   // Function to set the cursor position
   // const setCursorToEnd = () => {
   //   const input = mobileInputRef.current;
@@ -987,6 +1009,8 @@ const Create = () => {
   console.log(showRemembrance);
   return (
     <>
+      <ErrorPopup errorMessage={hallErrorMessage} onClose={handleClosePopup} />
+
       <div className="p-5">
         {/* breadcrumb start */}
         <div className=" mb-7 text-sm">

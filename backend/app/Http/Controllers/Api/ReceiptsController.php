@@ -295,7 +295,18 @@ public function index(Request $request): JsonResponse
           if($isPooja){
             $poojaTypeId = $request->input("pooja_type_id");
             $date = $request->input("date");
+            $gotra = $request->input("gotra");
 
+            if (!$gotra) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation failed',
+                    'errors' => [
+                        'gotra' => ['Gotra field is required.']
+                    ],
+                ], 422);   
+            }
+            
             if (!$poojaTypeId) {
                 return response()->json([
                     'status' => false,
@@ -315,7 +326,32 @@ public function index(Request $request): JsonResponse
                     ],
                 ], 422);   
             }
+
+           
           }
+
+          // sankalpa pooja validation
+        if($request->input('receipt_head') == config('data.receipt_heads.संकल्प पूजा')){
+          $receipt_heads = config("data.receipt_heads");
+          $receiptHead = null;
+          foreach($receipt_heads as $receipt_head){
+            $receiptHead = $receipt_head;
+            if($receiptHead == "संकल्प पूजा"){
+                $gotra = $request->input('gotra');
+                if (!$gotra) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'gotra' => ['Gotra field is required.']
+                        ],
+                    ], 422);   
+                }
+            }
+          }
+        }
+
+                  
          // pooja anek validation
          if (($request->input("receipt_type_id") == $poojaPavtiAnekReceiptId)) {
             $poojaTypeId = $request->input("pooja_type_id");
