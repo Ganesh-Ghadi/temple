@@ -71,8 +71,22 @@ class DashboardController extends BaseController
         ];
     });
 
+    $prasadReceipts = Receipt::where('receipt_type_id', 15)
+                    ->where('special_date',$today)
+                    ->where("cancelled", false)
+                    ->get();
+    
+    $prasadReceiptDetails = $prasadReceipts->map(function ($receipt) {
+            return [
+                'receipt_id' => $receipt->id,
+                'person_name' => $receipt->name ? $receipt->name : "N/A", // Fallback if hallReceipt is null
+                'amount' => $receipt->amount,
+            ];
+    });
+
     $totalPoojas = $poojaDetails->count();
     $totalHallBookings = $hallBookingDetails->count();
+    $totalPrasadCount = $prasadReceiptDetails->count();
 
     $sareeReceipt = Receipt::with('sareeReceipt')
                             ->where("cancelled", false)
@@ -115,8 +129,10 @@ class DashboardController extends BaseController
                                 'CancelledReceiptCount'=>$cancelledReceipts,
                                 'PoojaDetails'=>$poojaDetails,
                                 'HallBookingDetails'=>$hallBookingDetails,
+                                'PrasadReceiptDetails'=>$prasadReceiptDetails,
                                 'PoojaCount'=>$totalPoojas,
                                 'HallBookingCount'=>$totalHallBookings,
+                                'PrasadCount'=>$totalPrasadCount,
                                 'SareeDetails'=>$sareeDetails,
                                 'UparaneDetails'=>$uparaneDetails,
                                 ], "Dashboard data retrieved successfully");

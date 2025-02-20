@@ -60,6 +60,8 @@ const Homepage = () => {
     HallBookingCount,
     SareeDetails,
     UparaneDetails,
+    PrasadReceiptDetails,
+    PrasadCount,
   } = DashboardData || {};
 
   if (isDashboardDataError) {
@@ -172,7 +174,7 @@ const Homepage = () => {
           </TabsContent>
         </Tabs>
 
-        <Tabs defaultValue="overview" className="space-y-4">
+        <Tabs defaultValue="overview" className="space-y-4 mt-4">
           <TabsContent value="overview" className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
               <Card className="w-full">
@@ -243,32 +245,62 @@ const Homepage = () => {
               ))}
             </div>
           </ScrollArea>
-          <ScrollArea className="dark:bg-background md:w-[50%] h-[500px] my-5 px-6 py-5 border rounded-xl bg-white">
-            <div className="flex justify-between">
-              <h3 className="text-xl mb-5 font-bold">Today's Hall Bookings</h3>
-              <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
-                {HallBookingCount}
-              </p>
-            </div>
-            <div className="space-y-6">
-              {HallBookingDetails?.map((hall) => (
-                <div className="flex items-center">
-                  <User size={24} />
-                  <div className="ml-4 space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {hall.name}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {hall.hall_name}
-                    </p>
+          <div className="w-1/2 flex flex-col gap-2">
+            <ScrollArea className="dark:bg-background w-[100%] h-[250px] px-6 py-5 border rounded-xl bg-white">
+              <div className="flex justify-between">
+                <h3 className="text-xl mb-5 font-bold">
+                  Today's Hall Bookings
+                </h3>
+                <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
+                  {HallBookingCount}
+                </p>
+              </div>
+              <div className="space-y-6">
+                {HallBookingDetails?.map((hall) => (
+                  <div className="flex items-center">
+                    <User size={24} />
+                    <div className="ml-4 space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {hall.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {hall.hall_name}
+                      </p>
+                    </div>
+                    <div className="ml-auto font-medium">
+                      {hall.from_time} - {hall.to_time}
+                    </div>
                   </div>
-                  <div className="ml-auto font-medium">
-                    {hall.from_time} - {hall.to_time}
+                ))}
+              </div>
+            </ScrollArea>
+            <ScrollArea className="dark:bg-background w-[100%] h-[250px]  px-6 py-5 border rounded-xl bg-white">
+              <div className="flex justify-between">
+                <h3 className="text-xl mb-5 font-bold">Today's Prasad</h3>
+                <p className="text-lg font-semibold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">
+                  {PrasadCount}
+                </p>
+              </div>
+              <div className="space-y-6">
+                {PrasadReceiptDetails?.map((prasad) => (
+                  <div className="flex items-center">
+                    <User size={24} />
+                    <div className="ml-4 space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {prasad.person_name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {prasad.amount}
+                      </p>
+                    </div>
+                    <div className="ml-auto font-medium">
+                      {/* {hall.from_time} - {hall.to_time} */}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
         </div>
       </div>
     </>
