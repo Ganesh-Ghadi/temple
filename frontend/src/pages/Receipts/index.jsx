@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   Command,
   CommandEmpty,
@@ -16,9 +16,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,19 +29,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Pencil, MoreHorizontal, PrinterCheck } from 'lucide-react';
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Pencil, MoreHorizontal, PrinterCheck } from "lucide-react";
 
-import Pagination from '@/customComponents/Pagination/Pagination';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import Pagination from "@/customComponents/Pagination/Pagination";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -50,7 +50,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,22 +58,22 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import Cancel from './Cancel';
+} from "@/components/ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import Cancel from "./Cancel";
 
 const Index = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
-  const [search, setSearch] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  const [search, setSearch] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const [openReceiptType, setOpenReceiptType] = useState(false);
-  const [receiptType, setReceiptType] = useState('');
-  const [receiptName, setReceiptName] = useState('');
-  const [receiptNumber, setReceiptNumber] = useState('');
-  const [receiptAmount, setReceiptAmount] = useState('');
+  const [receiptType, setReceiptType] = useState("");
+  const [receiptName, setReceiptName] = useState("");
+  const [receiptNumber, setReceiptNumber] = useState("");
+  const [receiptAmount, setReceiptAmount] = useState("");
 
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
@@ -89,12 +89,12 @@ const Index = () => {
     isLoading: isAllReceiptTypesDataLoading,
     isError: isAllReceiptTypesDataError,
   } = useQuery({
-    queryKey: ['allReceiptTypes'], // This is the query key
+    queryKey: ["allReceiptTypes"], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/all_select_receipt_types`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
@@ -111,7 +111,7 @@ const Index = () => {
     isError: isReceiptsDataError,
   } = useQuery({
     queryKey: [
-      'receipts',
+      "receipts",
       currentPage,
       search,
       fromDate,
@@ -123,9 +123,9 @@ const Index = () => {
     ], // This is the query key
     queryFn: async () => {
       try {
-        const response = await axios.get('/api/receipts', {
+        const response = await axios.get("/api/receipts", {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           params: {
@@ -161,26 +161,26 @@ const Index = () => {
     try {
       const response = await axios.get(`/api/generate_receipt/${receiptId}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        responseType: 'blob', // Ensure the response is a blob (PDF file)
+        responseType: "blob", // Ensure the response is a blob (PDF file)
       });
 
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
 
       // Open a new window or tab with the PDF
-      const newWindow = window.open(url, '_blank');
+      const newWindow = window.open(url, "_blank");
 
       // Optionally, check if the window was successfully opened
       if (!newWindow) {
-        toast.error('Unable to open the PDF in a new window.');
+        toast.error("Unable to open the PDF in a new window.");
       }
 
       // Invalidate the queries related to the "lead" data
-      queryClient.invalidateQueries('receipts');
-      toast.success('Receipt Printed Successfully');
+      queryClient.invalidateQueries("receipts");
+      toast.success("Receipt Printed Successfully");
     } catch (error) {
       // Handle errors (both response errors and network errors)
       if (axios.isAxiosError(error)) {
@@ -189,16 +189,16 @@ const Index = () => {
           if (error.response.status === 401 && errorData.status === false) {
             toast.error(errorData.errors.error);
           } else {
-            toast.error('Failed to generate Receipt');
+            toast.error("Failed to generate Receipt");
           }
         } else {
           // Network or other errors
-          console.error('Error:', error);
-          toast.error('An error occurred while printing the Receipt');
+          console.error("Error:", error);
+          toast.error("An error occurred while printing the Receipt");
         }
       } else {
-        console.error('Unexpected error:', error);
-        toast.error('An unexpected error occurred');
+        console.error("Unexpected error:", error);
+        toast.error("An unexpected error occurred");
       }
     }
   };
@@ -215,7 +215,7 @@ const Index = () => {
             Search Receipts
           </Button>
           <Button
-            onClick={() => navigate('/receipts/create')}
+            onClick={() => navigate("/receipts/create")}
             variant=""
             className="text-sm dark:text-white shadow-xl bg-blue-600 hover:bg-blue-700"
           >
@@ -227,7 +227,7 @@ const Index = () => {
             <h2 className="text-2xl p-3 font-semibold leading-none tracking-tight">
               Search
             </h2>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+            <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="devta_id">
                   Receipt Type: <span className="text-red-500">*</span>
@@ -405,8 +405,8 @@ const Index = () => {
                     // } dark:border-b dark:border-gray-600`}
                     className={`${
                       receipt.cancelled
-                        ? 'relative' // Add a bottom border for strike-through effect
-                        : ''
+                        ? "relative" // Add a bottom border for strike-through effect
+                        : ""
                     } dark:border-b dark:border-gray-600`}
                   >
                     <TableCell className="font-medium p-2">
@@ -419,7 +419,7 @@ const Index = () => {
                     <TableCell className="font-medium p-2">
                       {/* {poojaDate.pooja_date} */}
                       {new Date(receipt.receipt_date).toLocaleDateString(
-                        'en-GB'
+                        "en-GB"
                       )}
                     </TableCell>
                     <TableCell className="font-medium p-2">
@@ -437,7 +437,7 @@ const Index = () => {
                         onClick={() => handlePrint(receipt.id)}
                       >
                         <PrinterCheck size={16} /> Print
-                      </Button>{' '}
+                      </Button>{" "}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -506,11 +506,11 @@ const Index = () => {
                       <div
                         className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-500"
                         style={{
-                          transform: 'translateY(-50%)', // Vertically center the line in the row
+                          transform: "translateY(-50%)", // Vertically center the line in the row
                         }}
                       ></div>
                     ) : (
-                      ''
+                      ""
                     )}
                   </TableRow>
                 ))}

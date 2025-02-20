@@ -968,17 +968,20 @@ const Create = () => {
   //   setValue("amount", newAmount);
   // };
   const handleAnteshteeCheckboxChange = (e, dayAmountKey) => {
-    const { checked } = e.target;  // Get the state of the checkbox (checked or unchecked)
-    const currentAmount = parseFloat(watch("amount")) || 0;  // Get the current amount
-  
+    const { checked } = e.target; // Get the state of the checkbox (checked or unchecked)
+    const currentAmount = parseFloat(watch("amount")) || 0.0; // Get the current amount
+
     // Get the amount for the selected day (e.g., day_9_amount, day_10_amount, etc.)
-    const amountToAdd = anteshteeAmounts[dayAmountKey];
-  
+    const amountToAdd = parseFloat(anteshteeAmounts[dayAmountKey]);
+
     // Add or subtract the fetched amount based on whether the checkbox is checked or unchecked
-    const newAmount = checked ? currentAmount + amountToAdd : currentAmount - amountToAdd;
-  
+    const newAmount = checked
+      ? currentAmount + amountToAdd
+      : currentAmount - amountToAdd;
+
     // Update the "amount" field in the form
-    setValue("amount", newAmount);
+    // setValue("amount", parseFloat(newAmount));
+    setValue("amount", newAmount.toFixed(2));
   };
 
   console.log(showRemembrance);
@@ -2461,7 +2464,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, 'day_9_amount'); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, "day_9_amount"); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2487,7 +2490,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, 'day_10_amount'); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, "day_10_amount"); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2513,7 +2516,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, 'day_11_amount'); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, "day_11_amount"); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2539,7 +2542,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, 'day_12_amount'); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, "day_12_amount"); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2565,7 +2568,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, 'day_13_amount'); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, "day_13_amount"); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
