@@ -203,6 +203,15 @@ const Index = () => {
     }
   };
 
+  const clearSearch = () => {
+    setFromDate("");
+    setToDate("");
+    setReceiptName("");
+    setReceiptNumber("");
+    setReceiptAmount("");
+    setReceiptType("");
+  };
+
   return (
     <>
       <div className="w-full p-5">
@@ -224,13 +233,22 @@ const Index = () => {
         </div>
         {isSearchVisible && (
           <div className="px-5 my-3 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
-            <h2 className="text-2xl p-3 font-semibold leading-none tracking-tight">
-              Search
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl py-3 font-semibold leading-none tracking-tight">
+                Search
+              </h2>
+              <Button
+                variant="ghost"
+                onClick={clearSearch}
+                className="bg-red-600 mt-3 w-20 text-white hover:bg-red-700 hover:text-white"
+              >
+                Clear
+              </Button>
+            </div>
             <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="devta_id">
-                  Receipt Type: <span className="text-red-500">*</span>
+                  Receipt Type:
                 </Label>
                 <Select value={receiptType} onValueChange={setReceiptType}>
                   <SelectTrigger className="mt-1">
@@ -251,39 +269,7 @@ const Index = () => {
               </div>
               <div className="relative">
                 <Label className="font-normal" htmlFor="devta_name">
-                  From Date: <span className="text-red-500">*</span>
-                </Label>
-                <input
-                  value={fromDate}
-                  onChange={(e) => {
-                    setFromDate(e.target.value);
-                  }}
-                  id="from_date"
-                  className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                  type="date"
-                  placeholder="Enter To date"
-                />
-              </div>
-              <div className="relative">
-                <Label className="font-normal" htmlFor="devta_name">
-                  To Date: <span className="text-red-500">*</span>
-                </Label>
-                <input
-                  value={toDate}
-                  onChange={(e) => {
-                    setToDate(e.target.value);
-                  }}
-                  id="to_date"
-                  className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
-                  type="date"
-                  placeholder="Enter To date"
-                />
-              </div>
-            </div>
-            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
-              <div className="relative">
-                <Label className="font-normal" htmlFor="devta_name">
-                  Name: <span className="text-red-500">*</span>
+                  Name:
                 </Label>
                 <Input
                   value={receiptName}
@@ -298,7 +284,7 @@ const Index = () => {
               </div>
               <div className="relative">
                 <Label className="font-normal" htmlFor="devta_name">
-                  Receipt No: <span className="text-red-500">*</span>
+                  Receipt No:
                 </Label>
                 <Input
                   value={receiptNumber}
@@ -311,9 +297,11 @@ const Index = () => {
                   placeholder="Enter receipt no."
                 />
               </div>
+            </div>
+            <div className="w-full mb-8 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
               <div className="relative">
                 <Label className="font-normal" htmlFor="amount">
-                  Amount: <span className="text-red-500">*</span>
+                  Amount:
                 </Label>
                 <Input
                   value={receiptAmount}
@@ -324,6 +312,36 @@ const Index = () => {
                   className=" mt-1"
                   type="text"
                   placeholder="Enter Amount"
+                />
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_name">
+                  From Date:
+                </Label>
+                <input
+                  value={fromDate}
+                  onChange={(e) => {
+                    setFromDate(e.target.value);
+                  }}
+                  id="from_date"
+                  className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                  type="date"
+                  placeholder="Enter To date"
+                />
+              </div>
+              <div className="relative">
+                <Label className="font-normal" htmlFor="devta_name">
+                  To Date:
+                </Label>
+                <input
+                  value={toDate}
+                  onChange={(e) => {
+                    setToDate(e.target.value);
+                  }}
+                  id="to_date"
+                  className=" dark:bg-[var(--foreground)] mt-1 text-sm w-full p-2 pr-3 rounded-md border border-1"
+                  type="date"
+                  placeholder="Enter To date"
                 />
               </div>
             </div>

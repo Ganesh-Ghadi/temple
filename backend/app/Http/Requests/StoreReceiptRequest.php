@@ -66,7 +66,7 @@ class StoreReceiptRequest extends FormRequest
         });
 
         $validator->sometimes('special_date', 'required', function ($input) {
-            return $input->receipt_type_id == 9; // Only require `hall` if `receipt_type_id` is 9
+            return in_array($input->receipt_type_id, [9, 15]); // Only require `hall` if `receipt_type_id` is 9
         });
         
         $validator->sometimes('from_time', 'required', function ($input) {

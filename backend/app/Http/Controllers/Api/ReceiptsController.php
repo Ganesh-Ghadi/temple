@@ -75,15 +75,20 @@ class ReceiptsController extends BaseController
 public function index(Request $request): JsonResponse
 {
     $query = Receipt::with("receiptType");
-     $receiptDate = $request->query('receiptDate');
+     $fromDate = $request->query('fromDate');
+     $toDate = $request->query('toDate');
      $receiptType = $request->query('receiptType');
      $receiptNumber = $request->query('receiptNumber');
      $receiptName = $request->query('receiptName');
      $receiptAmount = $request->query('receiptAmount');
 
-     if($receiptDate){
-         $query->where('receipt_date',$receiptDate);
-     }
+     if ($fromDate && $toDate) {
+        $query->whereBetween('receipt_date', [$fromDate, $toDate]);
+    } elseif ($fromDate) {
+        $query->where('receipt_date', '>=', $fromDate);
+    } elseif ($toDate) {
+        $query->where('receipt_date', '<=', $toDate);
+    }
 
       if($receiptType){
          $query->whereHas('receiptType', function ($query) use ($receiptType) {
@@ -91,10 +96,10 @@ public function index(Request $request): JsonResponse
          });
      }
      if($receiptNumber){
-         $query->where('receipt_no',$receiptNumber);
+         $query->where('receipt_no', 'like', '%' . $receiptNumber . '%');
      }
      if($receiptName){
-         $query->where('name',$receiptName);
+         $query->where('name', 'like', '%' . $receiptName . '%');
      }
       if($receiptAmount){
          $query->where('amount',$receiptAmount);
@@ -130,7 +135,7 @@ public function index(Request $request): JsonResponse
     //     }
     // }
    
-    $receipts = $query->orderby("id", "desc")->paginate(20);
+    $receipts = $query->orderBy("id", "desc")->paginate(20);
 
     return $this->sendResponse([
         "Receipts" => ReceiptResource::collection($receipts),
