@@ -1521,7 +1521,7 @@ const Create = () => {
               <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="description">
-                    description:
+                    description:<span className="text-red-500">*</span>
                   </Label>
                   <Controller
                     name="description"
@@ -1875,7 +1875,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === campReceiptId && (
-              <div className="w-full  grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full hidden grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="member_name">
                     Member Name:
@@ -1949,7 +1949,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === campReceiptId && (
-              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
+              <div className="w-full hidden mb-4 grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4">
                 <div className="relative flex gap-2 mt-5 md:mt-0 md:pt-10 md:pl-2 ">
                   <Controller
                     name="Mallakhamb"
@@ -2046,7 +2046,7 @@ const Create = () => {
                 <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative">
                     <Label className="font-normal" htmlFor="hall">
-                      Hall:
+                      Hall:<span className="text-red-500">*</span>
                     </Label>
                     <Controller
                       name="hall"
@@ -2224,7 +2224,7 @@ const Create = () => {
 
             {(selectedReceiptTypeId === libraryReceiptId ||
               selectedReceiptTypeId === studyRoomReceiptId) && (
-              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full hidden mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="membership_no">
                     Membership Number:
@@ -2298,7 +2298,7 @@ const Create = () => {
             )}
 
             {selectedReceiptTypeId === studyRoomReceiptId && (
-              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+              <div className="w-full hidden mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative ">
                   <Label className="font-normal" htmlFor="timing">
                     Timing:
@@ -2720,7 +2720,7 @@ const Create = () => {
               <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
                   <Label className="font-normal" htmlFor="pooja_type_id">
-                    Pooja Type:
+                    Pooja Type:<span className="text-red-500">*</span>
                   </Label>
                   <Controller
                     name="pooja_type_id"
@@ -2799,7 +2799,7 @@ const Create = () => {
                 </div>
                 <div className="relative">
                   <Label className="font-normal" htmlFor="date">
-                    date:
+                    date:<span className="text-red-500">*</span>
                   </Label>
                   <Controller
                     name="date"
@@ -2852,7 +2852,7 @@ const Create = () => {
                 <div className="w-full mb-4 md:mb-2 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative">
                     <Label className="font-normal" htmlFor="pooja_type_id">
-                      Pooja Type:
+                      Pooja Type:<span className="text-red-500">*</span>
                     </Label>
                     <Controller
                       name="pooja_type_id"
@@ -3076,7 +3076,7 @@ const Create = () => {
 
               <div className="relative md:col-start-3">
                 <Label className="font-normal" htmlFor="amount">
-                  Amount:
+                  Amount (Rs.):
                 </Label>
                 <Controller
                   name="amount"
