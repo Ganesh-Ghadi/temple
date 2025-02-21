@@ -254,7 +254,7 @@ const Index = () => {
                   <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select receipt type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="pb-10">
                     <SelectGroup>
                       <SelectLabel>Select receipt type</SelectLabel>
                       {allReceiptTypesData?.ReceiptTypes &&

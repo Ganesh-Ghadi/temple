@@ -85,7 +85,7 @@ const index = () => {
             Add Roles
           </Button>
         </div> */}
-        <div className="px-5 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
+        <div className="px-5 mt-17 dark:bg-background pt-1 w-full bg-white shadow-xl border rounded-md">
           <div className="w-full py-3 flex flex-col gap-2 md:flex-row justify-between items-center">
             <h2 className="text-2xl font-semibold leading-none tracking-tight">
               Roles

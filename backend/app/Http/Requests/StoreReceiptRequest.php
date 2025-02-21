@@ -35,21 +35,25 @@ class StoreReceiptRequest extends FormRequest
             'yajman' => 'nullable',
             'karma_number' => 'nullable',
             'amount' => 'nullable',
+            'payment_mode' => 'required', // Ensure 'Bank' is a valid option
+            'bank_details' => 'required_if:payment_mode,Bank', // Only require if 'Bank' mode
+            'cheque_number' => 'required_if:payment_mode,Bank',
+            'cheque_date' => 'required_if:payment_mode,Bank',
+            'upi_number' => 'required_if:payment_mode,UPI',
         ];
     }
 
-    //   /**
-    //  * Custom error messages for validation rules.
-    //  *
-    //  * @return array
-    //  */
-    // public function messages(): array
-    // {
-    //     return [
-    //         'saree_draping_date_morning.exists' => 'The selected morning saree draping date is already taken.',
-    //         'saree_draping_date_evening.exists' => 'The selected evening saree draping date is already taken.',
-    //     ];
-    // }
+      /**
+     * Custom error messages for validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'upi_number.required_if' => 'The utr number field is required when payment mode is UPI.',
+        ];
+    }
 
     protected function withValidator(Validator $validator)
     {

@@ -539,6 +539,40 @@ public function index(Request $request): JsonResponse
             }
 
         }
+
+        //Payment mode validation
+        // if($request->input("payment_mode") == "Bank"){
+            
+        //     if (!$request->input("bank_details")) {
+        //         return response()->json([
+        //             'status' => false,
+        //             'message' => 'Validation failed',
+        //             'errors' => [
+        //                 'bank_details' => ['Bank Details field is required.']
+        //             ],
+        //         ], 422);
+        //     }
+
+        //     if (!$request->input("cheque_number")) {
+        //         return response()->json([
+        //             'status' => false,
+        //             'message' => 'Validation failed',
+        //             'errors' => [
+        //                 'cheque_number' => ['Cheque Number field is required.']
+        //             ],
+        //         ], 422);
+        //     }
+
+        //     if (!$request->input("cheque_date")) {
+        //         return response()->json([
+        //             'status' => false,
+        //             'message' => 'Validation failed',
+        //             'errors' => [
+        //                 'cheque_date' => ['Cheque Date field is required.']
+        //             ],
+        //         ], 422);
+        //     }
+        // }
         
         // validation end
 

@@ -152,26 +152,26 @@ const Index = () => {
                     className=" dark:border-b dark:border-gray-600"
                   >
                     <TableCell className="font-medium p-2">
-                      {anteshtee.day_9_amount}
+                      ₹{anteshtee.day_9_amount}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {anteshtee.day_10_amount}
+                      ₹{anteshtee.day_10_amount}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {anteshtee.day_11_amount}
+                      ₹{anteshtee.day_11_amount}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {anteshtee.day_12_amount}
+                      ₹{anteshtee.day_12_amount}
                     </TableCell>
                     <TableCell className="font-medium p-2">
-                      {anteshtee.day_13_amount}
+                      ₹{anteshtee.day_13_amount}
                     </TableCell>
 
                     <TableCell className="text-right p-2 pr-0">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="w-full text-sm justify-center p-0 m-0"
+                        className="w-full text-white bg-blue-600 hover:bg-blue-700 hover:text-white text-sm justify-center p-0 m-0"
                         onClick={() =>
                           navigate(`/anteshtees/${anteshtee.id}/edit`)
                         }

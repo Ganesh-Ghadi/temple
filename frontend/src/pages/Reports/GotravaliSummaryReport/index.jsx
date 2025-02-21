@@ -56,8 +56,13 @@ const index = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
 
+      const currentDate = new Date();
+      const day = ("0" + currentDate.getDate()).slice(-2); // Ensure two digits for day
+      const month = ("0" + (currentDate.getMonth() + 1)).slice(-2); // Ensure two digits for month
+      const year = currentDate.getFullYear();
+      const formattedDate = `${day}-${month}-${year}`;
       link.href = url;
-      link.download = `GotravaliSummaryReport-${Date.now()}.pdf`; // Use current timestamp for unique file name
+      link.download = `GotravaliSummaryReport_${formattedDate}.pdf`; // Use current timestamp for unique file name
 
       document.body.appendChild(link);
       link.click();

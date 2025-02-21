@@ -108,8 +108,14 @@ const index = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
 
+      // link.download = `AllReceiptReport-${Date.now()}.pdf`; // Use current timestamp for unique file name
+      const currentDate = new Date();
+      const day = ("0" + currentDate.getDate()).slice(-2); // Ensure two digits for day
+      const month = ("0" + (currentDate.getMonth() + 1)).slice(-2); // Ensure two digits for month
+      const year = currentDate.getFullYear();
+      const formattedDate = `${day}-${month}-${year}`;
       link.href = url;
-      link.download = `AllReceiptReport-${Date.now()}.pdf`; // Use current timestamp for unique file name
+      link.download = `AllReceiptReport_${formattedDate}.pdf`; // Use formatted date in the filename
 
       document.body.appendChild(link);
       link.click();

@@ -45,15 +45,6 @@ const index = () => {
     watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
 
-  const currentDate = new Date();
-
-  // Extract the day, month, and year
-  const day = String(currentDate.getDate()).padStart(2, "0"); // Ensures 2-digit day
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Ensures 2-digit month (months are 0-indexed)
-  const year = currentDate.getFullYear(); // Full 4-digit year
-
-  // Format the date as dd/mm/yyyy
-  const formattedDate = `${day}/${month}/${year}`;
   
   const handlePrint = async (data) => {
     try {
@@ -69,8 +60,13 @@ const index = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
 
+      const currentDate = new Date();
+      const day = ("0" + currentDate.getDate()).slice(-2); // Ensure two digits for day
+      const month = ("0" + (currentDate.getMonth() + 1)).slice(-2); // Ensure two digits for month
+      const year = currentDate.getFullYear();
+      const formattedDate = `${day}-${month}-${year}`;
       link.href = url;
-      link.download = `GotravaliReport-${formattedDate}.pdf`; // Use current timestamp for unique file name
+      link.download = `GotravaliReport_${formattedDate}.pdf`; // Use current timestamp for unique file name
 
       document.body.appendChild(link);
       link.click();
