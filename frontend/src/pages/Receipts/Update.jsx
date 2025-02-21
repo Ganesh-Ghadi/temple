@@ -245,6 +245,27 @@ const Update = () => {
     keepPreviousData: true, // Keep previous data until the new data is available
   });
 
+   const {
+     data: allPoojaTypesMultipleData,
+     isLoading: isAllPoojaTypesDataMultipleLoading,
+     isError: isAllPoojaTypesDataMultipleError,
+   } = useQuery({
+     queryKey: ['allPoojaTypesMultiple'], // This is the query key
+     queryFn: async () => {
+       try {
+         const response = await axios.get(`/api/all_pooja_types_multiple`, {
+           headers: {
+             'Content-Type': 'application/json',
+             Authorization: `Bearer ${token}`,
+           },
+         });
+         return response.data?.data; // Return the fetched data
+       } catch (error) {
+         throw new Error(error.message);
+       }
+     },
+   });
+
   // const {
   //   data: allReceiptTypesData,
   //   isLoading: isAllReceiptTypesDataLoading,
@@ -654,7 +675,7 @@ const Update = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/receipts")}
+                onClick={() => navigate('/receipts')}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -866,7 +887,7 @@ const Update = () => {
                         <Button
                           variant="outline"
                           role="combobox"
-                          aria-expanded={openReceiptType ? "true" : "false"} // This should depend on the popover state
+                          aria-expanded={openReceiptType ? 'true' : 'false'} // This should depend on the popover state
                           className=" w-[325px] justify-between mt-1"
                           onClick={() => setOpenReceiptType((prev) => !prev)} // Toggle popover on button click
                         >
@@ -875,7 +896,7 @@ const Update = () => {
                               allReceiptTypesData?.ReceiptTypes.find(
                                 (receiptType) => receiptType.id === field.value
                               )?.receipt_type
-                            : "Select Receipt Type..."}
+                            : 'Select Receipt Type...'}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </PopoverTrigger>
@@ -901,7 +922,7 @@ const Update = () => {
                                         // );
                                         setSelectedReceiptTypeId(
                                           currentValue === selectedReceiptTypeId
-                                            ? ""
+                                            ? ''
                                             : currentValue
                                         );
                                         handleReceiptTypeChange(receiptType.id);
@@ -912,10 +933,10 @@ const Update = () => {
                                       {receiptType.receipt_type}
                                       <Check
                                         className={cn(
-                                          "ml-auto",
+                                          'ml-auto',
                                           receiptType.id === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0"
+                                            ? 'opacity-100'
+                                            : 'opacity-0'
                                         )}
                                       />
                                     </CommandItem>
@@ -1188,7 +1209,7 @@ const Update = () => {
                     )}
                   </div>
                 ) : (
-                  ""
+                  ''
                 )}
 
                 {showSpecialDate ? (
@@ -1216,11 +1237,11 @@ const Update = () => {
                     )}
                   </div>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             ) : (
-              ""
+              ''
             )}
 
             {(selectedReceiptTypeId === bhangarReceiptId ||
@@ -1286,7 +1307,7 @@ const Update = () => {
               </div>
             )}
 
-            {paymentMode === "Bank" && (
+            {paymentMode === 'Bank' && (
               <>
                 <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative ">
@@ -1885,7 +1906,7 @@ const Update = () => {
                       )}
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
               </div>
@@ -2251,7 +2272,7 @@ const Update = () => {
                       )}
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                   {day10Checked ? (
                     <div className="relative">
@@ -2278,7 +2299,7 @@ const Update = () => {
                       )}
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                   {day11Checked ? (
                     <div className="relative">
@@ -2305,7 +2326,7 @@ const Update = () => {
                       )}
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                   {day12Checked ? (
                     <div className="relative">
@@ -2332,7 +2353,7 @@ const Update = () => {
                       )}
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                   {day13Checked ? (
                     <div className="relative">
@@ -2359,7 +2380,7 @@ const Update = () => {
                       )}
                     </div>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
                 <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-7 md:gap-4"></div>
@@ -2384,7 +2405,7 @@ const Update = () => {
                           <Button
                             variant="outline"
                             role="combobox"
-                            aria-expanded={openPoojaType ? "true" : "false"} // This should depend on the popover state
+                            aria-expanded={openPoojaType ? 'true' : 'false'} // This should depend on the popover state
                             className=" w-[325px] justify-between mt-1"
                             onClick={() => setOpenPoojaType((prev) => !prev)} // Toggle popover on button click
                           >
@@ -2393,7 +2414,7 @@ const Update = () => {
                                 allPoojaTypesData?.PoojaTypes.find(
                                   (poojaType) => poojaType.id === field.value
                                 )?.pooja_type
-                              : "Select Pooja Type..."}
+                              : 'Select Pooja Type...'}
                             <ChevronsUpDown className="opacity-50" />
                           </Button>
                         </PopoverTrigger>
@@ -2414,7 +2435,7 @@ const Update = () => {
                                         value={poojaType.id}
                                         onSelect={(currentValue) => {
                                           setValue(
-                                            "pooja_type_id",
+                                            'pooja_type_id',
                                             poojaType.id
                                           );
 
@@ -2425,10 +2446,10 @@ const Update = () => {
                                         {poojaType.pooja_type}
                                         <Check
                                           className={cn(
-                                            "ml-auto",
+                                            'ml-auto',
                                             poojaType.id === field.value
-                                              ? "opacity-100"
-                                              : "opacity-0"
+                                              ? 'opacity-100'
+                                              : 'opacity-0'
                                           )}
                                         />
                                       </CommandItem>
@@ -2472,7 +2493,7 @@ const Update = () => {
                 </div>
               </div>
             ) : (
-              ""
+              ''
             )}
 
             {selectedReceiptTypeId === poojaPavtiAnekReceiptId && (
@@ -2494,16 +2515,16 @@ const Update = () => {
                             <Button
                               variant="outline"
                               role="combobox"
-                              aria-expanded={openPoojaType ? "true" : "false"} // This should depend on the popover state
+                              aria-expanded={openPoojaType ? 'true' : 'false'} // This should depend on the popover state
                               className=" w-[325px] justify-between mt-1"
                               onClick={() => setOpenPoojaType((prev) => !prev)} // Toggle popover on button click
                             >
                               {field.value
-                                ? allPoojaTypesData?.PoojaTypes &&
-                                  allPoojaTypesData?.PoojaTypes.find(
+                                ? allPoojaTypesMultipleData?.PoojaTypes &&
+                                  allPoojaTypesMultipleData?.PoojaTypes.find(
                                     (poojaType) => poojaType.id === field.value
                                   )?.pooja_type
-                                : "Select Pooja Type..."}
+                                : 'Select Pooja Type...'}
                               <ChevronsUpDown className="opacity-50" />
                             </Button>
                           </PopoverTrigger>
@@ -2518,15 +2539,15 @@ const Update = () => {
                                   No pooja type found.
                                 </CommandEmpty>
                                 <CommandGroup>
-                                  {allPoojaTypesData?.PoojaTypes &&
-                                    allPoojaTypesData?.PoojaTypes.map(
+                                  {allPoojaTypesMultipleData?.PoojaTypes &&
+                                    allPoojaTypesMultipleData?.PoojaTypes.map(
                                       (poojaType) => (
                                         <CommandItem
                                           key={poojaType.id}
                                           value={poojaType.id}
                                           onSelect={(currentValue) => {
                                             setValue(
-                                              "pooja_type_id",
+                                              'pooja_type_id',
                                               poojaType.id
                                             );
                                             setSelectedPoojaTypeId(
@@ -2539,10 +2560,10 @@ const Update = () => {
                                           {poojaType.pooja_type}
                                           <Check
                                             className={cn(
-                                              "ml-auto",
+                                              'ml-auto',
                                               poojaType.id === field.value
-                                                ? "opacity-100"
-                                                : "opacity-0"
+                                                ? 'opacity-100'
+                                                : 'opacity-0'
                                             )}
                                           />
                                         </CommandItem>
@@ -2591,7 +2612,7 @@ const Update = () => {
                         htmlFor={poojaDate.pooja_date}
                       >
                         {new Date(poojaDate.pooja_date).toLocaleDateString(
-                          "en-GB"
+                          'en-GB'
                         )}
                       </Label>
                     </div>
@@ -2637,7 +2658,7 @@ const Update = () => {
                 )}
               </div>
 
-              {paymentMode === "UPI" && (
+              {paymentMode === 'UPI' && (
                 <>
                   <div className="relative">
                     <Label className="font-normal" htmlFor="upi_number">
@@ -2695,7 +2716,7 @@ const Update = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/receipts")}
+                onClick={() => navigate('/receipts')}
               >
                 Cancel
               </Button>

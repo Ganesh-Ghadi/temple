@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { cn } from "@/lib/utils";
-import ErrorPopup from "./ErrorPopup.jsx";
+import React, { useEffect, useState, useRef } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Loader2 } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import DatePicker from 'react-multi-date-picker';
+import TimePicker from 'react-multi-date-picker/plugins/time_picker';
+import { cn } from '@/lib/utils';
+import ErrorPopup from './ErrorPopup.jsx';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 import {
   Command,
   CommandEmpty,
@@ -29,14 +29,14 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css"; // Import styles for the phone input
+} from '@/components/ui/command';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css'; // Import styles for the phone input
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -45,17 +45,17 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { AutoComplete } from "@/components/ui/autocomplete";
-import Autocompeleteadd from "@/customComponents/Autocompleteadd/Autocompleteadd";
+} from '@/components/ui/select';
+import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { AutoComplete } from '@/components/ui/autocomplete';
+import Autocompeleteadd from '@/customComponents/Autocompleteadd/Autocompleteadd';
 const formSchema = z.object({
-  receipt_type_id: z.coerce.number().min(1, "Receipt Type field is required"),
-  receipt_date: z.string().min(1, "Receipt date field is required"),
+  receipt_type_id: z.coerce.number().min(1, 'Receipt Type field is required'),
+  receipt_date: z.string().min(1, 'Receipt date field is required'),
   // name: z
   //   .string()
   //   .max(100, "Name must not exceed 100 characters.")
@@ -66,18 +66,18 @@ const formSchema = z.object({
   //   .optional(),
   name: z
     .string()
-    .min(2, "Name must be at least 2 characters.") // Ensuring minimum length of 2
-    .max(100, "Name must not exceed 100 characters.")
+    .min(2, 'Name must be at least 2 characters.') // Ensuring minimum length of 2
+    .max(100, 'Name must not exceed 100 characters.')
     .refine((val) => /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
-      message: "Name can only contain letters and spaces.",
+      message: 'Name can only contain letters and spaces.',
     }),
 
-  receipt_head: z.string().min(2, "Receipt head field is required"),
+  receipt_head: z.string().min(2, 'Receipt head field is required'),
   gotra: z
     .string()
-    .max(100, "Gotra must not exceed 100 characters.")
-    .refine((val) => val === "" || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
-      message: "Gotra can only contain letters.",
+    .max(100, 'Gotra must not exceed 100 characters.')
+    .refine((val) => val === '' || /^[A-Za-z\s\u0900-\u097F]+$/.test(val), {
+      message: 'Gotra can only contain letters.',
     })
     .optional(),
 
@@ -87,12 +87,12 @@ const formSchema = z.object({
   // email: z.string().optional(),
   email: z
     .string()
-    .max(100, "Name must not exceed 100 characters.")
-    .email("Invalid email address.")
+    .max(100, 'Name must not exceed 100 characters.')
+    .email('Invalid email address.')
     .optional()
     .nullable(),
   special_date: z.string().optional(),
-  payment_mode: z.string().min(1, "Payment Mode field is required"),
+  payment_mode: z.string().min(1, 'Payment Mode field is required'),
   // mobile: z
   //   .string()
   //   .refine((val) => val === "" || /^[0-9]{10}$/.test(val), {
@@ -100,29 +100,29 @@ const formSchema = z.object({
   //   })
   //   .optional(),
   mobile: z.string().refine((val) => /^[0-9]{10}$/.test(val), {
-    message: "Mobile number must contain exactly 10 digits.",
+    message: 'Mobile number must contain exactly 10 digits.',
   }),
 
   // pincode: z.coerce.string().optional(),
   pincode: z
     .string()
-    .refine((val) => val === "" || /^\d{6}$/.test(val), {
-      message: "Pincode must be of 6 digits.",
+    .refine((val) => val === '' || /^\d{6}$/.test(val), {
+      message: 'Pincode must be of 6 digits.',
     })
     .optional(),
   address: z
     .string()
-    .max(250, "Address must not exceed 250 characters.")
+    .max(250, 'Address must not exceed 250 characters.')
     .optional(),
   narration: z
     .string()
-    .max(250, "Narration must not exceed 250 characters.")
+    .max(250, 'Narration must not exceed 250 characters.')
     .optional(),
   cheque_date: z.string().optional(),
   cheque_number: z.coerce.string().optional(),
   upi_number: z
     .string()
-    .max(50, "UTR number must not exceed 50 characters.")
+    .max(50, 'UTR number must not exceed 50 characters.')
     // .regex(
     //   /^[a-zA-Z0-9]*$/,
     //   'UPI number must only contain alphanumeric characters.'
@@ -131,22 +131,22 @@ const formSchema = z.object({
 
   bank_details: z
     .string()
-    .max(250, "Bank detail must not exceed 250 characters.")
+    .max(250, 'Bank detail must not exceed 250 characters.')
     .optional(),
   remembrance: z
     .string()
-    .max(250, "Remembrance must not exceed 250 characters.")
+    .max(250, 'Remembrance must not exceed 250 characters.')
     .optional(),
   description: z.string().optional(),
   saree_draping_date_morning: z.string().optional(),
   saree_draping_date_evening: z.string().optional(),
-  return_saree: z.coerce.number().min(0, "return saree field is required"),
+  return_saree: z.coerce.number().min(0, 'return saree field is required'),
   uparane_draping_date_morning: z.string().optional(),
   uparane_draping_date_evening: z.string().optional(),
-  return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
+  return_uparane: z.coerce.number().min(0, 'return Uparane field is required'),
   member_name: z
     .string()
-    .max(100, "Member Name must not exceed 100 characters.")
+    .max(100, 'Member Name must not exceed 100 characters.')
     .optional(),
   from_date: z.string().optional(),
   to_date: z.string().optional(),
@@ -184,34 +184,34 @@ const formSchema = z.object({
       z.string().optional(), // Allow a string as an alternative
     ])
     .optional(), // Optional field
-  Mallakhamb: z.coerce.number().min(0, "mallakhamb field is required"),
-  zanj: z.coerce.number().min(0, "zanj field is required"),
-  dhol: z.coerce.number().min(0, "dhol field is required"),
-  lezim: z.coerce.number().min(0, "lezim field is required"),
+  Mallakhamb: z.coerce.number().min(0, 'mallakhamb field is required'),
+  zanj: z.coerce.number().min(0, 'zanj field is required'),
+  dhol: z.coerce.number().min(0, 'dhol field is required'),
+  lezim: z.coerce.number().min(0, 'lezim field is required'),
   hall: z.string().optional(),
   membership_no: z
     .string()
-    .max(100, "Membership no. must not exceed 100 characters.")
+    .max(100, 'Membership no. must not exceed 100 characters.')
     .optional(),
   timing: z
     .string()
-    .max(100, "Timing field must not exceed 100 characters.")
+    .max(100, 'Timing field must not exceed 100 characters.')
     .optional(),
   guruji: z.string().optional(),
   yajman: z
     .string()
-    .max(100, "Yajman field must not exceed 100 characters.")
+    .max(100, 'Yajman field must not exceed 100 characters.')
     .optional(),
   // karma_number: z.string().optional(),
   karma_number: z.coerce
     .number()
-    .max(99, "karma number must be at most 2 digits.")
+    .max(99, 'karma number must be at most 2 digits.')
     .optional(),
-  day_9: z.coerce.number().min(0, "day 9 field is required"),
-  day_10: z.coerce.number().min(0, "day 10 field is required"),
-  day_11: z.coerce.number().min(0, "day 11 field is required"),
-  day_12: z.coerce.number().min(0, "day 12 field is required"),
-  day_13: z.coerce.number().min(0, "day 13 field is required"),
+  day_9: z.coerce.number().min(0, 'day 9 field is required'),
+  day_10: z.coerce.number().min(0, 'day 10 field is required'),
+  day_11: z.coerce.number().min(0, 'day 11 field is required'),
+  day_12: z.coerce.number().min(0, 'day 12 field is required'),
+  day_13: z.coerce.number().min(0, 'day 13 field is required'),
   date: z.string().optional(),
   pooja_type_id: z.coerce.number().optional(),
   day_9_date: z.string().optional(),
@@ -219,7 +219,7 @@ const formSchema = z.object({
   day_11_date: z.string().optional(),
   day_12_date: z.string().optional(),
   day_13_date: z.string().optional(),
-  ac_charges: z.coerce.number().min(0, "ac charges is required"),
+  ac_charges: z.coerce.number().min(0, 'ac charges is required'),
   ac_amount: z.coerce.number().optional(),
 });
 
@@ -228,10 +228,10 @@ const Create = () => {
   const [openReceiptHead, setOpenReceiptHead] = useState(false);
   const [openReceiptType, setOpenReceiptType] = useState(false);
   const [openPoojaType, setOpenPoojaType] = useState(false);
-  const [selectedReceiptHead, setSelectedReceiptHead] = useState("");
-  const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState("");
-  const [selectedPoojaTypeId, setSelectedPoojaTypeId] = useState("");
-  const [paymentMode, setPaymentMode] = useState("");
+  const [selectedReceiptHead, setSelectedReceiptHead] = useState('');
+  const [selectedReceiptTypeId, setSelectedReceiptTypeId] = useState('');
+  const [selectedPoojaTypeId, setSelectedPoojaTypeId] = useState('');
+  const [paymentMode, setPaymentMode] = useState('');
   const [selectedAnteshtiId, setSelectedAnteshtiId] = useState(false);
   const [selectedShradhhId, setSelectedShradhhId] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
@@ -241,9 +241,9 @@ const Create = () => {
   const [values, setValues] = useState([]);
   const [takeinput, setTakeinput] = useState();
   const [inputvaluearray, setInputvaluearray] = useState({});
-  const [showRemembrance, setShowRemembrance] = useState("");
-  const [showSpecialDate, setShowSpecialDate] = useState("");
-  const [showPooja, setShowPooja] = useState("");
+  const [showRemembrance, setShowRemembrance] = useState('');
+  const [showSpecialDate, setShowSpecialDate] = useState('');
+  const [showPooja, setShowPooja] = useState('');
   const [anteshteeAmounts, setAnteshteeAmounts] = useState({
     day_9_amount: 0,
     day_10_amount: 0,
@@ -251,7 +251,7 @@ const Create = () => {
     day_12_amount: 0,
     day_13_amount: 0,
   });
-  const [hallErrorMessage, setHallErrorMessage] = useState(""); // state to handle the error message
+  const [hallErrorMessage, setHallErrorMessage] = useState(''); // state to handle the error message
 
   // const mobileInputRef = useRef(null);
 
@@ -272,12 +272,12 @@ const Create = () => {
 
   const frameworks = {
     hallName: [
-      { value: "लंबोदर १०२", label: "लंबोदर १०२" },
-      { value: "ओंकार १०४", label: "ओंकार १०४" },
-      { value: "विनायक २०१", label: "विनायक २०१" },
-      { value: "ववरद २०२", label: "वरद २०२" },
-      { value: "वक्रतुंड ३०१", label: "वक्रतुंड ३०१" },
-      { value: "विघ्नहर्ता ४०१", label: "विघ्नहर्ता ४०१" },
+      { value: 'लंबोदर १०२', label: 'लंबोदर १०२' },
+      { value: 'ओंकार १०४', label: 'ओंकार १०४' },
+      { value: 'विनायक २०१', label: 'विनायक २०१' },
+      { value: 'ववरद २०२', label: 'वरद २०२' },
+      { value: 'वक्रतुंड ३०१', label: 'वक्रतुंड ३०१' },
+      { value: 'विघ्नहर्ता ४०१', label: 'विघ्नहर्ता ४०१' },
     ],
   };
 
@@ -285,73 +285,73 @@ const Create = () => {
     if (takeinput !== values?.value) {
       setValues(takeinput);
 
-      setValue("companyName", takeinput);
+      setValue('companyName', takeinput);
     }
   }, [takeinput]);
 
   const queryClient = useQueryClient();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
   const token = user.token;
-  const currentDate = new Date().toISOString().split("T")[0];
+  const currentDate = new Date().toISOString().split('T')[0];
   const navigate = useNavigate();
   const defaultValues = {
-    receipt_type_id: "",
+    receipt_type_id: '',
     receipt_date: currentDate,
-    name: "",
-    gotra: "",
-    amount: "",
-    receipt_head: "",
-    quantity: "",
-    rate: "",
+    name: '',
+    gotra: '',
+    amount: '',
+    receipt_head: '',
+    quantity: '',
+    rate: '',
     email: null,
-    mobile: "",
-    address: "",
-    narration: "",
-    pincode: "",
-    payment_mode: "",
-    special_date: "",
-    cheque_date: "",
-    cheque_number: "",
-    bank_details: "",
-    remembrance: "",
-    description: "",
-    saree_draping_date_morning: "",
-    saree_draping_date_evening: "",
-    return_saree: "",
-    uparane_draping_date_morning: "",
-    uparane_draping_date_evening: "",
-    return_uparane: "",
-    member_name: "",
-    from_date: "",
-    to_date: "",
-    Mallakhamb: "",
-    zanj: "",
-    lezim: "",
-    dhol: "",
-    hall: "",
-    membership_no: "",
-    timing: "",
-    guruji: "",
-    yajman: "",
-    from_date: "",
-    to_date: "",
-    day_9: "",
-    day_10: "",
-    day_11: "",
-    day_12: "",
-    day_13: "",
-    pooja_type_id: "",
-    date: "",
-    upi_number: "",
-    from_time: "",
-    to_time: "",
-    day_9_date: "",
-    day_10_date: "",
-    day_11_date: "",
-    day_12_date: "",
-    day_13_date: "",
-    ac_charges: "",
-    ac_amount: "0.00",
+    mobile: '',
+    address: '',
+    narration: '',
+    pincode: '',
+    payment_mode: '',
+    special_date: '',
+    cheque_date: '',
+    cheque_number: '',
+    bank_details: '',
+    remembrance: '',
+    description: '',
+    saree_draping_date_morning: '',
+    saree_draping_date_evening: '',
+    return_saree: '',
+    uparane_draping_date_morning: '',
+    uparane_draping_date_evening: '',
+    return_uparane: '',
+    member_name: '',
+    from_date: '',
+    to_date: '',
+    Mallakhamb: '',
+    zanj: '',
+    lezim: '',
+    dhol: '',
+    hall: '',
+    membership_no: '',
+    timing: '',
+    guruji: '',
+    yajman: '',
+    from_date: '',
+    to_date: '',
+    day_9: '',
+    day_10: '',
+    day_11: '',
+    day_12: '',
+    day_13: '',
+    pooja_type_id: '',
+    date: '',
+    upi_number: '',
+    from_time: '',
+    to_time: '',
+    day_9_date: '',
+    day_10_date: '',
+    day_11_date: '',
+    day_12_date: '',
+    day_13_date: '',
+    ac_charges: '',
+    ac_amount: '0.00',
   };
 
   const {
@@ -362,19 +362,19 @@ const Create = () => {
     setValue,
     watch,
   } = useForm({ resolver: zodResolver(formSchema), defaultValues });
-  const day9Checked = watch("day_9", false);
-  const day10Checked = watch("day_10", false);
-  const day11Checked = watch("day_11", false);
-  const day12Checked = watch("day_12", false);
-  const day13Checked = watch("day_13", false);
-  const acChargesChecked = watch("ac_charges", false);
+  const day9Checked = watch('day_9', false);
+  const day10Checked = watch('day_10', false);
+  const day11Checked = watch('day_11', false);
+  const day12Checked = watch('day_12', false);
+  const day13Checked = watch('day_13', false);
+  const acChargesChecked = watch('ac_charges', false);
 
   const {
     data: allPoojaTypesData,
     isLoading: isAllPoojaTypesDataLoading,
     isError: isAllPoojaTypesDataError,
   } = useQuery({
-    queryKey: ["allPoojaTypes"], // This is the query key
+    queryKey: ['allPoojaTypes'], // This is the query key
     queryFn: async () => {
       try {
         // if (!selectedReceiptTypeId === 12) {
@@ -382,7 +382,7 @@ const Create = () => {
         // }
         const response = await axios.get(`/api/all_pooja_types`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -399,12 +399,12 @@ const Create = () => {
     isLoading: isAllPoojaTypesDataMultipleLoading,
     isError: isAllPoojaTypesDataMultipleError,
   } = useQuery({
-    queryKey: ["allPoojaTypesMultiple"], // This is the query key
+    queryKey: ['allPoojaTypesMultiple'], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/all_pooja_types_multiple`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -420,17 +420,17 @@ const Create = () => {
     isLoading: isAllReceiptTypesDataLoading,
     isError: isAllReceiptTypesDataError,
   } = useQuery({
-    queryKey: ["allReceiptTypes", selectedReceiptHead], // This is the query key
+    queryKey: ['allReceiptTypes', selectedReceiptHead], // This is the query key
     queryFn: async () => {
       try {
         if (selectedReceiptHead) {
-          setValue("receipt_type_id", "");
-          handleReceiptTypeChange("");
+          setValue('receipt_type_id', '');
+          handleReceiptTypeChange('');
         }
         const response = await axios.get(`/api/all_receipt_types`, {
           params: { receipt_head: selectedReceiptHead },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -448,7 +448,7 @@ const Create = () => {
     isLoading: isPoojaDatesDataLoading,
     isError: isPoojaDatesDataError,
   } = useQuery({
-    queryKey: ["showPoojaDate", selectedPoojaTypeId], // This is the query key
+    queryKey: ['showPoojaDate', selectedPoojaTypeId], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedPoojaTypeId) {
@@ -458,7 +458,7 @@ const Create = () => {
           `/api/show_pooja_dates/${selectedPoojaTypeId}`,
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
           }
@@ -505,7 +505,7 @@ const Create = () => {
   const updateAmount = (numOfDates) => {
     numOfDates = parseFloat(numOfDates);
     const newAmount = parseFloat(numOfDates * parseFloat(51)).toFixed(2);
-    setValue("amount", parseFloat(newAmount).toFixed(2));
+    setValue('amount', parseFloat(newAmount).toFixed(2));
   };
 
   // guruji data
@@ -514,7 +514,7 @@ const Create = () => {
     isLoading: isAllGurujisDataLoading,
     isError: isAllGurujisDataError,
   } = useQuery({
-    queryKey: ["allGurijis"], // This is the query key
+    queryKey: ['allGurijis'], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedAnteshtiId && !selectedShradhhId) {
@@ -522,7 +522,7 @@ const Create = () => {
         }
         const response = await axios.get(`/api/all_gurujis`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -539,12 +539,12 @@ const Create = () => {
     isLoading: isAllReceiptHeadsDataLoading,
     isError: isAllReceiptHeadsDataError,
   } = useQuery({
-    queryKey: ["allReceiptHeads"], // This is the query key
+    queryKey: ['allReceiptHeads'], // This is the query key
     queryFn: async () => {
       try {
         const response = await axios.get(`/api/all_receipt_heads`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -562,7 +562,7 @@ const Create = () => {
     isLoading: isSareeDateDataLoading,
     isError: isSareeDateDataError,
   } = useQuery({
-    queryKey: ["sareeDate"], // This is the query key
+    queryKey: ['sareeDate'], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedReceiptTypeId === 4) {
@@ -570,7 +570,7 @@ const Create = () => {
         }
         const response = await axios.get(`/api/saree_date`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -588,7 +588,7 @@ const Create = () => {
     isLoading: isUparaneDateDataLoading,
     isError: isUparaneDateDataError,
   } = useQuery({
-    queryKey: ["uparaneDate"], // This is the query key
+    queryKey: ['uparaneDate'], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedReceiptTypeId === 5) {
@@ -596,7 +596,7 @@ const Create = () => {
         }
         const response = await axios.get(`/api/uparane_date`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -614,7 +614,7 @@ const Create = () => {
     isLoading: isSareeEveningDateDataLoading,
     isError: isSareeEveningDateDataError,
   } = useQuery({
-    queryKey: ["sareeEveningDate"], // This is the query key
+    queryKey: ['sareeEveningDate'], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedReceiptTypeId === 4) {
@@ -622,7 +622,7 @@ const Create = () => {
         }
         const response = await axios.get(`/api/saree_date_evening`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -640,7 +640,7 @@ const Create = () => {
     isLoading: isUparaneEveningDateDataLoading,
     isError: isUparaneEveningDateDataError,
   } = useQuery({
-    queryKey: ["uparaneEveningDate"], // This is the query key
+    queryKey: ['uparaneEveningDate'], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedReceiptTypeId === 5) {
@@ -648,7 +648,7 @@ const Create = () => {
         }
         const response = await axios.get(`/api/uparane_date_evening`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -666,7 +666,7 @@ const Create = () => {
     isLoading: isAnteshteeAmountDateDataLoading,
     isError: isAnteshteeAmountDateDataError,
   } = useQuery({
-    queryKey: ["showAnteshtiAmountDate"], // This is the query key
+    queryKey: ['showAnteshtiAmountDate'], // This is the query key
     queryFn: async () => {
       try {
         if (!selectedReceiptTypeId === anteshteeReceiptId) {
@@ -674,7 +674,7 @@ const Create = () => {
         }
         const response = await axios.get(`/api/anteshtee_dates/1`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
@@ -704,7 +704,7 @@ const Create = () => {
     if (sareeDateData) {
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
       setValue(
-        "saree_draping_date_morning",
+        'saree_draping_date_morning',
         sareeDateData?.SareeDrapingDateMorning
       );
     }
@@ -713,7 +713,7 @@ const Create = () => {
   useEffect(() => {
     if (sareeEveningDateData) {
       setValue(
-        "saree_draping_date_evening",
+        'saree_draping_date_evening',
         sareeEveningDateData?.SareeDrapingDateEvening
       );
     }
@@ -724,9 +724,9 @@ const Create = () => {
       // setValue("saree_dsraping_date", sareeDateData?.SareeDrapingDate);
       const dateFormatted = new Date(uparaneDateData?.UparaneDrapingDate)
         .toISOString()
-        .split("T")[0];
+        .split('T')[0];
       setValue(
-        "uparane_draping_date_morning",
+        'uparane_draping_date_morning',
         uparaneDateData?.UparaneDrapingDate
       );
     }
@@ -735,7 +735,7 @@ const Create = () => {
   useEffect(() => {
     if (uparaneEveningDateData) {
       setValue(
-        "uparane_draping_date_evening",
+        'uparane_draping_date_evening',
         uparaneEveningDateData?.UparaneDrapingDateEvening
       );
     }
@@ -743,20 +743,20 @@ const Create = () => {
 
   const storeMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.post("/api/receipts", data, {
+      const response = await axios.post('/api/receipts', data, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Include the Bearer token
         },
       });
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries("receipts");
-      queryClient.invalidateQueries("dashboards");
-      toast.success("Receipt Added Successfully");
+      queryClient.invalidateQueries('receipts');
+      queryClient.invalidateQueries('dashboards');
+      toast.success('Receipt Added Successfully');
       setIsLoading(false);
-      navigate("/receipts");
+      navigate('/receipts');
     },
     onError: (error) => {
       setIsLoading(false);
@@ -765,15 +765,15 @@ const Create = () => {
         const serverErrors = error.response.data.errors;
         if (serverStatus === false) {
           if (serverErrors.quantity) {
-            setError("quantity", {
-              type: "manual",
+            setError('quantity', {
+              type: 'manual',
               message: serverErrors.quantity[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
           }
           if (serverErrors.rate) {
-            setError("rate", {
-              type: "manual",
+            setError('rate', {
+              type: 'manual',
               message: serverErrors.rate[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
@@ -783,127 +783,128 @@ const Create = () => {
             setHallErrorMessage(serverErrors.hall_booked[0]);
           }
           if (serverErrors.hall) {
-            setError("hall", {
-              type: "manual",
+            setError('hall', {
+              type: 'manual',
               message: serverErrors.hall[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
           }
           if (serverErrors.saree_draping_date_morning) {
-            setError("saree_draping_date_morning", {
-              type: "manual",
+            setError('saree_draping_date_morning', {
+              type: 'manual',
               message: serverErrors.saree_draping_date_morning[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
           }
           if (serverErrors.saree_draping_date_evening) {
-            setError("saree_draping_date_evening", {
-              type: "manual",
+            setError('saree_draping_date_evening', {
+              type: 'manual',
               message: serverErrors.saree_draping_date_evening[0], // The error message from the server
             });
             // toast.error("The poo has already been taken.");
           }
           if (serverErrors.uparane_draping_date_morning) {
-            setError("uparane_draping_date_morning", {
-              type: "manual",
+            setError('uparane_draping_date_morning', {
+              type: 'manual',
               message: serverErrors.uparane_draping_date_morning[0], // The error message from the server
             });
           }
           if (serverErrors.uparane_draping_date_evening) {
-            setError("uparane_draping_date_evening", {
-              type: "manual",
+            setError('uparane_draping_date_evening', {
+              type: 'manual',
               message: serverErrors.uparane_draping_date_evening[0], // The error message from the server
             });
           }
           if (serverErrors.saree_days) {
-            toast.error("Date field is required.");
+            toast.error('Date field is required.');
           }
           if (serverErrors.uparane_days) {
-            toast.error("Date field is required.");
+            toast.error('Date field is required.');
           }
           if (serverErrors.pooja_type_id) {
-            setError("pooja_type_id", {
-              type: "manual",
+            setError('pooja_type_id', {
+              type: 'manual',
               message: serverErrors.pooja_type_id[0],
             });
           }
           if (serverErrors.date) {
-            setError("date", {
-              type: "manual",
+            setError('date', {
+              type: 'manual',
               message: serverErrors.date[0],
             });
           }
           if (serverErrors.gotra) {
-            setError("gotra", {
-              type: "manual",
+            setError('gotra', {
+              type: 'manual',
               message: serverErrors.gotra[0],
             });
+            toast.error('Gotra field is required.');
           }
           if (serverErrors.multiple_dates) {
-            toast.error("Date field is required");
+            toast.error('Date field is required');
           }
           if (serverErrors.description) {
-            setError("description", {
-              type: "manual",
+            setError('description', {
+              type: 'manual',
               message: serverErrors.description[0],
             });
           }
           if (serverErrors.special_date) {
-            setError("special_date", {
-              type: "manual",
+            setError('special_date', {
+              type: 'manual',
               message: serverErrors.special_date[0],
             });
-            toast.error("Special Date field is required.");
+            toast.error('Special Date field is required.');
           }
           if (serverErrors.from_time) {
-            setError("from_time", {
-              type: "manual",
+            setError('from_time', {
+              type: 'manual',
               message: serverErrors.from_time[0],
             });
           }
           if (serverErrors.to_time) {
-            setError("to_time", {
-              type: "manual",
+            setError('to_time', {
+              type: 'manual',
               message: serverErrors.to_time[0],
             });
           }
           if (serverErrors.guruji) {
-            setError("guruji", {
-              type: "manual",
+            setError('guruji', {
+              type: 'manual',
               message: serverErrors.guruji[0],
             });
           }
           if (serverErrors.yajman) {
-            setError("yajman", {
-              type: "manual",
+            setError('yajman', {
+              type: 'manual',
               message: serverErrors.yajman[0],
             });
           }
           if (serverErrors.karma_number) {
-            setError("karma_number", {
-              type: "manual",
+            setError('karma_number', {
+              type: 'manual',
               message: serverErrors.karma_number[0],
             });
           }
           if (serverErrors.anteshti_dates) {
-            toast.error("Date field is required.");
+            toast.error('Date field is required.');
           }
           if (serverErrors.amount) {
-            setError("amount", {
-              type: "manual",
+            setError('amount', {
+              type: 'manual',
               message: serverErrors.amount[0],
             });
           }
         } else {
-          toast.error("Failed to add Receipt.");
+          toast.error('Failed to add Receipt.');
         }
       } else {
-        toast.error("Failed to add Receipt.");
+        toast.error('Failed to add Receipt.');
       }
     },
   });
   const handleClosePopup = () => {
-    setHallErrorMessage(""); // Close the popup by clearing the error message
+    setHallErrorMessage(''); // Close the popup by clearing the error message
   };
   // Function to set the cursor position
   // const setCursorToEnd = () => {
@@ -922,22 +923,22 @@ const Create = () => {
     // }
 
     if (!data.ac_charges) {
-      data.ac_amount = "";
+      data.ac_amount = '';
     }
     if (!data.day_9) {
-      data.day_9_date = "";
+      data.day_9_date = '';
     }
     if (!data.day_10) {
-      data.day_10_date = "";
+      data.day_10_date = '';
     }
     if (!data.day_11) {
-      data.day_11_date = "";
+      data.day_11_date = '';
     }
     if (!data.day_12) {
-      data.day_12_date = "";
+      data.day_12_date = '';
     }
     if (!data.day_13) {
-      data.day_13_date = "";
+      data.day_13_date = '';
     }
     const payload = {
       ...data, // existing form data
@@ -949,8 +950,8 @@ const Create = () => {
   const handleReceiptTypeChange = (value) => {
     setSelectedReceiptTypeId(value?.id);
     // setValue("amount", value?.minimum_amount);
-    setValue("amount", value?.minimum_amount || null);
-    setValue("special_date", value?.special_date || "");
+    setValue('amount', value?.minimum_amount || null);
+    setValue('special_date', value?.special_date || '');
     if (value?.id === 11) {
       setSelectedAnteshtiId(true);
     }
@@ -960,22 +961,22 @@ const Create = () => {
     }
   };
 
-  const receiptAmount = watch(["quantity", "rate"]);
+  const receiptAmount = watch(['quantity', 'rate']);
   useEffect(() => {
     const quantity = parseFloat(receiptAmount[0]) || 0;
     const rate = parseFloat(receiptAmount[1]) || 0;
     if (quantity && rate) {
       const totalAmount = (quantity * rate).toFixed(2); // Multiply instead of adding
-      setValue("amount", totalAmount);
+      setValue('amount', totalAmount);
     }
   }, [receiptAmount, setValue]);
 
   // ac amount change function
   const handleAcAmountChange = (e) => {
     const acAmount = parseFloat(e.target.value) || 0.0;
-    const currentAmount = parseFloat(watch("amount")) || 0.0;
+    const currentAmount = parseFloat(watch('amount')) || 0.0;
     const newAmount = (currentAmount + acAmount).toFixed(2); // Adjust decimal precision
-    setValue("amount", newAmount); // Update the form value
+    setValue('amount', newAmount); // Update the form value
   };
 
   // const handleAnteshteeCheckboxChange = (e, amountToAdd) => {
@@ -992,7 +993,7 @@ const Create = () => {
   // };
   const handleAnteshteeCheckboxChange = (e, dayAmountKey) => {
     const { checked } = e.target; // Get the state of the checkbox (checked or unchecked)
-    const currentAmount = parseFloat(watch("amount")) || 0.0; // Get the current amount
+    const currentAmount = parseFloat(watch('amount')) || 0.0; // Get the current amount
 
     // Get the amount for the selected day (e.g., day_9_amount, day_10_amount, etc.)
     const amountToAdd = parseFloat(anteshteeAmounts[dayAmountKey]);
@@ -1004,7 +1005,7 @@ const Create = () => {
 
     // Update the "amount" field in the form
     // setValue("amount", parseFloat(newAmount));
-    setValue("amount", newAmount.toFixed(2));
+    setValue('amount', newAmount.toFixed(2));
   };
 
   console.log(showRemembrance);
@@ -1018,7 +1019,7 @@ const Create = () => {
           <div className="flex items-center space-x-2 text-gray-700">
             <span className="">
               <Button
-                onClick={() => navigate("/receipts")}
+                onClick={() => navigate('/receipts')}
                 className="p-0 text-blue-700 text-sm font-light"
                 variant="link"
               >
@@ -1134,7 +1135,7 @@ const Create = () => {
                         <Button
                           variant="outline"
                           role="combobox"
-                          aria-expanded={openReceiptHead ? "true" : "false"} // This should depend on the popover state
+                          aria-expanded={openReceiptHead ? 'true' : 'false'} // This should depend on the popover state
                           className=" w-[325px] justify-between mt-1"
                           onClick={() => setOpenReceiptHead((prev) => !prev)} // Toggle popover on button click
                         >
@@ -1142,7 +1143,7 @@ const Create = () => {
                             ? Object.keys(
                                 allReceiptHeadsData?.ReceiptHeads
                               ).find((key) => key === field.value)
-                            : "Select Receipt Head..."}
+                            : 'Select Receipt Head...'}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </PopoverTrigger>
@@ -1163,10 +1164,10 @@ const Create = () => {
                                     key={key}
                                     value={key}
                                     onSelect={(currentValue) => {
-                                      setValue("receipt_head", key);
+                                      setValue('receipt_head', key);
                                       setSelectedReceiptHead(
                                         currentValue === selectedReceiptHead
-                                          ? ""
+                                          ? ''
                                           : currentValue
                                       );
                                       setOpenReceiptHead(false);
@@ -1176,10 +1177,10 @@ const Create = () => {
                                     {key}
                                     <Check
                                       className={cn(
-                                        "ml-auto",
+                                        'ml-auto',
                                         key === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
+                                          ? 'opacity-100'
+                                          : 'opacity-0'
                                       )}
                                     />
                                   </CommandItem>
@@ -1216,7 +1217,7 @@ const Create = () => {
                         <Button
                           variant="outline"
                           role="combobox"
-                          aria-expanded={openReceiptType ? "true" : "false"} // This should depend on the popover state
+                          aria-expanded={openReceiptType ? 'true' : 'false'} // This should depend on the popover state
                           className=" w-[325px] justify-between mt-1"
                           onClick={() => setOpenReceiptType((prev) => !prev)} // Toggle popover on button click
                         >
@@ -1225,7 +1226,7 @@ const Create = () => {
                               allReceiptTypesData?.ReceiptTypes.find(
                                 (receiptType) => receiptType.id === field.value
                               )?.receipt_type
-                            : "Select Receipt Type..."}
+                            : 'Select Receipt Type...'}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </PopoverTrigger>
@@ -1246,7 +1247,7 @@ const Create = () => {
                                       value={receiptType.id}
                                       onSelect={(currentValue) => {
                                         setValue(
-                                          "receipt_type_id",
+                                          'receipt_type_id',
                                           receiptType.id
                                         );
                                         // setSelectedReceiptTypeId(
@@ -1269,10 +1270,10 @@ const Create = () => {
                                       {receiptType.receipt_type}
                                       <Check
                                         className={cn(
-                                          "ml-auto",
+                                          'ml-auto',
                                           receiptType.id === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0"
+                                            ? 'opacity-100'
+                                            : 'opacity-0'
                                         )}
                                       />
                                     </CommandItem>
@@ -1506,7 +1507,7 @@ const Create = () => {
                     )}
                   </div>
                 ) : (
-                  ""
+                  ''
                 )}
 
                 {showSpecialDate ? (
@@ -1534,11 +1535,11 @@ const Create = () => {
                     )}
                   </div>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             ) : (
-              ""
+              ''
             )}
 
             {(selectedReceiptTypeId === bhangarReceiptId ||
@@ -1604,7 +1605,7 @@ const Create = () => {
               </div>
             )}
 
-            {paymentMode === "Bank" && (
+            {paymentMode === 'Bank' && (
               <>
                 <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                   <div className="relative ">
@@ -2152,7 +2153,7 @@ const Create = () => {
                           className="mt-1"
                           type="text"
                           placeholder="Enter time"
-                          style={{ width: "280px", height: "35px" }} // Inline style for width and height
+                          style={{ width: '280px', height: '35px' }} // Inline style for width and height
                         />
                       )}
                     />
@@ -2182,7 +2183,7 @@ const Create = () => {
                           className="mt-1"
                           type="text"
                           placeholder="Enter time"
-                          style={{ width: "280px", height: "35px" }} // Inline style for width and height
+                          style={{ width: '280px', height: '35px' }} // Inline style for width and height
                         />
                       )}
                     />
@@ -2489,7 +2490,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, "day_9_amount"); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, 'day_9_amount'); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2515,7 +2516,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, "day_10_amount"); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, 'day_10_amount'); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2541,7 +2542,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, "day_11_amount"); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, 'day_11_amount'); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2567,7 +2568,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, "day_12_amount"); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, 'day_12_amount'); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2593,7 +2594,7 @@ const Create = () => {
                           {...field}
                           onChange={(e) => {
                             field.onChange(e);
-                            handleAnteshteeCheckboxChange(e, "day_13_amount"); // Add 500 for Day 9
+                            handleAnteshteeCheckboxChange(e, 'day_13_amount'); // Add 500 for Day 9
                           }}
                           type="checkbox"
                           className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
@@ -2759,7 +2760,7 @@ const Create = () => {
                           <Button
                             variant="outline"
                             role="combobox"
-                            aria-expanded={openPoojaType ? "true" : "false"} // This should depend on the popover state
+                            aria-expanded={openPoojaType ? 'true' : 'false'} // This should depend on the popover state
                             className=" w-[325px] justify-between mt-1"
                             onClick={() => setOpenPoojaType((prev) => !prev)} // Toggle popover on button click
                           >
@@ -2768,7 +2769,7 @@ const Create = () => {
                                 allPoojaTypesData?.PoojaTypes.find(
                                   (poojaType) => poojaType.id === field.value
                                 )?.pooja_type
-                              : "Select Pooja Type..."}
+                              : 'Select Pooja Type...'}
                             <ChevronsUpDown className="opacity-50" />
                           </Button>
                         </PopoverTrigger>
@@ -2789,7 +2790,7 @@ const Create = () => {
                                         value={poojaType.id}
                                         onSelect={(currentValue) => {
                                           setValue(
-                                            "pooja_type_id",
+                                            'pooja_type_id',
                                             poojaType.id
                                           );
 
@@ -2800,10 +2801,10 @@ const Create = () => {
                                         {poojaType.pooja_type}
                                         <Check
                                           className={cn(
-                                            "ml-auto",
+                                            'ml-auto',
                                             poojaType.id === field.value
-                                              ? "opacity-100"
-                                              : "opacity-0"
+                                              ? 'opacity-100'
+                                              : 'opacity-0'
                                           )}
                                         />
                                       </CommandItem>
@@ -2847,7 +2848,7 @@ const Create = () => {
                 </div>
               </div>
             ) : (
-              ""
+              ''
             )}
 
             {/* <div className="w-full grid grid-cols-1 md:grid-cols-6 items-center gap-7 md:gap-1">
@@ -2891,7 +2892,7 @@ const Create = () => {
                             <Button
                               variant="outline"
                               role="combobox"
-                              aria-expanded={openPoojaType ? "true" : "false"} // This should depend on the popover state
+                              aria-expanded={openPoojaType ? 'true' : 'false'} // This should depend on the popover state
                               className=" w-[325px] justify-between mt-1"
                               onClick={() => setOpenPoojaType((prev) => !prev)} // Toggle popover on button click
                             >
@@ -2900,7 +2901,7 @@ const Create = () => {
                                   allPoojaTypesMultipleData?.PoojaTypes.find(
                                     (poojaType) => poojaType.id === field.value
                                   )?.pooja_type
-                                : "Select Pooja Type..."}
+                                : 'Select Pooja Type...'}
                               <ChevronsUpDown className="opacity-50" />
                             </Button>
                           </PopoverTrigger>
@@ -2923,7 +2924,7 @@ const Create = () => {
                                           value={poojaType.id}
                                           onSelect={(currentValue) => {
                                             setValue(
-                                              "pooja_type_id",
+                                              'pooja_type_id',
                                               poojaType.id
                                             );
                                             setSelectedPoojaTypeId(
@@ -2936,10 +2937,10 @@ const Create = () => {
                                           {poojaType.pooja_type}
                                           <Check
                                             className={cn(
-                                              "ml-auto",
+                                              'ml-auto',
                                               poojaType.id === field.value
-                                                ? "opacity-100"
-                                                : "opacity-0"
+                                                ? 'opacity-100'
+                                                : 'opacity-0'
                                             )}
                                           />
                                         </CommandItem>
@@ -3026,7 +3027,7 @@ const Create = () => {
                       htmlFor={poojaDate.pooja_date}
                     >
                       {new Date(poojaDate.pooja_date).toLocaleDateString(
-                        "en-GB"
+                        'en-GB'
                       )}
                     </Label>
                   </div>
@@ -3071,7 +3072,7 @@ const Create = () => {
                 )}
               </div>
 
-              {paymentMode === "UPI" && (
+              {paymentMode === 'UPI' && (
                 <>
                   <div className="relative">
                     <Label className="font-normal" htmlFor="upi_number">
@@ -3129,7 +3130,7 @@ const Create = () => {
               <Button
                 type="button"
                 className="dark:text-white shadow-xl bg-red-600 hover:bg-red-700"
-                onClick={() => navigate("/receipts")}
+                onClick={() => navigate('/receipts')}
               >
                 Cancel
               </Button>
@@ -3145,7 +3146,7 @@ const Create = () => {
                     Submitting...
                   </>
                 ) : (
-                  "Submit"
+                  'Submit'
                 )}
               </Button>
             </div>
