@@ -1415,6 +1415,13 @@ const Create = () => {
                 <Controller
                   name="mobile"
                   control={control}
+                  rules={{
+                    required: "Mobile number is required",
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: "Mobile number must be exact 10 digits",
+                    },
+                  }}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -1422,7 +1429,7 @@ const Create = () => {
                       className="mt-1"
                       type="text"
                       placeholder="Enter mobile"
-                      // maxLength={10} // Restrict input to 10 characters
+                      maxLength={10} // Restrict input to 10 characters
                       // pattern="^[0-9]{10}$" // Only allow exactly 10 digits
                     />
                     // <PhoneInput
