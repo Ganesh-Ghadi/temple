@@ -51,7 +51,21 @@ const Delete = ({ id }) => {
     },
     onError: (error) => {
       setIsLoading(false);
-      toast.error("Faild to delete receipt type");
+      if (error?.response && error?.response?.data?.errors) {
+        const serverStatus = error?.response?.data?.status;
+        const serverErrors = error?.response?.data?.errors;
+        if (serverStatus === false) {
+          if (serverErrors.delete_error) {
+            return toast.error(serverErrors.delete_error[0]);
+          }
+          return toast.error("Failed to add Receipt type.");
+        } else {
+          return toast.error("Failed to add Receipt type.");
+        }
+      } else {
+        return toast.error("Failed to add Receipt type.");
+      }
+      return toast.error("Failed to delete Receipt type");
     },
   });
   const onDelete = () => {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Receipt;
 use App\Models\ReceiptType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -126,6 +127,22 @@ class ReceiptTypesController extends BaseController
         if(!$receiptType){
             return $this->sendError("Receipt Type not found", ['error'=>'Receipt Type not found']);
         }
+
+         // Check if there are any receipts related to this receipt type
+    $relatedReceipts = Receipt::where('receipt_type_id', $id)->exists();
+    
+    // If related receipts exist, don't allow the deletion
+    if ($relatedReceipts) {
+        // return $this->sendError("Cannot delete Receipt Type with existing related receipts", ['error' => 'There are receipts associated with this Receipt Type']);
+        return response()->json([
+            'status' => false,
+            'message' => 'Validation failed',
+            'errors' => [
+                'delete_error' => ['There are receipts associated with this Receipt Type.']
+            ],
+        ], 422);
+    }
+    
         $receiptType->delete();
         return $this->sendResponse([], "Receipt Type deleted successfully");
     }
