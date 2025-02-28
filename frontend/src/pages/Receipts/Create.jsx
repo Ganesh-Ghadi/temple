@@ -85,12 +85,23 @@ const formSchema = z.object({
   quantity: z.coerce.number().optional(),
   rate: z.coerce.number().optional(),
   // email: z.string().optional(),
+  // email: z
+  //   .string()
+  //   .email("Invalid email address.")
+  //   .max(100, "email must not exceed 100 characters.")
+  //   .optional()
+  //   .nullable(),
   email: z
     .string()
-    .max(100, "Name must not exceed 100 characters.")
-    .email("Invalid email address.")
+    .max(100, "email must not exceed 100 characters.")
     .optional()
-    .nullable(),
+    .nullable()
+    .refine(
+      (value) => value === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+      {
+        message: "Invalid email address.",
+      }
+    ),
   special_date: z.string().optional(),
   payment_mode: z.string().min(1, "Payment Mode field is required"),
   // mobile: z
@@ -303,7 +314,7 @@ const Create = () => {
     receipt_head: "",
     quantity: "",
     rate: "",
-    email: null,
+    email: "",
     mobile: "",
     address: "",
     narration: "",

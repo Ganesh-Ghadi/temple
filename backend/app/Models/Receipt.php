@@ -18,25 +18,68 @@ use App\Models\UparaneReceipt;
 use App\Models\AnteshteeReceipt;
 use App\Models\StudyRoomReceipt;
 use App\Models\VasturupeeReceipt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
 {
+    // public static function generateReceiptNumber(): string
+    // {
+    //     // Find the latest profile number for the current month and year
+    //     $latestNumber = Receipt::where('receipt_no', 'like', date('my') . '%')
+    //                     ->orderBy('receipt_no', 'DESC')
+    //                     ->first();
+
+    //     // Increment the numeric part of the profile number
+    //     $lastNumber = 1;
+
+    //     if ($latestNumber) {
+    //         $lastNumber = intval(substr($latestNumber->receipt_no, 4)) + 1;
+    //     }
+    //     return date('my') . str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
+    // }
+
     public static function generateReceiptNumber(): string
     {
-        // Find the latest profile number for the current month and year
-        $latestNumber = Receipt::where('receipt_no', 'like', date('my') . '%')
-                        ->orderBy('receipt_no', 'DESC')
-                        ->first();
+        return DB::transaction(function () {
 
-        // Increment the numeric part of the profile number
-        $lastNumber = 1;
+        // Get the current date
+        $currentDate = now(); // 'now()' returns the current date and time.
+    
+        // Determine the financial year
+        // Assuming financial year starts from April 1st
+        $financialYearStart = now()->month >= 4 ? now()->year : now()->year - 1;
+        $financialYearEnd = $financialYearStart + 1;
+    
+        // Format financial year as YY (last 2 digits of the year)
+        // $financialYear = substr($financialYearStart, 2, 2) . substr($financialYearEnd, 2, 2);
+        $financialYear = substr((string)$financialYearStart, 2, 2) . substr((string)$financialYearEnd, 2, 2);
 
-        if ($latestNumber) {
-            $lastNumber = intval(substr($latestNumber->receipt_no, 4)) + 1;
+        // Get the latest receipt for the current financial year
+        $lastReceipt = Receipt::where('receipt_no', 'like', $financialYear . '%')
+                            ->orderBy('created_at', 'DESC') // Order by creation date descending
+                            ->first();
+    
+        // If no receipt exists, start with 1
+        $lastNumber = 22575;
+    
+        if ($lastReceipt) {
+            // Extract the numeric part from the receipt_no (after the hyphen)
+            $lastNumber = intval(substr($lastReceipt->receipt_no, 5)) + 1;
         }
-        return date('my') . str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
+    
+        // Increment receipt number and format it with leading zeros
+        $newReceiptNumber = str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
+    
+        // Generate the receipt number in the format 'YY-XXXX'
+        $receiptNumber = $financialYear . '-' . $newReceiptNumber;
+    
+        // Return the generated receipt number
+        return $receiptNumber;
+    });
+
     }
+    
 
     public function receiptType(){
         return $this->belongsTo(ReceiptType::class, 'receipt_type_id');
