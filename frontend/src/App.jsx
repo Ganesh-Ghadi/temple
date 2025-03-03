@@ -51,6 +51,7 @@ import CancelledReceiptReport from "./pages/Reports/CancelledReceiptReport/index
 import ReceiptsReport from "./pages/Reports/ReceiptsReport/index";
 import GotravaliSummaryReport from "./pages/Reports/GotravaliSummaryReport/index";
 import GotravaliReport from "./pages/Reports/GotravaliReport/index";
+import AnteshteeReport from "./pages/Reports/AnteshteeReport/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Error from "./customComponents/Error/Error";
@@ -136,6 +137,7 @@ const App = () => {
             element={<GotravaliSummaryReport />}
           />
           <Route path="/gotravali_report" element={<GotravaliReport />} />
+          <Route path="/anteshtee_report" element={<AnteshteeReport />} />
         </Route>
         <Route
           errorElement={<Error />}

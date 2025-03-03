@@ -1369,4 +1369,111 @@ class ReportsController extends BaseController
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
         // return $this->sendResponse([], "Invoice generated successfully");
     }
+
+
+    public function AnteshteeReport(Request $request)
+    {
+        $date = $request->input('date');
+         $anteshteeReceiptTypeId = 11;
+        $receipts = Receipt::with('anteshteeReceipt')
+        ->where("cancelled", false)
+        ->where('receipt_type_id', $anteshteeReceiptTypeId)
+        ->whereHas('anteshteeReceipt', function ($query) use ($date){
+            $query->where(function ($subQuery) use ($date) {
+            //     $subQuery->where('day_9_date', $date)
+            //              ->orWhere('day_10_date', $date)
+            //              ->orWhere('day_11_date', $date)
+            //              ->orWhere('day_12_date', $date)
+            //              ->orWhere('day_13_date', $date);
+            // });
+                        $subQuery->where('day_9_date', $date)->where('day_9', true)
+                        ->orWhere('day_10_date', $date)->where('day_10', true)
+                        ->orWhere('day_11_date', $date)->where('day_11', true)
+                        ->orWhere('day_12_date', $date)->where('day_12', true)
+                        ->orWhere('day_13_date', $date)->where('day_13', true);
+            });
+        })
+        ->get();
+      
+
+        if(!$receipts){
+            return $this->sendError("receipts not found", ['error'=>['receipts not found']]);
+        }
+        
+        $data = [
+            'receipts' => $receipts,
+            'date' => $date,
+        ];
+
+        // Render the Blade view to HTML
+        $html = view('Reports.AnteshteeReceiptReport.index', $data)->render();
+
+        // Create a new mPDF instance
+        // $mpdf = new Mpdf();
+            // $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'orientation' => 'L']);  // 'P' is for portrait (default)
+            $defaultConfig = (new ConfigVariables())->getDefaults();
+            $fontDirs = $defaultConfig['fontDir'];
+        
+            $defaultFontConfig = (new FontVariables())->getDefaults();
+            $fontData = $defaultFontConfig['fontdata'];
+
+            $mpdf = new Mpdf([
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'orientation' => 'P',
+                'fontDir' => array_merge($fontDirs, [
+                    storage_path('fonts/'), // Update to point to the storage/fonts directory
+                ]),
+                'fontdata' => $fontData + [
+                    'notosansdevanagari' => [
+                        'R' => 'NotoSansDevanagari-Regular.ttf',
+                        'B' => 'NotoSansDevanagari-Bold.ttf',
+                    ], 
+                ],
+                'default_font' => 'notosansdevanagari',
+                'margin_top' => 18,        // Set top margin to 0
+                'margin_left' => 8,      // Optional: Set left margin if needed
+                'margin_right' => 8,     // Optional: Set right margin if needed
+                'margin_bottom' => 20,     // Optional: Set bottom margin if needed
+            ]);
+            
+            $DateFormatted = \Carbon\Carbon::parse($date)->format('d/m/Y');
+            
+            // Set header HTML with dynamic values
+            $headerHtml = '
+            <div style="text-align: center;">
+                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - अंत्येष्टी कर्म पावत्या ' . $DateFormatted . '.'.'</p>
+            </div>
+            <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
+            
+            // Set the header for each page
+            $mpdf->SetHTMLHeader($headerHtml);
+            
+            // $footerHtml = '
+            // <div style="border-top: 1px solid black; display: flex; justify-content: space-between; padding: 5px;">
+            //     <p style="margin: 0; text-align: center; flex: 1;">Printed on ' . \Carbon\Carbon::now()->format('d-m-Y H:i') . '</p>
+            //     <p style="margin: 0; text-align: right; flex: 1;">Page {PAGENO} of {nb}</p>
+            // </div>';
+            $footerHtml = '
+            <div style="border-top: 1px solid black; margin-top: 5px;"></div> <!-- Line above the footer -->
+            <div style="width: 100%; text-align: center; padding-top: 5px;">
+                <span>Printed on ' . \Carbon\Carbon::now()->format('d/m/Y h:i A') . '</span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <span>Page {PAGENO} of {nb}</span>
+            </div>';
+        
+            
+            $mpdf->SetHTMLFooter($footerHtml);
+
+
+        // Write HTML to the PDF
+        $mpdf->WriteHTML($html);
+        $randomNumber = rand(1000, 9999);
+        // Define the file path for saving the PDF
+        $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
+        $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
+        // Output the PDF for download
+        return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
+        // return $this->sendResponse([], "Invoice generated successfully");
+    }
 }

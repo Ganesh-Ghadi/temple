@@ -106,6 +106,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       logo: <ClipboardPlus size={16} />,
       children: [
         {
+          name: "Anteshtee Report",
+          path: "/anteshtee_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Gotravali",
           path: "/gotravali_report",
           logo: <ClipboardMinus size={16} />,
@@ -192,6 +197,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       path: "#",
       logo: <ClipboardPlus size={16} />,
       children: [
+        {
+          name: "Anteshtee Report",
+          path: "/anteshtee_report",
+          logo: <ClipboardMinus size={16} />,
+        },
         {
           name: "Gotravali",
           path: "/gotravali_report",

@@ -164,6 +164,11 @@ const MobileSidebar = ({ open, setOpen }) => {
       logo: <ClipboardPlus size={16} />,
       children: [
         {
+          name: "Anteshtee Report",
+          path: "/anteshtee_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Gotravali",
           path: "/gotravali_report",
           logo: <ClipboardMinus size={16} />,
@@ -250,6 +255,11 @@ const MobileSidebar = ({ open, setOpen }) => {
       path: "#",
       logo: <ClipboardPlus size={16} />,
       children: [
+        {
+          name: "Anteshtee Report",
+          path: "/anteshtee_report",
+          logo: <ClipboardMinus size={16} />,
+        },
         {
           name: "Gotravali",
           path: "/gotravali_report",
