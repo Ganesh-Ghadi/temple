@@ -973,7 +973,7 @@ public function index(Request $request): JsonResponse
     //  }
     public function generateReceipt(string $id)
     {
-        $receipt = Receipt::with('libraryReceipt','hallReceipt','vasturupeeReceipt','poojas','bhangarReceipt','anteshteeReceipt','uparaneReceipt','sareeReceipt','naralReceipt','khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
+        $receipt = Receipt::with('guruji','libraryReceipt','hallReceipt','vasturupeeReceipt','poojas','bhangarReceipt','anteshteeReceipt','uparaneReceipt','sareeReceipt','naralReceipt','khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
         if (!$receipt) {
             return $this->sendError("receipt not found", ['error' => ['receipt not found']]);
         }
@@ -1043,6 +1043,9 @@ public function index(Request $request): JsonResponse
         }
         else if($receipt->receipt_type_id == 14){
             $html = view('Receipt.bharani_shradhh_receipt.index', $data)->render();
+        }
+        else if($receipt->receipt_type_id == 34){
+            $html = view('Receipt.vahan_pooja_receipt.index', $data)->render();
         }
         else{
             $html = view('Receipt.receipt', $data)->render();
