@@ -40,6 +40,7 @@ class StoreReceiptRequest extends FormRequest
             'cheque_number' => 'required_if:payment_mode,Bank',
             'cheque_date' => 'required_if:payment_mode,Bank',
             'upi_number' => 'required_if:payment_mode,UPI',
+
         ];
     }
 
@@ -82,7 +83,7 @@ class StoreReceiptRequest extends FormRequest
         });
 
         $validator->sometimes('guruji', 'required', function ($input) {
-            return in_array($input->receipt_type_id, [11, 14]);
+            return in_array($input->receipt_type_id, [11, 14, 34]);
         });
 
         $validator->sometimes('yajman', 'required', function ($input) {
@@ -118,6 +119,7 @@ class StoreReceiptRequest extends FormRequest
     // $poojaReceiptId = 12;
     // $poojaPavtiAnekReceiptId = 13;
     // $bharaniShradhhId = 14;
+    // $vahanPoojaId = 34;
 
     protected function failedValidation(Validator $validator)
     {

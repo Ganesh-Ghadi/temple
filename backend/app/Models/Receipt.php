@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Pooja;
+use App\Models\Guruji;
 use App\Models\Profile;
 use App\Models\Receipt;
 use App\Models\PoojaType;
@@ -61,7 +62,7 @@ class Receipt extends Model
                             ->first();
     
         // If no receipt exists, start with 1
-        $lastNumber = 22575;
+        $lastNumber = 1;
     
         if ($lastReceipt) {
             // Extract the numeric part from the receipt_no (after the hyphen)
@@ -83,6 +84,10 @@ class Receipt extends Model
 
     public function receiptType(){
         return $this->belongsTo(ReceiptType::class, 'receipt_type_id');
+    }
+
+    public function guruji(){
+        return $this->belongsTo(Guruji::class, 'guruji_id');
     }
 
     public function khatReceipt(){

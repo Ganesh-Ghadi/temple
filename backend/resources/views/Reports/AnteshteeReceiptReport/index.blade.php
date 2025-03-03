@@ -41,6 +41,7 @@
         <thead>
         <tr>
             <th>Receipt No</th>
+            <th>Receipt Date</th>
             <th>Receipt Type</th>
             <th>Guruji Name</th>
             <th>Yajman Name</th>
@@ -51,6 +52,7 @@
             @foreach($receipts as $receipt)
             <tr>
                 <td>{{$receipt->receipt_no}}</td>
+                <td>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
                 <td>{{$receipt->receiptType->receipt_type}}</td>
                 <td>{{$receipt->anteshteeReceipt->guruji}}</td>
                 <td>{{$receipt->anteshteeReceipt->yajman}}</td>

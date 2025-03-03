@@ -171,6 +171,7 @@ public function index(Request $request): JsonResponse
         $poojaReceiptId = 12;
         $poojaPavtiAnekReceiptId = 13;
         $bharaniShradhhId = 14;
+        $vahanPoojaId = 34;
 
         //validation start
         //saree validation
@@ -487,6 +488,12 @@ public function index(Request $request): JsonResponse
             $day_12_date = $request->input("day_12_date");
             $day_13_date = $request->input("day_13_date");
 
+            $day_9 = $request->input("day_9");
+            $day_10 = $request->input("day_10");
+            $day_11 = $request->input("day_11");
+            $day_12 = $request->input("day_12");
+            $day_13 = $request->input("day_13");
+
 
             if (!$day_9_date && !$day_10_date && !$day_11_date && !$day_12_date && !$day_13_date) {
                 return response()->json([
@@ -497,6 +504,66 @@ public function index(Request $request): JsonResponse
                     ],
                 ], 422);
             }
+
+            if($day_9 == true){
+                 if(!$day_9_date){
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'day_9_date' => ['day 9 date field is required']
+                        ],
+                    ], 422);
+                 }
+            }
+
+            if($day_10 == true){
+                if(!$day_10_date){
+                   return response()->json([
+                       'status' => false,
+                       'message' => 'Validation failed',
+                       'errors' => [
+                           'day_10_date' => ['day 10 date field is required']
+                       ],
+                   ], 422);
+                }
+           }
+
+           if($day_11 == true){
+            if(!$day_11_date){
+               return response()->json([
+                   'status' => false,
+                   'message' => 'Validation failed',
+                   'errors' => [
+                       'day_11_date' => ['day 11 date field is required']
+                   ],
+               ], 422);
+            }
+           }
+
+                if($day_12 == true){
+                    if(!$day_12_date){
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Validation failed',
+                        'errors' => [
+                            'day_12_date' => ['day 12 date field is required']
+                        ],
+                    ], 422);
+                    }
+            }
+
+                    if($day_13 == true){
+                        if(!$day_13_date){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Validation failed',
+                            'errors' => [
+                                'day_13_date' => ['day 13 date field is required']
+                            ],
+                        ], 422);
+                        }
+                }
 
         }
 
@@ -600,6 +667,9 @@ public function index(Request $request): JsonResponse
         $receipt->remembrance = $request->input("remembrance");
         $amountInWords = AmountToWordsHelper::amountToWords($request->input("amount"));
         $receipt->amount_in_words = $amountInWords;
+        if ($request->input("receipt_type_id") == $vahanPoojaId) {
+            $receipt->guruji_id = $request->input("guruji");
+        }
         $receipt->save();
 
         $multiple_dates = $request->input("multiple_dates");
@@ -756,6 +826,9 @@ public function index(Request $request): JsonResponse
             $bharani_shradhh_receipt->guruji = $request->input("guruji");                                                                                       
             $bharani_shradhh_receipt->save();
         }
+
+      
+
         
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');
     }

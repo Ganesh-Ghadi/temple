@@ -280,6 +280,7 @@ const Create = () => {
   const poojaReceiptId = 12;
   const poojaPavtiAnekReceiptId = 13;
   const bharani_shradhhId = 14;
+  const vahanPoojaId = 34;
 
   const frameworks = {
     hallName: [
@@ -544,9 +545,9 @@ const Create = () => {
     queryKey: ["allGurijis"], // This is the query key
     queryFn: async () => {
       try {
-        if (!selectedAnteshtiId && !selectedShradhhId) {
-          return [];
-        }
+        // if (!selectedAnteshtiId && !selectedShradhhId) {
+        //   return [];
+        // }
         const response = await axios.get(`/api/all_gurujis`, {
           headers: {
             "Content-Type": "application/json",
@@ -558,7 +559,7 @@ const Create = () => {
         throw new Error(error.message);
       }
     },
-    enabled: !!selectedAnteshtiId || !!selectedShradhhId, // Enable the query only if selectedPoojaTypeId is truthy
+    // enabled: !!selectedAnteshtiId || !!selectedShradhhId, // Enable the query only if selectedPoojaTypeId is truthy
   });
 
   const {
@@ -943,6 +944,36 @@ const Create = () => {
           }
           if (serverErrors.anteshti_dates) {
             toast.error("Date field is required.");
+          }
+          if (serverErrors.day_9_date) {
+            setError("day_9_date", {
+              type: "manual",
+              message: serverErrors.day_9_date[0],
+            });
+          }
+          if (serverErrors.day_10_date) {
+            setError("day_10_date", {
+              type: "manual",
+              message: serverErrors.day_10_date[0],
+            });
+          }
+          if (serverErrors.day_11_date) {
+            setError("day_11_date", {
+              type: "manual",
+              message: serverErrors.day_11_date[0],
+            });
+          }
+          if (serverErrors.day_12_date) {
+            setError("day_12_date", {
+              type: "manual",
+              message: serverErrors.day_12_date[0],
+            });
+          }
+          if (serverErrors.day_13_date) {
+            setError("day_13_date", {
+              type: "manual",
+              message: serverErrors.day_13_date[0],
+            });
           }
           if (serverErrors.amount) {
             setError("amount", {
@@ -2413,6 +2444,46 @@ const Create = () => {
               </div>
             )}
 
+{selectedReceiptTypeId === vahanPoojaId && (
+              <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
+                <div className="relative">
+                  <Label className="font-normal" htmlFor="guruji">
+                    Guruji Name: <span className="text-red-500">*</span>
+                  </Label>
+                  <Controller
+                    name="guruji"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select guruji" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Select Guruji</SelectLabel>
+                            {AllGurujisData?.Gurujis &&
+                              AllGurujisData?.Gurujis.map((guruji) => (
+                                <SelectItem value={String(guruji.id)}>
+                                  {guruji.guruji_name}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.guruji && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.guruji.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             {selectedReceiptTypeId === bharani_shradhhId && (
               <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-4">
                 <div className="relative">
@@ -2452,6 +2523,7 @@ const Create = () => {
                 </div>
               </div>
             )}
+            
 
             {selectedReceiptTypeId === anteshteeReceiptId && (
               <div>

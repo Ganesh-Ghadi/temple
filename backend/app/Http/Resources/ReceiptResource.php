@@ -17,6 +17,8 @@ class ReceiptResource extends JsonResource
         return [
             'id' => $this->id,
             'receipt_type_id' => $this->receipt_type_id,
+            'guruji_id' => $this->guruji_id,
+            'guruji_name' => $this->guruji ? $this->guruji->guruji_name : "",
             'receipt_type' => $this->receiptType ? $this->receiptType->receipt_type : null,
             'receipt_no' => $this->receipt_no,
             'receipt_head' => $this->receipt_head,
