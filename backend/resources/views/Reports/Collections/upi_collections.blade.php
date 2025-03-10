@@ -43,6 +43,7 @@
             <th>Receipt No</th>
             <th>Receipt Date</th>
             <th>Receipt Head</th>
+            <th>Receipt Type</th>
             <th>Name</th>
             <th>UPI Number</th>
             <th>Amount</th>
@@ -54,6 +55,7 @@
                 <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->receipt_no}}</td>
                 <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{ \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y') }}</td>
                 <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->receipt_head}}</td>
+                <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->receiptType->receipt_type}}</td>
                 <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->name}}</td>
                 <td @if($receipt->cancelled == true) style="text-decoration:line-through" @endif>{{$receipt->upi_number}}</td>
                 <td @if($receipt->cancelled == true) style="text-decoration:line-through; text-align: right;"@else style="text-align: right;" @endif>{{$receipt->amount}}</td>
@@ -61,6 +63,7 @@
             @endforeach
            
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

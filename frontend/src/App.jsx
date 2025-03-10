@@ -43,6 +43,7 @@ import UpdateReceipts from "./pages/Receipts/Update";
 import Permissions from "./pages/Permissions/index";
 import AllReceipts from "./pages/Reports/AllReceipts/index";
 import ReceiptSummary from "./pages/Reports/ReceiptSummary/index";
+import ReceiptTotalSummary from "./pages/Reports/ReceiptTotalSummary/index";
 import ChequeCollectionReport from "./pages/Reports/ChequeCollectionReport/index";
 import UPICollectionReport from "./pages/Reports/UPICollectionReport/index";
 import KhatReport from "./pages/Reports/KhatReport/index";
@@ -117,6 +118,10 @@ const App = () => {
           <Route path="/permissions" element={<Permissions />} />
           <Route path="/all_receipts" element={<AllReceipts />} />
           <Route path="/receipt_summary" element={<ReceiptSummary />} />
+          <Route
+            path="/receipt_total_summary"
+            element={<ReceiptTotalSummary />}
+          />
           <Route
             path="/cheque_collection_report"
             element={<ChequeCollectionReport />}

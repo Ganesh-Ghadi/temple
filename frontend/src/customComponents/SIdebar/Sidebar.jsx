@@ -136,6 +136,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           logo: <ClipboardMinus size={16} />,
         },
         {
+          name: "Receipt Total Summary",
+          path: "/receipt_total_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Cheque Collection",
           path: "/cheque_collection_report",
           logo: <ClipboardMinus size={16} />,
@@ -225,6 +230,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {
           name: "Receipt Summary",
           path: "/receipt_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Receipt Total Summary",
+          path: "/receipt_total_summary",
           logo: <ClipboardMinus size={16} />,
         },
         {

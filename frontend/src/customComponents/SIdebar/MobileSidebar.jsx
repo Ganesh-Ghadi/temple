@@ -194,6 +194,11 @@ const MobileSidebar = ({ open, setOpen }) => {
           logo: <ClipboardMinus size={16} />,
         },
         {
+          name: "Receipt Total Summary",
+          path: "/receipt_total_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Cheque Collection",
           path: "/cheque_collection_report",
           logo: <ClipboardMinus size={16} />,
@@ -286,6 +291,11 @@ const MobileSidebar = ({ open, setOpen }) => {
           logo: <ClipboardMinus size={16} />,
         },
         {
+          name: "Receipt Total Summary",
+          path: "/receipt_total_summary",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Cheque Collection",
           path: "/cheque_collection_report",
           logo: <ClipboardMinus size={16} />,
@@ -345,10 +355,10 @@ const MobileSidebar = ({ open, setOpen }) => {
         >
           <SheetHeader>
             <SheetTitle className="text-left mb-10">
-              <div className="flex gap-3 p-1 text-2xl items-center text-white">
+              <div className="flex gap-3 p-1 text-sm items-center text-white">
                 {" "}
                 <LayoutDashboard />
-                Designer
+                श्री गणेश मंदिर संस्थान, डोंबिवली
               </div>{" "}
             </SheetTitle>
           </SheetHeader>
