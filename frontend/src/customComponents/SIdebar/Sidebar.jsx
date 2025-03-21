@@ -115,11 +115,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/gotravali_report",
           logo: <ClipboardMinus size={16} />,
         },
-        {
-          name: "Gotravali New",
-          path: "/gotravali_report_new",
-          logo: <ClipboardMinus size={16} />,
-        },
+        // {
+        //   name: "Gotravali Summary New",
+        //   path: "/gotravali_summary_report_new",
+        //   logo: <ClipboardMinus size={16} />,
+        // },
         {
           name: "Gotravali Summary",
           path: "/gotravali_summary_report",
@@ -217,11 +217,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           path: "/gotravali_report",
           logo: <ClipboardMinus size={16} />,
         },
-        {
-          name: "Gotravali New",
-          path: "/gotravali_report_new",
-          logo: <ClipboardMinus size={16} />,
-        },
+        // {
+        //   name: "Gotravali Summary New",
+        //   path: "/gotravali_summary_report_new",
+        //   logo: <ClipboardMinus size={16} />,
+        // },
         {
           name: "Gotravali Summary",
           path: "/gotravali_summary_report",

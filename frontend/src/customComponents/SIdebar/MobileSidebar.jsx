@@ -174,6 +174,11 @@ const MobileSidebar = ({ open, setOpen }) => {
           logo: <ClipboardMinus size={16} />,
         },
         {
+          name: "Gotravali Summary New",
+          path: "/gotravali_summary_report_new",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Gotravali Summary",
           path: "/gotravali_summary_report",
           logo: <ClipboardMinus size={16} />,
@@ -273,6 +278,11 @@ const MobileSidebar = ({ open, setOpen }) => {
         {
           name: "Gotravali Summary",
           path: "/gotravali_summary_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Gotravali Summary New",
+          path: "/gotravali_summary_report_new",
           logo: <ClipboardMinus size={16} />,
         },
         {

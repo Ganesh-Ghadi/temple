@@ -51,6 +51,7 @@ import NaralReport from "./pages/Reports/NaralReport/index";
 import CancelledReceiptReport from "./pages/Reports/CancelledReceiptReport/index";
 import ReceiptsReport from "./pages/Reports/ReceiptsReport/index";
 import GotravaliSummaryReport from "./pages/Reports/GotravaliSummaryReport/index";
+import GotravaliSummaryReportNew from "./pages/Reports/GotravaliSummaryReportNew/index";
 import GotravaliReport from "./pages/Reports/GotravaliReport/index";
 import GotravaliReportNew from "./pages/Reports/GotravaliReportNew/index";
 import AnteshteeReport from "./pages/Reports/AnteshteeReport/index";
@@ -142,11 +143,12 @@ const App = () => {
             path="/gotravali_summary_report"
             element={<GotravaliSummaryReport />}
           />
-          <Route path="/gotravali_report" element={<GotravaliReport />} />
           <Route
-            path="/gotravali_report_new"
-            element={<GotravaliReportNew />}
+            path="/gotravali_summary_report_new"
+            element={<GotravaliSummaryReportNew />}
           />
+          <Route path="/gotravali_report" element={<GotravaliReport />} />
+
           <Route path="/anteshtee_report" element={<AnteshteeReport />} />
         </Route>
         <Route
