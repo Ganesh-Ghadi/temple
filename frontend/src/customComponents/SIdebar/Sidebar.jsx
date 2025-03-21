@@ -116,6 +116,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           logo: <ClipboardMinus size={16} />,
         },
         {
+          name: "Gotravali New",
+          path: "/gotravali_report_new",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
           name: "Gotravali Summary",
           path: "/gotravali_summary_report",
           logo: <ClipboardMinus size={16} />,
@@ -210,6 +215,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {
           name: "Gotravali",
           path: "/gotravali_report",
+          logo: <ClipboardMinus size={16} />,
+        },
+        {
+          name: "Gotravali New",
+          path: "/gotravali_report_new",
           logo: <ClipboardMinus size={16} />,
         },
         {

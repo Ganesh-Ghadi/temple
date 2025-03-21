@@ -45,9 +45,9 @@
         <tbody>
             @foreach($receiptsWithTotal as $receiptHead => $receiptHeadData)
                 <!-- Display Receipt Head Title -->
-                <tr>
+                {{-- <tr>
                     <td colspan="2" style="font-weight: bold;">{{ $receiptHead }}</td>
-                </tr>
+                </tr> --}}
 
                 {{-- Loop through each receiptType within the current receiptHead --}}
                 @foreach($receiptHeadData as $receiptTypeId => $data)
@@ -82,16 +82,15 @@
             <tr>
                 <td style="font-weight: bold; text-align:right">Card Total:</td>
                 <td style="font-weight: bold; text-align: right;" >{{$cardTotal}}</td>
-            </tr>
+            </tr> --}}
             <tr>
                 <td style="font-weight: bold; text-align:right">TOTAL:</td>
                 <td style="font-weight: bold; text-align: right;" >{{$Total}}</td>
-            </tr> --}}
+            </tr> 
         </tbody>
     </table>
 
 </body>
-
 
 </html>
 

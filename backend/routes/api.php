@@ -70,5 +70,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::get('/all_select_receipt_types', [ReceiptTypesController::class, 'allSelectReceiptTypes'])->name("receipt_types.allSelect");
    Route::post('/anteshtee_report', [ReportsController::class, 'AnteshteeReport'])->name("report.anteshtee_report");
    Route::post('/total_summary_receipt_report', [ReportsController::class, 'ReceiptTotalSummaryReport'])->name("report.total_summary_receipt_report");
+   Route::post('/gotravali_report_new', [ReportsController::class, 'gotravaliReportNew'])->name("report.gotravali_report_new");
 
 });
