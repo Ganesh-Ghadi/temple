@@ -53,7 +53,6 @@ import ReceiptsReport from "./pages/Reports/ReceiptsReport/index";
 import GotravaliSummaryReport from "./pages/Reports/GotravaliSummaryReport/index";
 import GotravaliSummaryReportNew from "./pages/Reports/GotravaliSummaryReportNew/index";
 import GotravaliReport from "./pages/Reports/GotravaliReport/index";
-import GotravaliReportNew from "./pages/Reports/GotravaliReportNew/index";
 import AnteshteeReport from "./pages/Reports/AnteshteeReport/index";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -142,10 +141,6 @@ const App = () => {
           <Route
             path="/gotravali_summary_report"
             element={<GotravaliSummaryReport />}
-          />
-          <Route
-            path="/gotravali_summary_report_new"
-            element={<GotravaliSummaryReportNew />}
           />
           <Route path="/gotravali_report" element={<GotravaliReport />} />
 

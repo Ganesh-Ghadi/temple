@@ -1669,6 +1669,9 @@ class ReportsController extends BaseController
 
         $receipts = Receipt::with(['poojas.poojaType', 'receiptType'])
             ->where("cancelled", false)
+            ->whereHas('receiptType', function ($query) use ($date) {
+                $query->where("is_pooja", true);
+            })
             ->whereHas('poojas', function ($query) use ($date) {
                 // Apply the condition on pooja's date column
                 if ($date) {
@@ -1676,46 +1679,42 @@ class ReportsController extends BaseController
                 }
             });
         
-        // $receipts = Receipt::with(['pooja.poojaType', 'receiptType']) // Eager load related poojas and receiptType
-        //            ->whereHas('pooja');
-
-        // if ($date) {
-        //     $receipts->where('receipt_date', $date);
-        // }
-        
-    
         $receipts = $receipts->get();
-        // $poojaTypeCounts = $receipts->flatMap(function ($receipt) {
-        //     return $receipt->pooja->map(function ($puja) {
+      
+        // $poojaTypeCounts = $receipts->flatMap(function ($receipt) use ($date) {
+        //     return $receipt->poojas->filter(function ($puja) use ($date) {
+        //         return !$date || $puja->date == $date;
+        //     })->map(function ($puja) {
         //         return $puja->poojaType->pooja_type;
         //     });
-        // })->countBy(); 
-        $poojaTypeCounts = $receipts->flatMap(function ($receipt) use ($date) {
+        // })->countBy();
+        $poojaTypeCountsByReceiptType = $receipts->flatMap(function ($receipt) use ($date) {
             return $receipt->poojas->filter(function ($puja) use ($date) {
                 return !$date || $puja->date == $date;
-            })->map(function ($puja) {
-                return $puja->poojaType->pooja_type;
+            })->map(function ($puja) use ($receipt) {
+                return [
+                    'receiptType' => $receipt->receiptType->receipt_type, // Assuming 'receipt_type' is the field you want
+                    'poojaType' => $puja->poojaType->pooja_type, // Extract the pooja type
+                ];
             });
-        })->countBy();
+        })->groupBy('receiptType'); // Group by receiptType
+        
     
-        $totalCount = $poojaTypeCounts->sum(); // Sum of all co
+        // $totalCount = $poojaTypeCounts->sum(); // Sum of all co
 
-
-    
         if(!$receipts){
             return $this->sendError("receipts not found", ['error'=>['receipts not found']]);
         }
         
         $data = [
             'date' => $date,
-            'totalCount' => $totalCount,
-            'poojaTypeCounts' => $poojaTypeCounts,
+            // 'totalCount' => $totalCount,
+            'poojaTypeCountsByReceiptType' => $poojaTypeCountsByReceiptType,
 
-            
         ];
 
         // Render the Blade view to HTML
-        $html = view('Reports.GotravaliSummaryReport.index', $data)->render();
+        $html = view('Reports.GotravaliSummaryReportNew.index', $data)->render();
 
         // Create a new mPDF instance
         // $mpdf = new Mpdf();

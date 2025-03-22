@@ -44,13 +44,17 @@ const index = () => {
 
   const handlePrint = async (data) => {
     try {
-      const response = await axios.post(`/api/gotravali_summary_report`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: "blob", // Ensure the response is a blob (PDF file)
-      });
+      const response = await axios.post(
+        `/api/gotravali_summary_report_new`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob", // Ensure the response is a blob (PDF file)
+        }
+      );
 
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
