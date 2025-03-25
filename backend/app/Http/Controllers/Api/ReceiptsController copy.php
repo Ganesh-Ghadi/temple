@@ -1068,20 +1068,20 @@ public function index(Request $request): JsonResponse
 
         // start
        
-            // if (!empty($receipt->receipt_file) && Storage::exists('public/Receipts/'.$receipt->receipt_file)) {
-            //     Storage::delete('public/Receipts/'.$receipt->receipt_file);
-            // }
-            // $randomNumber = rand(1000, 9999);
+            if (!empty($receipt->receipt_file) && Storage::exists('public/Receipts/'.$receipt->receipt_file)) {
+                Storage::delete('public/Receipts/'.$receipt->receipt_file);
+            }
+            $randomNumber = rand(1000, 9999);
 
-            // // Define the file path to store the PDF
-            // $filePath = 'receipt_' . time() . $randomNumber . $receipt->receipt_no .'.pdf'; // Example: public/Receipts/receipt_1614688323.pdf
+            // Define the file path to store the PDF
+            $filePath = 'receipt_' . time() . $randomNumber . $receipt->receipt_no .'.pdf'; // Example: public/Receipts/receipt_1614688323.pdf
 
-            // // Store the PDF file
-            // $mpdf->Output(storage_path('app/public/Receipts/' . $filePath), 'F'); // Store file in 'storage/app/public/Receipts'
+            // Store the PDF file
+            $mpdf->Output(storage_path('app/public/Receipts/' . $filePath), 'F'); // Store file in 'storage/app/public/Receipts'
 
-            // // Save the file path to the database (in the receipt table)
-            // $receipt->receipt_file = $filePath; // Save the file path to the database
-            // $receipt->save();
+            // Save the file path to the database (in the receipt table)
+            $receipt->receipt_file = $filePath; // Save the file path to the database
+            $receipt->save();
          
         // end
         
