@@ -54,20 +54,92 @@
 
     <div style="margin:0px; padding:0px; border-bottom: 1px solid gray;">
     </div>
-
-    <div style="margin:0px; padding:0px; border-bottom: 1px solid gray;">
-        <h4>साडी</h4>
-        <div style="margin:0px; padding:0px">
-            <p>{{@$sareeReceipt->name}}</p> 
-        </div>  
+    <div style="display: flex; gap: 20px;">
+        <!-- Saree Morning -->
+        <div style="flex: 1;">
+            <h4>साडी (सकाळ)</h4>
+            <table border="1" width="100%" cellpadding="8" cellspacing="0">
+                {{-- <thead>
+                    <tr><th>नाव</th></tr>
+                </thead> --}}
+                <tbody>
+                    @forelse ($sareeDetails as $item)
+                        <tr>
+                            <td>{{ $item['name'] ?? '' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td>नोंद नाही</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Saree Evening -->
+        <div style="flex: 1;">
+            <h4>साडी (संध्याकाळ)</h4>
+            <table border="1" width="100%" cellpadding="8" cellspacing="0">
+                {{-- <thead>
+                    <tr><th>नाव</th></tr>
+                </thead> --}}
+                <tbody>
+                    @forelse ($sareeEveningDetails as $item)
+                        <tr>
+                            <td>{{ $item['name'] ?? '' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td>नोंद नाही</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div style="margin:0px; padding:0px; border-bottom: 1px solid gray;">
-        <h4>उपरणे</h4>
-        <div style="margin:0px; padding:0px">
-            <p>{{@$uparaneReceipt->name}}</p> 
-        </div>  
+    
+    <br>
+    
+    <div style="display: flex; gap: 20px;">
+        <!-- Uparane Morning -->
+        <div style="flex: 1;">
+            <h4>उपरणे (सकाळ)</h4>
+            <table border="1" width="100%" cellpadding="8" cellspacing="0">
+                {{-- <thead>
+                    <tr><th>नाव</th></tr>
+                </thead> --}}
+                <tbody>
+                    @forelse ($uparaneDetails as $item)
+                        <tr>
+                            <td>{{ $item['name'] ?? '' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td>नोंद नाही</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Uparane Evening -->
+        <div style="flex: 1;">
+            <h4>उपरणे (संध्याकाळ)</h4>
+            <table border="1" width="100%" cellpadding="8" cellspacing="0">
+                {{-- <thead>
+                    <tr><th>नाव</th></tr>
+                </thead> --}}
+                <tbody>
+                    @forelse ($uparaneEveningDetails as $item)
+                        <tr>
+                            <td>{{ $item['name'] ?? '' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td>नोंद नाही</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
+    
   
 </body>
 

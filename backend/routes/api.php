@@ -72,5 +72,6 @@ Route::group(['middleware'=>['auth:sanctum', 'permission']], function(){
    Route::post('/total_summary_receipt_report', [ReportsController::class, 'ReceiptTotalSummaryReport'])->name("report.total_summary_receipt_report");
    // Route::post('/gotravali_report_new', [ReportsController::class, 'gotravaliReportNew'])->name("report.gotravali_report_new");
    Route::post('/gotravali_summary_report_new', [ReportsController::class, 'gotravaliSummaryReportNew'])->name("report.gotravali_summary_report_new");
+   Route::post('/ac_charges/{id}', [ReceiptsController::class, 'addACCharges'])->name("ac_charges.add");
 
 });

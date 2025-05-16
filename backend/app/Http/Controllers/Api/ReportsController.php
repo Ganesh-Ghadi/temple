@@ -1542,40 +1542,85 @@ class ReportsController extends BaseController
         $totalCount = $poojaTypeAndGotraCounts->flatten()->count();
     
         // uparane and saree start
-        $sareeReceipt = Receipt::with('sareeReceipt')
+        $sareeReceipts = Receipt::with('sareeReceipt')
         ->where("cancelled", false)
         ->whereHas('sareeReceipt', function($query) use ($date) {
-            $query->where('saree_draping_date_morning',$date);
+            $query->where('saree_draping_date_morning', $date);
         })
-        ->first();
-
-        if ($sareeReceipt) {
-            $sareeDetails = [
+        ->get();
+    
+    if ($sareeReceipts->isNotEmpty()) {
+        $sareeDetails = $sareeReceipts->map(function ($sareeReceipt) {
+            return [
                 'saree_draping_date_morning' => $sareeReceipt->sareeReceipt->saree_draping_date_morning,
                 'return_saree' => $sareeReceipt->sareeReceipt->return_saree,
                 'name' => $sareeReceipt->name,
                 'gotra' => $sareeReceipt->gotra,
             ];
-        } else {
-            // Handle the case where no matching receipt was found
-            $sareeDetails = null;
-        }
+        });
+    } else {
+        $sareeDetails = [];
+    }
 
-        $uparaneReceipt = Receipt::with('uparaneReceipt')
-        ->where("cancelled", false)
-        ->whereHas('uparaneReceipt', function($query) use ($date) {
-            $query->where('uparane_draping_date_morning',$date);
-        })
-        ->first();
-        if ($uparaneReceipt) {
-        $uparaneDetails = [
-            'name' => $uparaneReceipt->name,
-            'gotra' => $uparaneReceipt->gotra,
+    // saree evening
+    $sareeEveningReceipts = Receipt::with('sareeReceipt')
+    ->where("cancelled", false)
+    ->whereHas('sareeReceipt', function($query) use ($date) {
+        $query->where('saree_draping_date_evening', $date);
+    })
+    ->get();
+
+    if ($sareeEveningReceipts->isNotEmpty()) {
+        $sareeEveningDetails = $sareeEveningReceipts->map(function ($sareeEveningReceipts) {
+            return [
+                'saree_draping_date_evening' => $sareeEveningReceipts->sareeReceipt->saree_draping_date_evening,
+                'return_saree' => $sareeEveningReceipts->sareeReceipt->return_saree,
+                'name' => $sareeEveningReceipts->name,
+                'gotra' => $sareeEveningReceipts->gotra,
+            ];
+        });
+    } else {
+        $sareeEveningDetails = [];
+    }
+// saree evening end
+    
+    $uparaneReceipts = Receipt::with('uparaneReceipt')
+    ->where("cancelled", false)
+    ->whereHas('uparaneReceipt', function($query) use ($date) {
+        $query->where('uparane_draping_date_morning', $date);
+    })
+    ->get();
+
+    if ($uparaneReceipts->isNotEmpty()) {
+    $uparaneDetails = $uparaneReceipts->map(function ($receipt) {
+        return [
+            'name' => $receipt->name,
+            'gotra' => $receipt->gotra,
         ];
-        } else {
-        // Handle the case where no matching receipt was found
-        $uparaneDetails = null;
-        }
+    });
+    } else {
+    $uparaneDetails = [];
+    }
+
+    // uparane evening start
+    $uparaneEveningReceipts = Receipt::with('uparaneReceipt')
+    ->where("cancelled", false)
+    ->whereHas('uparaneReceipt', function($query) use ($date) {
+        $query->where('uparane_draping_date_evening', $date);
+    })
+    ->get();
+
+    if ($uparaneEveningReceipts->isNotEmpty()) {
+    $uparaneEveningDetails = $uparaneEveningReceipts->map(function ($receipt) {
+        return [
+            'name' => $receipt->name,
+            'gotra' => $receipt->gotra,
+        ];
+    });
+    } else {
+    $uparaneEveningDetails = [];
+    }
+    // uparane evening end
         // uparane and saree end
     
         if(!$receipts){
@@ -1586,8 +1631,10 @@ class ReportsController extends BaseController
             'date' => $date,
             'totalCount' => $totalCount,
             'poojaTypeAndGotraCounts'=>$poojaTypeAndGotraCounts,
-            'sareeReceipt'=> $sareeReceipt,
-            'uparaneReceipt'=> $uparaneReceipt,
+            'sareeDetails'=> $sareeDetails,
+            'sareeEveningDetails'=> $sareeEveningDetails,
+            'uparaneDetails'=> $uparaneDetails,
+            'uparaneEveningDetails'=> $uparaneEveningDetails,
         ];
 
         // Render the Blade view to HTML

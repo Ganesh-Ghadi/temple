@@ -30,6 +30,7 @@ class ReceiptResource extends JsonResource
             'mobile' => $this->mobile,
             'email' => $this->email,
             'narration' => $this->narration,
+            'is_wa_no' => $this->is_wa_no,
             'payment_mode' => $this->payment_mode,
             'check_no' => $this->check_no,
             'check_date' => $this->check_date,

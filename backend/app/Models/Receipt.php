@@ -20,25 +20,12 @@ use App\Models\AnteshteeReceipt;
 use App\Models\StudyRoomReceipt;
 use App\Models\VasturupeeReceipt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
 {
-    // public static function generateReceiptNumber(): string
-    // {
-    //     // Find the latest profile number for the current month and year
-    //     $latestNumber = Receipt::where('receipt_no', 'like', date('my') . '%')
-    //                     ->orderBy('receipt_no', 'DESC')
-    //                     ->first();
-
-    //     // Increment the numeric part of the profile number
-    //     $lastNumber = 1;
-
-    //     if ($latestNumber) {
-    //         $lastNumber = intval(substr($latestNumber->receipt_no, 4)) + 1;
-    //     }
-    //     return date('my') . str_pad($lastNumber, 5, '0', STR_PAD_LEFT);
-    // }
+   
 
     public static function generateReceiptNumber(): string
     {
@@ -144,5 +131,53 @@ class Receipt extends Model
 
     public function profile(){
         return $this->belongsTo(Profile::class, 'created_by');
+    }
+
+    public static function sendWhatsAppMessage($receipt){
+          // Prepare WhatsApp payload
+          $paymentModeMap = [
+            'Cash' => 'रोख',
+            'Card' => 'Card',
+            'UPI'  => 'UPI',
+            'Bank' => 'धनादेश',
+        ];
+          $payload = [
+            "messaging_product" => "whatsapp",
+            "to" => "91". $receipt->mobile,
+            "type" => "template",
+            "template" => [
+                "name" => "general_receipt",
+                "language" => [
+                    "code" => "en"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [ "type" => "text", "text" => \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y'), ],
+                            [ "type" => "text", "text" => $receipt->receiptType->receipt_type],
+                            [ "type" => "text", "text" => $receipt->receipt_no ],
+                            [ "type" => "text", "text" => (string)$receipt->amount ],
+                            [ "type" => "text", "text" => $paymentModeMap[$receipt->payment_mode] ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+         
+         $apiKey = config('data.whatsapp.api_key');
+          $response = Http::withHeaders([
+              'Authorization' => 'Bearer '.$apiKey,
+              'Content-Type' => 'application/json',
+          ])->post('https://graph.facebook.com/v22.0/659774710543447/messages', $payload);
+
+          // Log or handle the response
+          if ($response->successful()) {
+              \Log::info('WhatsApp message sent successfully.');
+          } else {
+              \Log::error('Failed to send WhatsApp message', [
+                  'response' => $response->body()
+              ]);
+          }
     }
 }

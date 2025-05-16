@@ -62,6 +62,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import Cancel from "./Cancel";
+import AddAcCharges from "./AddAcCharges";
 
 const Index = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -515,6 +516,15 @@ const Index = () => {
                             <div className="w-full">
                               <Cancel id={receipt.id} />
                             </div>
+                          )}
+                          {receipt.receipt_type_id === 9 &&
+                          receipt.HallReceipt &&
+                          receipt.HallReceipt.ac_charges == 0 ? (
+                            <>
+                              <AddAcCharges id={receipt.id} />
+                            </>
+                          ) : (
+                            ""
                           )}
                           {/* print button end */}
                         </DropdownMenuContent>

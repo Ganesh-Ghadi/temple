@@ -155,6 +155,7 @@ const formSchema = z.object({
   uparane_draping_date_morning: z.string().optional(),
   uparane_draping_date_evening: z.string().optional(),
   return_uparane: z.coerce.number().min(0, "return Uparane field is required"),
+  is_wa_no: z.coerce.number().min(0, "whatsApp Number checkbox field is required"),
   member_name: z
     .string()
     .max(100, "Member Name must not exceed 100 characters.")
@@ -364,6 +365,7 @@ const Create = () => {
     day_13_date: "",
     ac_charges: "",
     ac_amount: "0.00",
+    is_wa_no: "1",
   };
 
   const {
@@ -1472,27 +1474,41 @@ const Create = () => {
                       type="text"
                       placeholder="Enter mobile"
                       maxLength={10} // Restrict input to 10 characters
-                      // pattern="^[0-9]{10}$" // Only allow exactly 10 digits
                     />
-                    // <PhoneInput
-                    //   {...field}
-                    //   defaultCountry="IN" // Default country for the country code
-                    //   // value={mobile}
-                    //   // onChange={setMobile}
-                    //   id="mobile"
-                    //   name="mobile"
-                    //   placeholder="Enter mobile number"
-                    //   inputStyle={{ minWidth: "17rem" }}
-                    //   className="mt-1"
-                    // />
+                  
                   )}
                 />
-                {errors.mobile && (
-                  <p className="absolute text-red-500 text-sm mt-1 left-0">
-                    {errors.mobile.message}
-                  </p>
-                )}
+                 <div className="flex justify-end mt-2 ">
+                 <div className="relative flex gap-2 ">
+                  <Controller
+                    name="is_wa_no"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id="is_wa_no"
+                        {...field}
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)} 
+                        type="checkbox"
+                        className="peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    )}
+                  />
+                  <Label className="font-normal" htmlFor="is_wa_no">
+                    WhatsApp number
+                  </Label>
+                  {errors.is_wa_no && (
+                    <p className="absolute text-red-500 text-sm mt-1 left-0">
+                      {errors.is_wa_no.message}
+                    </p>
+                  )}
+                </div>
+                </div>
+
               </div>
+            
+
+             
             </div>
             <div className="w-full mb-4 grid grid-cols-1 md:grid-cols-1 gap-7 md:gap-4">
               <div className="relative ">

@@ -26,9 +26,11 @@ use App\Models\StudyRoomReceipt;
 use Mpdf\Config\ConfigVariables;
 use App\Models\VasturupeeReceipt;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Helpers\AmountToWordsHelper;
 use App\Helpers\NumberToWordsHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use App\Http\Resources\ReceiptResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreReceiptRequest;
@@ -44,33 +46,7 @@ class ReceiptsController extends BaseController
     /**
      * All Receipt.
      */
-    // public function index(Request $request): JsonResponse
-    // {
-    //     $query = Receipt::with("receiptType");
-
-    //     if ($request->query('search')) {
-    //         $searchTerm = $request->query('search');
-    
-    //         $query->where(function ($query) use ($searchTerm) {
-    //             $query->where('name', 'like', '%' . $searchTerm . '%')
-    //             ->orWhere('amount', 'like', '%' . $searchTerm . '%')
-    //             // ->orWhere('receipt_date', 'like', '%' . $searchTerm . '%')
-    //             ->orWhere('receipt_no', 'like', '%' . $searchTerm . '%')
-    //             ->orWhereHas('receiptType', function ($query) use ($searchTerm) {
-    //                 $query->where('receipt_type', 'like', '%' . $searchTerm . '%');
-    //             });
-    //         });
-    //     }
-    //     $receipts = $query->Orderby("id","desc")->paginate(20);
-
-    //     return $this->sendResponse(["Receipts"=>ReceiptResource::collection($receipts),
-    //     'pagination' => [
-    //         'current_page' => $receipts->currentPage(),
-    //         'last_page' => $receipts->lastPage(),
-    //         'per_page' => $receipts->perPage(),
-    //         'total' => $receipts->total(),
-    //     ]], "Receipts retrieved successfully");
-    // }
+  
 
 public function index(Request $request): JsonResponse
 {
@@ -149,6 +125,37 @@ public function index(Request $request): JsonResponse
 }
 
 
+    public function addACCharges(Request $request,string $id): JsonResponse
+    {
+        $ac_amount = $request->input("ac_amount");
+        
+        $receipt = Receipt::with("hallReceipt")->find($id);
+        if(!$receipt){
+            return $this->sendError("Receipt not found", ['error'=>'Receipt not found']);
+        }
+        if($receipt->receipt_type_id != 9){
+            return $this->sendError("Receipt is not a hall receipt", ['error'=>'Receipt is not a hall receipt']);
+        }
+        if (!$receipt->hallReceipt) {
+            return $this->sendError("Hall receipt not found", ['error' => 'Hall receipt not found']);
+        }
+        
+        DB::transaction(function () use ($receipt, $ac_amount) {
+            $receipt->hallReceipt->ac_charges = true;
+            $receipt->hallReceipt->ac_amount = $ac_amount;
+            $amountInWords = AmountToWordsHelper::amountToWords($receipt->amount + $ac_amount);            
+            $receipt->amount_in_words = $amountInWords;
+            $receipt->amount += $ac_amount;
+            $receipt->updated_by = auth()->user()->profile->id;
+            $receipt->hallReceipt->save();
+            $receipt->save();
+        });
+
+        return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], "AC Charges added successfully");
+    }
+
+
+
     /**
      * Store Receipt.
      * @bodyParam name string the name of the person for receipt.
@@ -191,35 +198,35 @@ public function index(Request $request): JsonResponse
             }
 
             // Only query if the date is provided
-            if ($sareeDrapingDateMorningInput) {
-                $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $sareeDrapingDateMorningInput)->first();
+            // if ($sareeDrapingDateMorningInput) {
+            //     $sareeDrapingDateMorning = SareeReceipt::where('saree_draping_date_morning', $sareeDrapingDateMorningInput)->first();
                 
-                // Check if the date exists in the database
-                if ($sareeDrapingDateMorning) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Validation failed',
-                        'errors' => [
-                            'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
-                        ],
-                    ], 422);
-                }
-            }
+            //     // Check if the date exists in the database
+            //     if ($sareeDrapingDateMorning) {
+            //         return response()->json([
+            //             'status' => false,
+            //             'message' => 'Validation failed',
+            //             'errors' => [
+            //                 'saree_draping_date_morning' => ['The selected morning saree draping date is already taken.']
+            //             ],
+            //         ], 422);
+            //     }
+            // }
 
-            if ($sareeDrapingDateEveningInput) {
-                $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
+            // if ($sareeDrapingDateEveningInput) {
+            //     $sareeDrapingDateEvening = SareeReceipt::where('saree_draping_date_evening', $sareeDrapingDateEveningInput)->first();
                 
-                // Check if the date exists in the database
-                if ($sareeDrapingDateEvening) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Validation failed',
-                        'errors' => [
-                            'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
-                        ],
-                    ], 422);
-                }
-            }
+            //     // Check if the date exists in the database
+            //     if ($sareeDrapingDateEvening) {
+            //         return response()->json([
+            //             'status' => false,
+            //             'message' => 'Validation failed',
+            //             'errors' => [
+            //                 'saree_draping_date_evening' => ['The selected evening saree draping date is already taken.']
+            //             ],
+            //         ], 422);
+            //     }
+            // }
 
         }
 
@@ -240,34 +247,34 @@ public function index(Request $request): JsonResponse
             }
             
             // Only query if the date is provided
-            if ($uparaneDrapingDateMorningInput) {
-                $uparaneDrapingDateMorning = UparaneReceipt::where('uparane_draping_date_morning', $uparaneDrapingDateMorningInput)->first();
+            // if ($uparaneDrapingDateMorningInput) {
+            //     $uparaneDrapingDateMorning = UparaneReceipt::where('uparane_draping_date_morning', $uparaneDrapingDateMorningInput)->first();
                 
-                // Check if the date exists in the database
-                if ($uparaneDrapingDateMorning) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Validation failed',
-                        'errors' => [
-                            'uparane_draping_date_morning' => ['The selected morning uparane draping date is already taken.']
-                        ],
-                    ], 422);
-                }
-            }
+            //     // Check if the date exists in the database
+            //     if ($uparaneDrapingDateMorning) {
+            //         return response()->json([
+            //             'status' => false,
+            //             'message' => 'Validation failed',
+            //             'errors' => [
+            //                 'uparane_draping_date_morning' => ['The selected morning uparane draping date is already taken.']
+            //             ],
+            //         ], 422);
+            //     }
+            // }
 
-            if ($uparaneDrapingDateEveningInput) {
-                $uparaneDrapingDateEvening = UparaneReceipt::where('uparane_draping_date_evening', $uparaneDrapingDateEveningInput)->first();
+            // if ($uparaneDrapingDateEveningInput) {
+            //     $uparaneDrapingDateEvening = UparaneReceipt::where('uparane_draping_date_evening', $uparaneDrapingDateEveningInput)->first();
                 
-                if ($uparaneDrapingDateEvening) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Validation failed',
-                        'errors' => [
-                            'uparane_draping_date_evening' => ['The selected evening uparane draping date is already taken.']
-                        ],
-                    ], 422);
-                }
-            }
+            //     if ($uparaneDrapingDateEvening) {
+            //         return response()->json([
+            //             'status' => false,
+            //             'message' => 'Validation failed',
+            //             'errors' => [
+            //                 'uparane_draping_date_evening' => ['The selected evening uparane draping date is already taken.']
+            //             ],
+            //         ], 422);
+            //     }
+            // }
 
         }
 
@@ -607,39 +614,7 @@ public function index(Request $request): JsonResponse
 
         }
 
-        //Payment mode validation
-        // if($request->input("payment_mode") == "Bank"){
-            
-        //     if (!$request->input("bank_details")) {
-        //         return response()->json([
-        //             'status' => false,
-        //             'message' => 'Validation failed',
-        //             'errors' => [
-        //                 'bank_details' => ['Bank Details field is required.']
-        //             ],
-        //         ], 422);
-        //     }
-
-        //     if (!$request->input("cheque_number")) {
-        //         return response()->json([
-        //             'status' => false,
-        //             'message' => 'Validation failed',
-        //             'errors' => [
-        //                 'cheque_number' => ['Cheque Number field is required.']
-        //             ],
-        //         ], 422);
-        //     }
-
-        //     if (!$request->input("cheque_date")) {
-        //         return response()->json([
-        //             'status' => false,
-        //             'message' => 'Validation failed',
-        //             'errors' => [
-        //                 'cheque_date' => ['Cheque Date field is required.']
-        //             ],
-        //         ], 422);
-        //     }
-        // }
+      
         
         // validation end
 
@@ -658,6 +633,7 @@ public function index(Request $request): JsonResponse
         $receipt->address = $request->input("address");
         $receipt->narration = $request->input("narration");
         $receipt->pincode = $request->input("pincode");
+        $receipt->is_wa_no = $request->input("is_wa_no");
         $receipt->payment_mode = $request->input("payment_mode");
         $receipt->special_date = $request->input("special_date");
         $receipt->bank_details = $request->input("bank_details");
@@ -827,8 +803,12 @@ public function index(Request $request): JsonResponse
             $bharani_shradhh_receipt->save();
         }
 
-      
-
+        // whatsApp message start
+         $receiptData =Receipt::with('receiptType')->find($receipt->id);
+        if($receiptData->is_wa_no){
+            Receipt::sendWhatsAppMessage($receiptData);
+        }
+        // whatsApp message end
         
         return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], 'Receipt Created Successfully');
     }
@@ -883,94 +863,9 @@ public function index(Request $request): JsonResponse
         return $this->sendResponse([], "Receipt deleted successfully");
     }
 
-     /**
-     * Generate Receipt
+    /**
+     * Generate Receipt PDF.
      */
-
-    //  public function generateReceipt(string $id)
-    //  {
-    //      $receipt = Receipt::with('receiptType')->find($id);
-    //      if(!$receipt){
-    //          return $this->sendError("receipt not found", ['error'=>['receipt not found']]);
-    //      }
-         
-    //      if(!empty($receipt->receipt_file) && Storage::exists('public/Receipt/'.$receipt->receipt_file)) {
-    //          Storage::delete('public/Receipt/'.$receipt->receipt_file);
-    //      }
- 
-    //      $data = [
-    //          'receipt' => $receipt,
-    //      ];
-
-    //      $defaultConfig = (new ConfigVariables())->getDefaults();
-    //      $fontDirs = $defaultConfig['fontDir'];
-     
-    //      $defaultFontConfig = (new FontVariables())->getDefaults();
-    //      $fontData = $defaultFontConfig['fontdata'];
-     
-    //      $mpdf = new Mpdf([
-    //          'mode' => 'utf-8',
-    //          'format' => [135,135],
-    //          'orientation' => 'P',
-    //          'fontDir' => array_merge($fontDirs, [
-    //              storage_path('fonts/'), // Update to point to the storage/fonts directory
-    //          ]),
-    //          'fontdata' => $fontData + [
-    //              'notosansdevanagari' => [
-    //                  'R' => 'NotoSansDevanagari-Regular.ttf',
-    //                  'B' => 'NotoSansDevanagari-Bold.ttf',
-    //              ],
-    //          ],
-    //          'default_font' => 'notosansdevanagari',
-    //          'margin_top' => 8,        // Set top margin to 0
-    //          'margin_left' => 11,      // Optional: Set left margin if needed
-    //          'margin_right' => 11,     // Optional: Set right margin if needed
-    //          'margin_bottom' => 8,     // Optional: Set bottom margin if needed
-    //      ]);
-
-    //       //  strt watermar
-    //         // Add watermark "Duplicate" before content rendering
-    //     $mpdf->SetFont('notosansdevanagari', 'B', 50); // Set font and size for watermark
-    //     $mpdf->SetTextColor(200, 200, 200); // Set text color to light gray
-
-    //     // Get page width and height
-    //     $pageWidth = $mpdf->w;
-    //     $pageHeight = $mpdf->h;
-
-    //     // Place watermark diagonally from bottom-left to top-right
-    //     $mpdf->Text($pageWidth * 0.1, $pageHeight * 0.9, 'Duplicate');  // Start at bottom-left and go diagonally
-    //     $mpdf->Text($pageWidth * 0.3, $pageHeight * 0.7, 'Duplicate');
-    //     $mpdf->Text($pageWidth * 0.5, $pageHeight * 0.5, 'Duplicate');
-    //     $mpdf->Text($pageWidth * 0.7, $pageHeight * 0.3, 'Duplicate');
-    //     $mpdf->Text($pageWidth * 0.9, $pageHeight * 0.1, 'Duplicate'); // 
-    //             // end watermarkl
- 
-    //      // Render the Blade view to HTML
-    //      $html = view('Receipt.receipt', $data)->render();
-
- 
-    //      // Write HTML to the PDF
-    //      $mpdf->WriteHTML($html);
-    //      $randomNumber = rand(1000, 9999);
-    //      // Define the file path for saving the PDF
-    //      $filePath = 'public/Receipt/receipt' . time(). $randomNumber . '.pdf'; // Store in 'storage/app/invoices'
-    //      $fileName = basename($filePath); // Extracts 'invoice_{timestamp}{user_id}.pdf'
-    //      $receipt->receipt_file = $fileName;
-    //      $printCount = $receipt->print_count;
-    //      if($receipt->print_count >=1){
-    //          $receipt->print_count = $printCount +1;
-    //      }else{
-    //         $receipt->print_count = 1;
-    //      }
-    //      $receipt->save();
-       
-    //      // Save PDF to storage
-    //      Storage::put($filePath, $mpdf->Output('', 'S')); // Output as string and save to storage
- 
-    //      // Output the PDF for download
-    //      return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
-    //      // return $this->sendResponse([], "Invoice generated successfully");
-    //  }
     public function generateReceipt(string $id)
     {
         $receipt = Receipt::with('guruji','libraryReceipt','hallReceipt','vasturupeeReceipt','poojas','bhangarReceipt','anteshteeReceipt','uparaneReceipt','sareeReceipt','naralReceipt','khatReceipt','profile','pooja.poojaType','receiptType')->find($id);
@@ -1064,27 +959,6 @@ public function index(Request $request): JsonResponse
             $receipt->print_count = 1;
         }
         $receipt->save();
-    
-
-        // start
-       
-            // if (!empty($receipt->receipt_file) && Storage::exists('public/Receipts/'.$receipt->receipt_file)) {
-            //     Storage::delete('public/Receipts/'.$receipt->receipt_file);
-            // }
-            // $randomNumber = rand(1000, 9999);
-
-            // // Define the file path to store the PDF
-            // $filePath = 'receipt_' . time() . $randomNumber . $receipt->receipt_no .'.pdf'; // Example: public/Receipts/receipt_1614688323.pdf
-
-            // // Store the PDF file
-            // $mpdf->Output(storage_path('app/public/Receipts/' . $filePath), 'F'); // Store file in 'storage/app/public/Receipts'
-
-            // // Save the file path to the database (in the receipt table)
-            // $receipt->receipt_file = $filePath; // Save the file path to the database
-            // $receipt->save();
-         
-        // end
-        
     
         // Output the PDF for download
         return $mpdf->Output('receipt.pdf', 'D'); // Download the PDF
