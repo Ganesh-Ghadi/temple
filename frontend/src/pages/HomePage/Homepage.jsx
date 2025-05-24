@@ -22,6 +22,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import AddAcCharges from "./AddAcCharges";
 const Homepage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
@@ -264,7 +265,14 @@ const Homepage = () => {
                         {hall.name}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {hall.hall_name}
+                        <div className="flex gap-4">
+                          {hall.hall_name}
+                          {!hall.isAC && !hall.isduplicate && (
+                            <span>
+                              <AddAcCharges id={hall.receipt_id} />
+                            </span>
+                          )}
+                        </div>
                       </p>
                     </div>
                     <div className="ml-auto font-medium">

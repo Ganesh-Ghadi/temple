@@ -125,34 +125,7 @@ public function index(Request $request): JsonResponse
 }
 
 
-    public function addACCharges(Request $request,string $id): JsonResponse
-    {
-        $ac_amount = $request->input("ac_amount");
-        
-        $receipt = Receipt::with("hallReceipt")->find($id);
-        if(!$receipt){
-            return $this->sendError("Receipt not found", ['error'=>'Receipt not found']);
-        }
-        if($receipt->receipt_type_id != 9){
-            return $this->sendError("Receipt is not a hall receipt", ['error'=>'Receipt is not a hall receipt']);
-        }
-        if (!$receipt->hallReceipt) {
-            return $this->sendError("Hall receipt not found", ['error' => 'Hall receipt not found']);
-        }
-        
-        DB::transaction(function () use ($receipt, $ac_amount) {
-            $receipt->hallReceipt->ac_charges = true;
-            $receipt->hallReceipt->ac_amount = $ac_amount;
-            $amountInWords = AmountToWordsHelper::amountToWords($receipt->amount + $ac_amount);            
-            $receipt->amount_in_words = $amountInWords;
-            $receipt->amount += $ac_amount;
-            $receipt->updated_by = auth()->user()->profile->id;
-            $receipt->hallReceipt->save();
-            $receipt->save();
-        });
-
-        return $this->sendResponse(['Receipt'=> new ReceiptResource($receipt)], "AC Charges added successfully");
-    }
+    
 
 
 
