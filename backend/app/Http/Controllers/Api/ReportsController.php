@@ -1549,7 +1549,7 @@ class ReportsController extends BaseController
         })
         ->get();
     
-    if ($sareeReceipts->isNotEmpty()) {
+      if ($sareeReceipts->isNotEmpty()) {
         $sareeDetails = $sareeReceipts->map(function ($sareeReceipt) {
             return [
                 'saree_draping_date_morning' => $sareeReceipt->sareeReceipt->saree_draping_date_morning,
@@ -1558,69 +1558,69 @@ class ReportsController extends BaseController
                 'gotra' => $sareeReceipt->gotra,
             ];
         });
-    } else {
+      } else {
         $sareeDetails = [];
-    }
+     }
 
-    // saree evening
-    $sareeEveningReceipts = Receipt::with('sareeReceipt')
-    ->where("cancelled", false)
-    ->whereHas('sareeReceipt', function($query) use ($date) {
-        $query->where('saree_draping_date_evening', $date);
-    })
-    ->get();
+        // saree evening
+        $sareeEveningReceipts = Receipt::with('sareeReceipt')
+        ->where("cancelled", false)
+        ->whereHas('sareeReceipt', function($query) use ($date) {
+            $query->where('saree_draping_date_evening', $date);
+        })
+        ->get();
 
-    if ($sareeEveningReceipts->isNotEmpty()) {
-        $sareeEveningDetails = $sareeEveningReceipts->map(function ($sareeEveningReceipts) {
+            if ($sareeEveningReceipts->isNotEmpty()) {
+                $sareeEveningDetails = $sareeEveningReceipts->map(function ($sareeEveningReceipts) {
+                    return [
+                        'saree_draping_date_evening' => $sareeEveningReceipts->sareeReceipt->saree_draping_date_evening,
+                        'return_saree' => $sareeEveningReceipts->sareeReceipt->return_saree,
+                        'name' => $sareeEveningReceipts->name,
+                        'gotra' => $sareeEveningReceipts->gotra,
+                    ];
+                });
+            } else {
+                $sareeEveningDetails = [];
+            }
+        // saree evening end
+    
+        $uparaneReceipts = Receipt::with('uparaneReceipt')
+        ->where("cancelled", false)
+        ->whereHas('uparaneReceipt', function($query) use ($date) {
+            $query->where('uparane_draping_date_morning', $date);
+        })
+        ->get();
+
+        if ($uparaneReceipts->isNotEmpty()) {
+        $uparaneDetails = $uparaneReceipts->map(function ($receipt) {
             return [
-                'saree_draping_date_evening' => $sareeEveningReceipts->sareeReceipt->saree_draping_date_evening,
-                'return_saree' => $sareeEveningReceipts->sareeReceipt->return_saree,
-                'name' => $sareeEveningReceipts->name,
-                'gotra' => $sareeEveningReceipts->gotra,
+                'name' => $receipt->name,
+                'gotra' => $receipt->gotra,
             ];
         });
-    } else {
-        $sareeEveningDetails = [];
-    }
-// saree evening end
-    
-    $uparaneReceipts = Receipt::with('uparaneReceipt')
-    ->where("cancelled", false)
-    ->whereHas('uparaneReceipt', function($query) use ($date) {
-        $query->where('uparane_draping_date_morning', $date);
-    })
-    ->get();
+        } else {
+        $uparaneDetails = [];
+        }
 
-    if ($uparaneReceipts->isNotEmpty()) {
-    $uparaneDetails = $uparaneReceipts->map(function ($receipt) {
-        return [
-            'name' => $receipt->name,
-            'gotra' => $receipt->gotra,
-        ];
-    });
-    } else {
-    $uparaneDetails = [];
-    }
+        // uparane evening start
+        $uparaneEveningReceipts = Receipt::with('uparaneReceipt')
+        ->where("cancelled", false)
+        ->whereHas('uparaneReceipt', function($query) use ($date) {
+            $query->where('uparane_draping_date_evening', $date);
+        })
+        ->get();
 
-    // uparane evening start
-    $uparaneEveningReceipts = Receipt::with('uparaneReceipt')
-    ->where("cancelled", false)
-    ->whereHas('uparaneReceipt', function($query) use ($date) {
-        $query->where('uparane_draping_date_evening', $date);
-    })
-    ->get();
-
-    if ($uparaneEveningReceipts->isNotEmpty()) {
-    $uparaneEveningDetails = $uparaneEveningReceipts->map(function ($receipt) {
-        return [
-            'name' => $receipt->name,
-            'gotra' => $receipt->gotra,
-        ];
-    });
-    } else {
-    $uparaneEveningDetails = [];
-    }
-    // uparane evening end
+        if ($uparaneEveningReceipts->isNotEmpty()) {
+        $uparaneEveningDetails = $uparaneEveningReceipts->map(function ($receipt) {
+            return [
+                'name' => $receipt->name,
+                'gotra' => $receipt->gotra,
+            ];
+        });
+        } else {
+        $uparaneEveningDetails = [];
+        }
+        // uparane evening end
         // uparane and saree end
     
         if(!$receipts){

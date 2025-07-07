@@ -180,4 +180,46 @@ class Receipt extends Model
               ]);
           }
     }
+
+
+    public static function sendSareeWhatsAppMessageDaily($receipt){
+        // Prepare WhatsApp payload
+        
+        $payload = [
+          "messaging_product" => "whatsapp",
+          "to" => "91". $receipt->mobile,
+          "type" => "template",
+          "template" => [
+              "name" => "saree_template",
+              "language" => [
+                  "code" => "en"
+              ],
+              "components" => [
+                  [
+                      "type" => "body",
+                      "parameters" => [
+                          [ "type" => "text", "text" => \Carbon\Carbon::parse($receipt->receipt_date)->format('d/m/Y'), ],
+                          [ "type" => "text", "text" => $receipt->receipt_no ],
+                          [ "type" => "text", "text" => \Carbon\Carbon::today()->format('d/m/Y') ],  // <-- today's date here
+                        ]
+                  ]
+              ]
+          ]
+      ];
+       
+       $apiKey = config('data.whatsapp.api_key');
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer '.$apiKey,
+            'Content-Type' => 'application/json',
+        ])->post('https://graph.facebook.com/v22.0/659774710543447/messages', $payload);
+
+        // Log or handle the response
+        if ($response->successful()) {
+            \Log::info('saree WhatsApp message sent successfully.');
+        } else {
+            \Log::error('Failed to send saree WhatsApp message', [
+                'response' => $response->body()
+            ]);
+        }
+  }
 }
