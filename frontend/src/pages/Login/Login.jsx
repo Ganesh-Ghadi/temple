@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import background from "../../images/doitBackground.avif";
-import templeImage from "../../images/ganesh.jpeg";
-// import templeImage from "../../images/temple-4.jpg";
+import templeImage from "../../images/maruti.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +12,7 @@ import { useForm, Controller } from "react-hook-form";
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const projectName = import.meta.env.VITE_PROJECT_NAME;
 
   const defaultValues = {
     email: "",
@@ -67,9 +66,9 @@ const Login = () => {
         <div
           style={{
             backgroundImage: `url(${templeImage})`,
-            backgroundSize: "cover",
+            backgroundSize: "50%",
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
+            backgroundPosition: "center",
             // height: "640px",
             // width: "650px",
           }}
@@ -108,8 +107,9 @@ const Login = () => {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             {/* <p className="text-lg text-white font-bold">Welcome To Website</p> */}
-            <footer className="text-sm text-white">
-              श्री गणेश मंदिर संस्थान, डोंबिवली
+            <footer className="text-sm text-black">
+              {/* श्री गणेश मंदिर संस्थान, डोंबिवली */}
+              {projectName}
             </footer>
           </blockquote>
         </div>

@@ -34,6 +34,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const role = user?.user?.role?.name;
   const location = useLocation();
   const [activeParent, setActiveParent] = useState(null);
+  const projectName = import.meta.env.VITE_PROJECT_NAME;
 
   const adminItems = [
     {
@@ -306,7 +307,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       <div className="flex items-center gap-x-4 mt-4 ">
         <LayoutDashboard size={32} />
         {isSidebarOpen && (
-          <span className="text-sm font-semibold">श्री गणेश मंदिर संस्थान</span>
+          <span className="text-sm font-semibold">{projectName}</span>
         )}
       </div>
       <ul className="mt-6">

@@ -42,6 +42,8 @@ const MobileSidebar = ({ open, setOpen }) => {
   const [activeParent, setActiveParent] = useState(null);
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.user?.role?.name;
+  const projectName = import.meta.env.VITE_PROJECT_NAME;
+
   // const items = [
   //   {
   //     name: "Home",
@@ -358,7 +360,8 @@ const MobileSidebar = ({ open, setOpen }) => {
               <div className="flex gap-3 p-1 text-sm items-center text-white">
                 {" "}
                 <LayoutDashboard />
-                श्री गणेश मंदिर संस्थान, डोंबिवली
+                {/* श्री गणेश मंदिर संस्थान, डोंबिवली */}
+                {projectName}
               </div>{" "}
             </SheetTitle>
           </SheetHeader>

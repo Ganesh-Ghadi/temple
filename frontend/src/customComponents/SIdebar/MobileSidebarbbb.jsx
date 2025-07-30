@@ -17,6 +17,7 @@ const MobileSidebar = ({
 }) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const sidebarRef = useRef(null); // Create a ref for the sidebar
+  const projectName = import.meta.env.VITE_PROJECT_NAME;
 
   const items = [
     { name: "Home", path: "/", logo: <IoLogoSlack /> },
@@ -54,7 +55,7 @@ const MobileSidebar = ({
           <button onClick={handleBar}>
             <FaBars />
           </button>
-          <p className=" font-bold">श्री गणेश मंदिर संस्थान, डोंबिवली</p>
+          <p className=" font-bold"> {projectName}</p>
         </div>
         <div className="text-2xl gap-4 flex justify-end">
           <button
@@ -107,7 +108,8 @@ const MobileSidebar = ({
               <IoLogoSlack />
             </p>
             <p className="text-3xl text-white">
-              श्री गणेश मंदिर संस्थान, डोंबिवली
+              {/* श्री गणेश मंदिर संस्थान, डोंबिवली */}
+              {projectName}
             </p>
           </div>
           <button

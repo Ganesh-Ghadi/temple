@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1 style="text-align: center">
-            श्री गणेश मंदिर संस्थान - नोट विवरण तक्ता {{
+            {{ config('app.name') }} - नोट विवरण तक्ता {{
             \Carbon\Carbon::parse($denomination->deposit_date)->format('d/m/Y')
             }}
         </h1>

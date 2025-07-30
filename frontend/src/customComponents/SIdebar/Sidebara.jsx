@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   // State to track which parent item has its children visible
   const [activeParent, setActiveParent] = useState(null);
+  const projectName = import.meta.env.VITE_PROJECT_NAME;
 
   const items = [
     {
@@ -120,7 +121,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             <LayoutDashboard />
           </p>
           <p className={`text-3xl duration-300 ${!isSidebarOpen && "scale-0"}`}>
-            श्री गणेश मंदिर संस्थान, डोंबिवली
+            {/* श्री गणेश मंदिर संस्थान, डोंबिवली */}
+            {projectName}
           </p>
         </div>
         <ul className="pb-24 pt-8">

@@ -16,8 +16,16 @@ use App\Http\Controllers\Api\BaseController;
 
 class ReportsController extends BaseController
 {
+    protected $appName;
+
+    public function __construct()
+    {
+        $this->appName = config('app.name');
+    }
+    
     public function AllReceiptReport(Request $request)
     {
+
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
         $receipt_head = $request->input('receipt_head');
@@ -150,7 +158,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - सर्व पावत्या '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - सर्व पावत्या '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -264,7 +272,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - खत विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - खत विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -457,7 +465,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - पावती सारांश '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - पावती सारांश '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -571,7 +579,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - चेक जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - चेक जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -685,7 +693,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - यू. पी. आय. जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - यू. पी. आय. जमा सारांश ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -799,7 +807,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - नारळ विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - नारळ विक्री पावत्या ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -906,7 +914,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - रद्द पावत्या  ' . $receipt_head . ' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - रद्द पावत्या  ' . $receipt_head . ' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1039,7 +1047,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - पावती तक्ता  ' . $receipt_head . ' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - पावती तक्ता  ' . $receipt_head . ' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1163,7 +1171,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - गोत्रावळी सारांश ' . $date .'.</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - गोत्रावळी सारांश ' . $date .'.</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1273,7 +1281,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - अंत्येष्टी कर्म पावत्या ' . $DateFormatted . '.'.'</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - अंत्येष्टी कर्म पावत्या ' . $DateFormatted . '.'.'</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1464,7 +1472,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - पावती सारांश '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - पावती सारांश '. $receipt_head .' ' . $fromDateFormatted . ' ते ' . $toDateFormatted . '</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1674,7 +1682,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - गोत्रावळी ' . $date .' साठी.</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - गोत्रावळी ' . $date .' साठी.</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
@@ -1797,7 +1805,7 @@ class ReportsController extends BaseController
             // Set header HTML with dynamic values
             $headerHtml = '
             <div style="text-align: center;">
-                <p style="margin: 0; padding: 0; font-size:17px;">श्री गणेश मंदिर संस्थान - गोत्रावळी सारांश ' . $date .'.</p>
+                <p style="margin: 0; padding: 0; font-size:17px;">'.$this->appName.' - गोत्रावळी सारांश ' . $date .'.</p>
             </div>
             <p style="border: 1px solid black; width:100%; margin:0px; padding:0px; margin-bottom:5px;"></p>';
             
