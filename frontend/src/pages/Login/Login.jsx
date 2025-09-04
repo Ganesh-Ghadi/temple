@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import templeImage from "../../images/maruti.jpg";
+import templeImage from "../../images/ganesh.jpeg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,9 +66,9 @@ const Login = () => {
         <div
           style={{
             backgroundImage: `url(${templeImage})`,
-            backgroundSize: "50%",
+            backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
+            backgroundPosition: "top",
             // height: "640px",
             // width: "650px",
           }}
@@ -107,7 +107,7 @@ const Login = () => {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             {/* <p className="text-lg text-white font-bold">Welcome To Website</p> */}
-            <footer className="text-sm text-black">
+            <footer className="text-sm text-white">
               {/* श्री गणेश मंदिर संस्थान, डोंबिवली */}
               {projectName}
             </footer>
