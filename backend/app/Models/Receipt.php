@@ -222,4 +222,107 @@ class Receipt extends Model
             ]);
         }
   }
+
+
+//   public static function sendPrasadWhatsAppMessageDaily($receipt){
+//     // Prepare WhatsApp payload
+    
+//     $payload = [
+//       "messaging_product" => "whatsapp",
+//       "to" => "91". $receipt->mobile,
+//       "type" => "template",
+//       "template" => [
+//           "name" => "abhishek_prasad",
+//           "language" => [
+//               "code" => "en"
+//           ],
+//           "components" => [
+//               [
+//                   "type" => "body",
+//                   "parameters" => [
+//                       [ "type" => "text", "text" => $receipt->pooja->poojaType->devta->devta_name ],
+//                     ]
+//               ]
+//           ]
+//       ]
+//   ];
+   
+//    $apiKey = config('data.whatsapp.api_key');
+//     $response = Http::withHeaders([
+//         'Authorization' => 'Bearer '.$apiKey,
+//         'Content-Type' => 'application/json',
+//     ])->post('https://graph.facebook.com/v22.0/659774710543447/messages', $payload);
+
+//     // Log or handle the response
+//     if ($response->successful()) {
+//         \Log::info('Prasad WhatsApp message sent successfully.');
+//     } else {
+//         \Log::error('Failed to send Prasad WhatsApp message', [
+//             'response' => $response->body()
+//         ]);
+//     }
+// }
+public static function sendPrasadWhatsAppMessageDaily($receipt)
+{
+    // Generate the dynamic value (devta name) once
+    $devtaName = $receipt->pooja->poojaType->devta->devta_name;
+
+    $apiKey = config('data.whatsapp.api_key');
+
+    // Base WhatsApp payload
+    $basePayload = [
+        "messaging_product" => "whatsapp",
+        "type" => "template",
+        "template" => [
+            "name" => "abhishek_prasad",
+            "language" => [
+                "code" => "en"
+            ],
+            "components" => [
+                [
+                    "type" => "body",
+                    "parameters" => [
+                        [ "type" => "text", "text" => $devtaName ],
+                    ]
+                ]
+            ]
+        ]
+    ];
+
+    // 🔹 1. Send to receipt holder
+    $payloadToUser = $basePayload;
+    $payloadToUser['to'] = "91" . $receipt->mobile;
+
+    $responseUser = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $apiKey,
+        'Content-Type' => 'application/json',
+    ])->post('https://graph.facebook.com/v22.0/659774710543447/messages', $payloadToUser);
+
+    if ($responseUser->successful()) {
+        \Log::info('Prasad WhatsApp message sent to user: ' . $receipt->mobile);
+    } else {
+        \Log::error('Failed to send Prasad WhatsApp message to user', [
+            'mobile' => $receipt->mobile,
+            'response' => $responseUser->body()
+        ]);
+    }
+
+    // 🔹 2. Send to fixed number 9324597574
+    $payloadToFixed = $basePayload;
+    $payloadToFixed['to'] = "91" . "9324597574";
+
+    $responseFixed = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $apiKey,
+        'Content-Type' => 'application/json',
+    ])->post('https://graph.facebook.com/v22.0/659774710543447/messages', $payloadToFixed);
+
+    if ($responseFixed->successful()) {
+        \Log::info('Prasad WhatsApp message sent to fixed number 9324597574');
+    } else {
+        \Log::error('Failed to send Prasad WhatsApp message to fixed number', [
+            'response' => $responseFixed->body()
+        ]);
+    }
+}
+
 }

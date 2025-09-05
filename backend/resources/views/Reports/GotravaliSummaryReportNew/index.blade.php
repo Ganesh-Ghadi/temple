@@ -1,73 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Gotravali Summary Report</title>
     <style>
         body {
             font-family: "freeserif";
             margin-bottom: 50px;
         }
         table {
-            margin-bottom: 50px;
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
         }
-
-        table,
-        th,
-        td {
+        table, th, td {
             border: 1px solid black;
         }
-
-        th,
-        td {
-            padding: 5px;
-            margin: 5px;
+        th, td {
+            padding: 8px;
         }
-
         thead {
-            display: table-header-group;
+            background-color: #f5f5f5;
+        }
+        .devta-header {
+            background-color: #eaeaea;
+            font-weight: bold;
+            padding: 10px;
+        }
+        .total-row {
+            font-weight: bold;
+            text-align: right;
         }
     </style>
 </head>
-
 <body>
-{{-- working --}}
+
+<h3>Gotravali Summary Report - {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</h3>
+
 @php
-$totalCount = 0; // Initialize the total count variable
+    $grouped = $poojaTypeEntries->groupBy('devtaName');
+    $grandTotal = 0;
 @endphp
-    @foreach($poojaTypeCountsByReceiptType as $receiptType => $poojas)
-        <h3>{{ $receiptType }}</h3>
-        <table style="width: 100%">
-            <thead>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 50%;">Devta Name</th>
+            <th style="width: 40%;">Pooja Type</th>
+            <th style="width: 10%;">Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($grouped as $devtaName => $entries)
+            @php
+                $poojaGroups = $entries->groupBy('poojaType');
+                $devtaTotal = $entries->count();
+                $grandTotal += $devtaTotal;
+            @endphp
+
+            <tr>
+                <td colspan="3" class="devta-header">{{ $devtaName }}</td>
+            </tr>
+
+            @foreach($poojaGroups as $poojaType => $groupedPoojas)
                 <tr>
-                    <th style="width: 80%;">Pooja Type</th>
-                    <th>Count</th>
+                    <td></td>
+                    <td>{{ $poojaType }}</td>
+                    <td style="text-align: right;">{{ $groupedPoojas->count() }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($poojas->groupBy('poojaType') as $poojaType => $groupedPoojas)
-                    <tr>
-                        <td>{{ $poojaType }}</td>
-                        <td style="text-align: right;">{{ $groupedPoojas->count() }}</td>
-                    </tr>
-                @endforeach
+            @endforeach
 
-                <tr class="">
-                    <td style="font-weight: bold; text-align: right;">TOTAL:</td>
-                    <td style="font-weight: bold; text-align: right;">{{ $poojas->count() }}</td>
-                </tr>
-            </tbody>
-        </table>
-        @php
-        $totalCount += $poojas->count(); // Add to the total count for each receiptType
-    @endphp
-    @endforeach
-    <h3 style="text-align: right;">Total: {{ $totalCount }}</h3>
+            <tr>
+                <td colspan="2" class="total-row">Total for {{ $devtaName }}</td>
+                <td class="total-row">{{ $devtaTotal }}</td>
+            </tr>
+        @endforeach
 
+        <tr>
+            <td colspan="2" class="total-row">Grand Total</td>
+            <td class="total-row">{{ $grandTotal }}</td>
+        </tr>
+    </tbody>
+</table>
 
 </body>
-
 </html>

@@ -1513,11 +1513,11 @@ class ReportsController extends BaseController
     {
         $date = $request->input('date');
 
-        $receipts = Receipt::with(['receiptType','poojas.poojaType']) // Eager load related poojas and receiptType
+        $receipts = Receipt::with(['receiptType','poojas.poojaType.devta']) // Eager load related poojas and receiptType
              ->where("cancelled", false)
-             ->whereHas('receiptType', function ($query) use ($date) {
-                    $query->where('is_pooja', true);
-            })
+            //  ->whereHas('receiptType', function ($query) use ($date) {
+            //         $query->where('is_pooja', true);
+            // })
             ->whereHas('poojas', function ($query) use ($date) {
                 // Apply the condition on pooja's date column
                 if ($date) {
@@ -1527,24 +1527,41 @@ class ReportsController extends BaseController
     
         $receipts = $receipts->get();
        
+        // $poojaTypeAndGotraCounts = $receipts->flatMap(function ($receipt) use ($date) {
+        //     return $receipt->poojas->filter(function ($puja) use ($date) {
+        //         return !$date || $puja->date == $date; // Apply date filter if provided
+        //     })->map(function ($puja) use ($receipt) {
+        //         return [
+        //             'receiptType' => $receipt->receiptType->receipt_type,  // Include the receiptType
+        //             'poojaType' => $puja->poojaType->pooja_type,   // Include poojaType
+        //             'gotra' => $receipt->gotra,                     // Include gotra from the receipt
+        //             'name' => $receipt->name,                       // Include the name of the person for this receipt
+        //         ];
+        //     });
+        // })->groupBy('receiptType') // Group by receiptType first
+        //   ->map(function ($groupedByReceiptType) {
+        //       return $groupedByReceiptType->groupBy('poojaType') // Then group by poojaType within each receiptType
+        //           ->map(function ($groupedByPoojaType) {
+        //               return $groupedByPoojaType->groupBy('gotra'); // Finally group by gotra within each poojaType
+        //           });
+        // });
+
         $poojaTypeAndGotraCounts = $receipts->flatMap(function ($receipt) use ($date) {
             return $receipt->poojas->filter(function ($puja) use ($date) {
-                return !$date || $puja->date == $date; // Apply date filter if provided
+                return !$date || $puja->date == $date;
             })->map(function ($puja) use ($receipt) {
                 return [
-                    'receiptType' => $receipt->receiptType->receipt_type,  // Include the receiptType
-                    'poojaType' => $puja->poojaType->pooja_type,   // Include poojaType
-                    'gotra' => $receipt->gotra,                     // Include gotra from the receipt
-                    'name' => $receipt->name,                       // Include the name of the person for this receipt
+                    'devtaName' => $puja->poojaType->devta->devta_name,  // ✅ Use devtaName here
+                    'gotra' => $receipt->gotra,
+                    'name' => $receipt->name,
                 ];
             });
-        })->groupBy('receiptType') // Group by receiptType first
-          ->map(function ($groupedByReceiptType) {
-              return $groupedByReceiptType->groupBy('poojaType') // Then group by poojaType within each receiptType
-                  ->map(function ($groupedByPoojaType) {
-                      return $groupedByPoojaType->groupBy('gotra'); // Finally group by gotra within each poojaType
-                  });
+        })
+        ->groupBy('devtaName') // ✅ Group by Devta Name
+        ->map(function ($groupedByDevta) {
+            return $groupedByDevta->groupBy('gotra'); // ✅ Group by Gotra
         });
+        
     
         // Calculate the total count (number of records)
         $totalCount = $poojaTypeAndGotraCounts->flatten()->count();
@@ -1722,11 +1739,11 @@ class ReportsController extends BaseController
     {
         $date = $request->input('date');
 
-        $receipts = Receipt::with(['poojas.poojaType', 'receiptType'])
+        $receipts = Receipt::with(['poojas.poojaType.devta', 'receiptType'])
             ->where("cancelled", false)
-            ->whereHas('receiptType', function ($query) use ($date) {
-                $query->where("is_pooja", true);
-            })
+            // ->whereHas('receiptType', function ($query) use ($date) {
+            //     $query->where("is_pooja", true);
+            // })
             ->whereHas('poojas', function ($query) use ($date) {
                 // Apply the condition on pooja's date column
                 if ($date) {
@@ -1736,23 +1753,30 @@ class ReportsController extends BaseController
         
         $receipts = $receipts->get();
       
-        // $poojaTypeCounts = $receipts->flatMap(function ($receipt) use ($date) {
+      
+        // $poojaTypeCountsByReceiptType = $receipts->flatMap(function ($receipt) use ($date) {
         //     return $receipt->poojas->filter(function ($puja) use ($date) {
         //         return !$date || $puja->date == $date;
-        //     })->map(function ($puja) {
-        //         return $puja->poojaType->pooja_type;
+        //     })->map(function ($puja) use ($receipt) {
+        //         return [
+        //             'receiptType' => $receipt->receiptType->receipt_type, // Assuming 'receipt_type' is the field you want
+        //             'poojaType' => $puja->poojaType->pooja_type, // Extract the pooja type
+        //             'devtaName' => $puja->poojaType->devta->devta_name, // Extract the pooja type
+        //         ];
         //     });
-        // })->countBy();
-        $poojaTypeCountsByReceiptType = $receipts->flatMap(function ($receipt) use ($date) {
+        // })->groupBy('receiptType'); // Group by receiptType
+        $poojaTypeEntries = $receipts->flatMap(function ($receipt) use ($date) {
             return $receipt->poojas->filter(function ($puja) use ($date) {
                 return !$date || $puja->date == $date;
             })->map(function ($puja) use ($receipt) {
                 return [
-                    'receiptType' => $receipt->receiptType->receipt_type, // Assuming 'receipt_type' is the field you want
-                    'poojaType' => $puja->poojaType->pooja_type, // Extract the pooja type
+                    'receiptType' => $receipt->receiptType->receipt_type ?? 'N/A',
+                    'poojaType' => $puja->poojaType->pooja_type ?? 'N/A',
+                    'devtaName' => $puja->poojaType->devta->devta_name ?? 'N/A',
                 ];
             });
-        })->groupBy('receiptType'); // Group by receiptType
+        });
+        
         
     
         // $totalCount = $poojaTypeCounts->sum(); // Sum of all co
@@ -1763,9 +1787,8 @@ class ReportsController extends BaseController
         
         $data = [
             'date' => $date,
-            // 'totalCount' => $totalCount,
-            'poojaTypeCountsByReceiptType' => $poojaTypeCountsByReceiptType,
-
+            // 'poojaTypeCountsByReceiptType' => $poojaTypeCountsByReceiptType,
+            'poojaTypeEntries' => $poojaTypeEntries,
         ];
 
         // Render the Blade view to HTML
